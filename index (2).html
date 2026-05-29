@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DROIT & JUSTICE — Serious Game STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0B1628;--navy-mid:#152340;
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5E8C0;
+  --white:#FFF;--off:#F8F6F0;--gl:#E8E5DF;--gray:#9A9590;
+  --green:#2D7D56;--greenl:#E8F5EE;
+  --red:#B83232;--redl:#FDEAEA;
+  --orange:#C67B1A;--orangel:#FEF3E2;
+  --blue:#1A5FA8;--bluel:#E8F0FB;
+  --fd:'Playfair Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+  --r:12px;--rl:20px;--sh:0 4px 24px rgba(11,22,40,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--navy);color:#fff;min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+/* HOME */
+.hbg{min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#0D2040 100%);display:flex;align-items:center;padding:2rem;position:relative;overflow:hidden}
+.hbg::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);border-radius:50%}
+.hcols{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1100px;margin:0 auto;width:100%;align-items:center}
+.firm-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.4);padding:6px 16px;border-radius:30px;margin-bottom:1.5rem}
+.gtitle{font-family:var(--fd);font-size:clamp(3.5rem,7vw,5.5rem);font-weight:900;line-height:.9;margin-bottom:1rem}
+.gsub{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.gdesc{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.7;max-width:420px;margin-bottom:2rem}
+.hright{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.scales{font-size:5rem;animation:sway 3s ease-in-out infinite;display:block;text-align:center}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.tchips{display:flex;flex-direction:column;gap:8px;width:100%}
+.tchip{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-left:3px solid var(--gold);padding:10px 16px;border-radius:6px;font-size:.85rem;color:var(--gold-light);font-weight:500}
+.sinfo{margin-top:.75rem;font-size:.78rem;color:var(--gray)}
+/* BUTTONS */
+.bp{background:var(--gold);color:var(--navy);border:none;padding:14px 28px;border-radius:8px;font-family:var(--fb);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-block}
+.bp:hover{background:var(--gold-light);transform:translateY(-1px)}
+.bp:disabled{background:var(--gray);cursor:not-allowed;transform:none;opacity:.6}
+.bs{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25);padding:12px 24px;border-radius:8px;font-family:var(--fb);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s}
+.bs:hover{background:rgba(255,255,255,.08)}
+.bback{background:none;border:none;color:rgba(255,255,255,.6);font-family:var(--fb);font-size:.88rem;cursor:pointer;padding:8px 12px}
+.bback:hover{color:#fff}
+.bhint{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold-light);padding:8px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:var(--fb);white-space:nowrap}
+/* MAP */
+#screen-map{background:var(--off);color:var(--navy)}
+.mhdr{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.mtitle{font-family:var(--fd);font-size:1.3rem;color:#fff;font-weight:700}
+.xpm{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--gold-light)}
+.rbadge{background:rgba(201,168,76,.2);border:1px solid var(--gold);padding:3px 12px;border-radius:20px;font-size:.75rem;font-weight:600;color:var(--gold-light)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;padding:2rem;max-width:1100px;margin:0 auto;width:100%}
+.cc{background:#fff;border-radius:var(--rl);padding:1.75rem;cursor:pointer;transition:all .25s;box-shadow:0 2px 12px rgba(11,22,40,.08);border:2px solid transparent;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gold)}
+.cc:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:rgba(201,168,76,.3)}
+.cc.locked{opacity:.65;cursor:default}.cc.locked:hover{transform:none}
+.cc.done::before{background:var(--green)}
+.cnum{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:4px}
+.ctheme{font-size:.75rem;font-weight:600;color:var(--gold);margin-bottom:.75rem;text-transform:uppercase}
+.ctitle{font-family:var(--fd);font-size:1.3rem;color:var(--navy);margin-bottom:.75rem;line-height:1.2}
+.cdesc{font-size:.88rem;color:#5A6070;line-height:1.6;margin-bottom:1rem}
+.cmeta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.diff{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px}
+.d1{background:#E8F5EE;color:var(--green)}.d2{background:var(--orangel);color:var(--orange)}.d3{background:var(--redl);color:var(--red)}
+.stag{font-size:.72rem;color:var(--gray);background:var(--gl);padding:3px 10px;border-radius:20px}
+.cprog{background:var(--gl);border-radius:4px;height:5px;margin-bottom:.5rem}
+.pbar{height:5px;border-radius:4px;background:var(--gold);width:0%;transition:width .5s}
+.cscore{font-size:.8rem;color:var(--gray);font-weight:500}
+.lockv{position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:600;color:var(--navy);border-radius:var(--rl)}
+/* GAME */
+#screen-game{background:#F2F0EB;color:var(--navy)}
+.ghdr{background:var(--navy);padding:.75rem 1.5rem;display:flex;align-items:center;gap:1rem;justify-content:space-between;flex-shrink:0}
+.ghc{flex:1;text-align:center}
+.ghtitle{font-size:.88rem;font-weight:600;color:var(--gold-light);margin-bottom:5px}
+.sdots{display:flex;gap:6px;justify-content:center}
+.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s}
+.sdot.done{background:var(--green)}.sdot.active{background:var(--gold);transform:scale(1.3)}
+.ghr{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.slive{font-size:.85rem;color:var(--gold-light);font-weight:600;white-space:nowrap}
+.gcont{flex:1;overflow-y:auto;padding:1.5rem;max-width:920px;margin:0 auto;width:100%}
+.gnav{background:#fff;border-top:1px solid var(--gl);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-shrink:0}
+.slbl{font-size:.8rem;color:var(--gray);text-align:center;font-weight:500;flex:1}
+.sinstr{background:var(--navy);color:#fff;border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:.9rem;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.sic{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+/* DOCS */
+.docgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1rem}
+.dcard{background:#fff;border-radius:var(--r);padding:1.2rem;border-left:4px solid #ccc;box-shadow:0 2px 8px rgba(11,22,40,.06);cursor:pointer;transition:all .2s;position:relative}
+.dcard:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.dcard.sel{border-left-color:var(--gold);background:var(--gold-pale)}
+.dcard.cor{border-left-color:var(--green);background:var(--greenl);pointer-events:none}
+.dcard.wr{border-left-color:var(--red);background:var(--redl);pointer-events:none}
+.dcard.neu{border-left-color:#ccc;opacity:.6;pointer-events:none}
+.dtype{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--gray);margin-bottom:5px}
+.dtitle{font-size:.92rem;font-weight:600;color:var(--navy);margin-bottom:5px}
+.dbody{font-size:.82rem;color:#5A6070;line-height:1.5}
+.dcheck{position:absolute;top:10px;right:12px;font-size:1.1rem;opacity:0;transition:opacity .2s}
+.dcard.sel .dcheck{opacity:1}
+.dtip{font-size:.72rem;margin-top:6px;font-style:italic;display:none;line-height:1.4}
+.dcard.cor .dtip,.dcard.wr .dtip{display:block}
+.dcard.cor .dtip{color:var(--green)}.dcard.wr .dtip{color:var(--red)}
+/* QUALI */
+.cgridq{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1rem}
+.cbtn{background:#fff;border:2px solid var(--gl);border-radius:var(--r);padding:1rem;cursor:pointer;text-align:left;transition:all .2s;font-family:var(--fb);width:100%}
+.cbtn:hover:not(.dis){border-color:var(--navy);background:var(--off)}
+.cbtn.ok{border-color:var(--green);background:var(--greenl)}
+.cbtn.ko{border-color:var(--red);background:var(--redl)}
+.cbtn.dis{pointer-events:none}
+.clbl{font-size:.9rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.cdet{font-size:.78rem;color:var(--gray);line-height:1.4}
+/* SYLLOGISME BAC */
+.sylwrap{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem}
+.sylrow{background:#fff;border-radius:var(--r);padding:1.25rem;border-left:5px solid #ccc}
+.sylrow.maj{border-left-color:var(--navy)}
+.sylrow.min{border-left-color:var(--orange)}
+.sylrow.conc{border-left-color:var(--green)}
+.sylhdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.syltag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 10px;border-radius:20px}
+.tmaj{background:var(--bluel);color:var(--blue)}
+.tmin{background:var(--orangel);color:var(--orange)}
+.tconc{background:var(--greenl);color:var(--green)}
+.sylsub{font-size:.78rem;color:var(--gray)}
+.sylasm{background:var(--off);border-radius:8px;padding:.85rem;min-height:52px;border:2px dashed var(--gl);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;transition:border-color .2s}
+.sylasm.has{border-style:solid;border-color:var(--gold)}
+.pfrag{background:var(--gold-pale);border:2px solid var(--gold);border-radius:6px;padding:5px 12px;font-size:.8rem;color:var(--navy);font-family:var(--fb)}
+.conchip{background:var(--navy);color:var(--gold-light);border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:var(--fb);border:2px solid transparent;transition:all .2s}
+.conchip:hover{border-color:var(--gold-light)}
+.conchip.selc{border-color:var(--gold);background:#1E3257}
+.conchip.okc{border-color:var(--green);background:#1a4a30}
+.conchip.koc{border-color:var(--red)}
+.blbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:6px}
+.fragbank{display:flex;flex-wrap:wrap;gap:8px}
+.fr{background:var(--off);border:2px solid var(--gl);border-radius:6px;padding:7px 12px;font-size:.8rem;cursor:pointer;font-family:var(--fb);color:var(--navy);transition:all .2s;text-align:left}
+.fr:hover{border-color:var(--navy)}
+.fr.self{border-color:var(--gold);background:var(--gold-pale);font-weight:600}
+.fr.okf{border-color:var(--green);background:var(--greenl);color:var(--green);pointer-events:none}
+.fr.kof{border-color:var(--red);background:var(--redl);color:var(--red);pointer-events:none}
+.fr.usedx{opacity:.35;pointer-events:none}
+.sylprev{font-size:.82rem;color:var(--gray);font-style:italic;margin-top:6px;min-height:18px;line-height:1.5}
+.sylprev.active{color:var(--navy);font-style:normal;font-weight:500}
+.bactip{background:var(--bluel);border-radius:var(--r);padding:.9rem 1.1rem;font-size:.82rem;color:var(--blue);line-height:1.6;margin-top:.5rem}
+/* CONTRE */
+.objcard{background:var(--redl);border:2px solid var(--red);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;display:flex;gap:12px;align-items:flex-start}
+.objic{font-size:1.4rem;flex-shrink:0}
+.objauto{font-size:.73rem;font-weight:700;color:var(--red);margin-bottom:4px;text-transform:uppercase}
+.objtxt{font-size:.88rem;color:var(--navy);line-height:1.6}
+.jmeter{background:#fff;border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.jic{font-size:1.8rem}.jinfo{flex:1}
+.jlbl{font-size:.73rem;color:var(--gray);margin-bottom:4px}
+.jwrap{background:var(--gl);border-radius:4px;height:8px}
+.jbar{height:8px;border-radius:4px;background:var(--gold);transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.jpct{font-size:.85rem;font-weight:700;color:var(--navy);min-width:36px;text-align:right}
+/* VERDICT */
+#screen-verdict{background:var(--off);color:var(--navy);align-items:center;justify-content:center;padding:2rem}
+.vbox{max-width:680px;width:100%;text-align:center}
+.gavel{font-size:3rem;animation:gav .6s ease-out;display:inline-block;margin-bottom:1rem}
+@keyframes gav{0%{transform:rotate(-40deg) scale(.5);opacity:0}60%{transform:rotate(10deg) scale(1.1)}100%{transform:rotate(0) scale(1);opacity:1}}
+.vtitle{font-family:var(--fd);font-size:2rem;color:var(--navy);margin-bottom:.75rem}
+.vtext{font-size:1rem;color:#5A6070;line-height:1.7;margin-bottom:1.5rem}
+.vscores{background:#fff;border-radius:var(--rl);padding:1.5rem;margin-bottom:1.25rem;text-align:left}
+.vsi{display:grid;grid-template-columns:170px 1fr 50px;gap:10px;align-items:center;margin-bottom:10px}
+.vslbl{font-size:.82rem;font-weight:500;color:var(--navy)}
+.vswrap{background:var(--gl);border-radius:4px;height:8px}
+.vsbar{height:8px;border-radius:4px;background:var(--gold);transition:width 1s ease}
+.vsval{font-size:.82rem;font-weight:700;color:var(--navy);text-align:right}
+.vtips{background:var(--navy);color:#fff;border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1rem;text-align:left;font-size:.88rem;line-height:1.7}
+.vxp{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+.vacts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+/* SYNTHESE */
+#screen-synthese{background:var(--off);color:var(--navy)}
+.swrap{max-width:820px;margin:0 auto;padding:2rem;width:100%}
+.shdr{text-align:center;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--gl)}
+.shdr h2{font-family:var(--fd);font-size:1.8rem;color:var(--navy);margin-bottom:.4rem}
+.ssub{color:var(--gray);font-size:.88rem}
+.sbank{display:flex;flex-wrap:wrap;gap:10px;background:#fff;border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;border:1px solid var(--gl)}
+.schip{background:var(--off);border:2px solid var(--gl);border-radius:6px;padding:8px 14px;font-size:.8rem;cursor:pointer;transition:all .2s;color:var(--navy);font-family:var(--fb)}
+.schip:hover{border-color:var(--navy);transform:translateY(-1px)}
+.schip.ssel{border-color:var(--gold);background:var(--gold-pale);font-weight:600}
+.schip.placed{opacity:.35;pointer-events:none}
+.szone{background:#fff;border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;min-height:80px;border:2px dashed var(--gl);transition:all .2s;cursor:pointer}
+.szone:hover{border-color:var(--gold);background:#FFFBF0}
+.szone.filled{border-style:solid;border-color:var(--green)}
+.zlbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:8px}
+.zitems{display:flex;flex-wrap:wrap;gap:8px;min-height:30px}
+.pchip{background:var(--gold-pale);border:2px solid var(--gold);border-radius:6px;padding:6px 12px;font-size:.78rem;color:var(--navy);cursor:pointer}
+.pchip:hover{background:var(--redl);border-color:var(--red)}
+.sacts{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;background:rgba(11,22,40,.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.overlay.hidden{display:none}
+.ovbox{background:#fff;border-radius:var(--rl);padding:2rem;max-width:500px;width:100%;text-align:center;animation:pop .3s cubic-bezier(.34,1.56,.64,1);color:var(--navy)}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.ovtitle{font-family:var(--fd);font-size:1.4rem;font-weight:700;color:var(--navy);margin-bottom:.75rem}
+.ovbody{font-size:.9rem;color:#5A6070;line-height:1.7;margin-bottom:1.25rem}
+.fbic{font-size:3rem;margin-bottom:.5rem}
+.badgebox{border-top:5px solid var(--gold)}
+.badgeic{font-size:4rem;margin-bottom:.5rem}
+.badgenm{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+.fi{animation:fadein .4s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:720px){
+  .hcols{grid-template-columns:1fr;gap:2rem}.hright{display:none}
+  .cgrid{grid-template-columns:1fr;padding:1rem}
+  .ghdr{padding:.5rem 1rem;gap:.5rem}.gcont{padding:1rem}.gnav{padding:.75rem 1rem}
+  .docgrid{grid-template-columns:1fr}.cgridq{grid-template-columns:1fr}
+  .vsi{grid-template-columns:130px 1fr 40px}
+}
+
+/* HOME — stats + features */
+.home-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.hstat{background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:.9rem 1rem;text-align:center}
+.hstat-num{font-family:var(--fd);font-size:2rem;font-weight:900;color:var(--gold);line-height:1}
+.hstat-lbl{font-size:.68rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.home-rule{display:flex;align-items:center;gap:10px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--gold-light)}
+.rule-icon{font-size:1.3rem;flex-shrink:0}
+.hfeatures{display:flex;flex-direction:column;gap:6px;margin-bottom:2rem}
+.hfeat{display:flex;align-items:center;gap:10px;font-size:.83rem;color:rgba(255,255,255,.75)}
+.hfeat::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+.home-progress-bar{background:rgba(255,255,255,.08);border-radius:20px;height:6px;margin-top:.5rem;overflow:hidden}
+.home-progress-fill{height:6px;border-radius:20px;background:linear-gradient(90deg,var(--gold),var(--gold-light));width:0%;transition:width 1s ease}
+.hright-v2{display:flex;flex-direction:column;gap:1.25rem;width:100%}
+.theme-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.1rem 1.25rem;border-left:3px solid var(--gold)}
+.theme-block:nth-child(2){border-left-color:#E86F4A}
+.theme-block:nth-child(3){border-left-color:#4AB5E8}
+.theme-block:nth-child(4){border-left-color:#6AE86F}
+.tb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.tb-title{font-size:.82rem;font-weight:600;color:var(--gold-light)}
+.tb-title:nth-child(2){color:#E86F4A}
+.tb-count{font-size:.7rem;color:rgba(255,255,255,.4);background:rgba(255,255,255,.08);padding:2px 8px;border-radius:20px}
+.tb-notions{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.6}
+.home-btn-group{display:flex;gap:12px;flex-wrap:wrap}
+
+/* CORRIGÉ TYPE BAC */
+.ov-corrige{max-width:700px;text-align:left;max-height:85vh;overflow-y:auto}
+.corrige-part{margin-bottom:1.25rem}
+.corrige-part-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gray);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.corrige-part-label::after{content:'';flex:1;height:1px;background:var(--gl)}
+.corrige-text{font-size:.88rem;color:var(--navy);line-height:1.8;background:var(--off);border-radius:8px;padding:.9rem 1.1rem;border-left:3px solid var(--gl)}
+.corrige-text.maj{border-left-color:var(--blue)}
+.corrige-text.min{border-left-color:var(--orange)}
+.corrige-text.conc{border-left-color:var(--green)}
+.corrige-text.quali{border-left-color:var(--gold)}
+.con-highlight{color:var(--navy);font-weight:700;background:var(--gold-pale);padding:1px 4px;border-radius:3px}
+.corrige-intro{font-size:.8rem;color:var(--gray);margin-bottom:1.25rem;font-style:italic;text-align:center}
+</style>
+</head>
+<body>
+<div id="screen-home" class="screen active">
+  <div class="hbg">
+    <div class="hcols">
+      <!-- COL GAUCHE -->
+      <div>
+        <div class="firm-badge">Cabinet Leclerc &amp; Associ&#233;s &#8212; Terminale STMG</div>
+        <h1 class="gtitle">DROIT<br/>&amp;<br/>JUSTICE</h1>
+        <p class="gsub">Serious Game &middot; &#201;conomie-Droit &middot; Terminale STMG</p>
+
+        <!-- Stats -->
+        <div class="home-stats">
+          <div class="hstat">
+            <div class="hstat-num">8</div>
+            <div class="hstat-lbl">Dossiers</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-num">4</div>
+            <div class="hstat-lbl">Th&#232;mes</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-num">32</div>
+            <div class="hstat-lbl">&#201;tapes</div>
+          </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="home-btn-group">
+          <button class="bp" id="btn-start">Prendre en charge les dossiers &#8594;</button>
+        </div>
+
+        <!-- Sauvegarde + progression -->
+        <div class="sinfo" id="save-info"></div>
+        <div id="home-progress-wrap" style="display:none;margin-top:.75rem">
+          <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:4px">Progression globale</div>
+          <div class="home-progress-bar"><div class="home-progress-fill" id="home-prog-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- COL DROITE -->
+      <div class="hright-v2">
+        <div class="theme-block">
+          <div class="tb-header">
+            <span class="tb-title">&#128196; Th&#232;me 5 &#8212; Le Contrat</span>
+            <span class="tb-count">2 dossiers</span>
+          </div>
+          <div class="tb-notions">Formation &middot; Inexex&#233;cution &middot; Mise en demeure &middot; Dol &middot; Nullit&#233; relative</div>
+        </div>
+        <div class="theme-block">
+          <div class="tb-header">
+            <span class="tb-title">&#9888;&#65039; Th&#232;me 6 &#8212; La Responsabilit&#233;</span>
+            <span class="tb-count">2 dossiers</span>
+          </div>
+          <div class="tb-notions">Fait personnel &middot; Fait d&#8217;autrui &middot; Fait des choses &middot; Conditions &middot; Exon&#233;ration</div>
+        </div>
+        <div class="theme-block">
+          <div class="tb-header">
+            <span class="tb-title">&#128188; Th&#232;me 7 &#8212; Le Travail Salari&#233;</span>
+            <span class="tb-count">2 dossiers</span>
+          </div>
+          <div class="tb-notions">Licenciement &middot; Proc&#233;dure &middot; Entretien pr&#233;alable &middot; Clause de non-concurrence</div>
+        </div>
+        <div class="theme-block">
+          <div class="tb-header">
+            <span class="tb-title">&#127981; Th&#232;me 8 &#8212; Entreprendre</span>
+            <span class="tb-count">2 dossiers</span>
+          </div>
+          <div class="tb-notions">Concurrence d&#233;loyale &middot; Contrat de franchise &middot; R&#233;siliation &middot; Obligations</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-map" class="screen">
+  <div class="mhdr">
+    <button class="bback" id="btn-home2">&#8592; Accueil</button>
+    <div class="mtitle">&#9878;&#65039; Vos dossiers</div>
+    <div class="xpm"><span id="map-xp">XP : 0</span><span class="rbadge" id="map-rep">&#127891; Stagiaire</span></div>
+  </div>
+  <div class="cgrid">
+    <div class="cc" id="card-1" data-case="1">
+      <div class="cnum">Dossier 01</div><div class="ctheme">&#128196; Th&#232;me 5 &#8212; Le Contrat</div>
+      <h2 class="ctitle">L&#8217;achat qui tourne mal</h2>
+      <p class="cdesc">Mme Dupont commande un smartphone en ligne. Le vendeur pr&#233;tend que rien n&#8217;a &#233;t&#233; conclu. Qui a tort&nbsp;?</p>
+      <div class="cmeta"><span class="diff d1">&#11044; Niveau 1</span><span class="stag">Formation &middot; Inexex&#233;cution &middot; Syllogisme BAC</span></div>
+      <div class="cprog"><div class="pbar" id="pb-1"></div></div><div class="cscore" id="cs-1"></div>
+      <button id="cbtn-1" onclick="event.stopPropagation();showCorrige(1)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+    </div>
+    <div class="cc locked" id="card-2" data-case="2">
+      <div class="cnum">Dossier 02</div><div class="ctheme">&#9888;&#65039; Th&#232;me 6 &#8212; La Responsabilit&#233;</div>
+      <h2 class="ctitle">L&#8217;accident de la livraison</h2>
+      <p class="cdesc">Un livreur renverse un pi&#233;ton avec son scooter. Responsabilit&#233; de qui&nbsp;? Quel r&#233;gime&nbsp;?</p>
+      <div class="cmeta"><span class="diff d2">&#11044; Niveau 2</span><span class="stag">Fait g&#233;n&#233;rateur &middot; Dommage &middot; Fait d&#8217;autrui</span></div>
+      <div class="cprog"><div class="pbar" id="pb-2"></div></div><div class="cscore" id="cs-2"></div>
+      <button id="cbtn-2" onclick="event.stopPropagation();showCorrige(2)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-2">&#128274; Terminez le dossier 01</div>
+    </div>
+    <div class="cc locked" id="card-3" data-case="3">
+      <div class="cnum">Dossier 03</div><div class="ctheme">&#128188; Th&#232;me 7 &#8212; Le Travail Salari&#233;</div>
+      <h2 class="ctitle">Le licenciement contest&#233;</h2>
+      <p class="cdesc">M. Benali est licenci&#233; apr&#232;s 6 ans. La proc&#233;dure a-t-elle &#233;t&#233; respect&#233;e&nbsp;? Le motif est-il valable&nbsp;?</p>
+      <div class="cmeta"><span class="diff d3">&#11044; Niveau 3</span><span class="stag">CDI &middot; Rupture &middot; Cause r&#233;elle et s&#233;rieuse</span></div>
+      <div class="cprog"><div class="pbar" id="pb-3"></div></div><div class="cscore" id="cs-3"></div>
+      <button id="cbtn-3" onclick="event.stopPropagation();showCorrige(3)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-3">&#128274; Terminez le dossier 02</div>
+    </div>
+    <div class="cc locked" id="card-4" data-case="4">
+      <div class="cnum">Dossier 04</div><div class="ctheme">&#128196; Th&#232;me 5 &#8212; Le Contrat</div>
+      <h2 class="ctitle">La voiture au compteur truqu&#233;</h2>
+      <p class="cdesc">M. Gros ach&#232;te une voiture d&#8217;occasion. Le kilom&#233;trage &#233;tait falsifi&#233;. Peut-il obtenir la nullit&#233; du contrat&nbsp;?</p>
+      <div class="cmeta"><span class="diff d2">&#11044; Niveau 2</span><span class="stag">Dol &middot; Vice du consentement &middot; Nullit&#233; relative</span></div>
+      <div class="cprog"><div class="pbar" id="pb-4"></div></div><div class="cscore" id="cs-4"></div>
+      <button id="cbtn-4" onclick="event.stopPropagation();showCorrige(4)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-4">&#128274; Terminez le dossier 01</div>
+    </div>
+    <div class="cc locked" id="card-5" data-case="5">
+      <div class="cnum">Dossier 05</div><div class="ctheme">&#9888;&#65039; Th&#232;me 6 &#8212; La Responsabilit&#233;</div>
+      <h2 class="ctitle">Le pr&#233;sentoir qui s&#8217;effondre</h2>
+      <p class="cdesc">Mme Renard est bless&#233;e par un pr&#233;sentoir surcharg&#233; dans un supermarch&#233;. Responsabilit&#233; du fait des choses&nbsp;?</p>
+      <div class="cmeta"><span class="diff d2">&#11044; Niveau 2</span><span class="stag">Fait des choses &middot; Gardien &middot; Pr&#233;somption</span></div>
+      <div class="cprog"><div class="pbar" id="pb-5"></div></div><div class="cscore" id="cs-5"></div>
+      <button id="cbtn-5" onclick="event.stopPropagation();showCorrige(5)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-5">&#128274; Terminez le dossier 02</div>
+    </div>
+    <div class="cc locked" id="card-6" data-case="6">
+      <div class="cnum">Dossier 06</div><div class="ctheme">&#128188; Th&#232;me 7 &#8212; Le Travail Salari&#233;</div>
+      <h2 class="ctitle">La clause de non-concurrence</h2>
+      <p class="cdesc">Mme Torres quitte son employeur et cr&#233;e une agence concurrente. La clause de non-concurrence est-elle valide&nbsp;?</p>
+      <div class="cmeta"><span class="diff d3">&#11044; Niveau 3</span><span class="stag">Non-concurrence &middot; 4 conditions &middot; Violation</span></div>
+      <div class="cprog"><div class="pbar" id="pb-6"></div></div><div class="cscore" id="cs-6"></div>
+      <button id="cbtn-6" onclick="event.stopPropagation();showCorrige(6)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-6">&#128274; Terminez le dossier 03</div>
+    </div>
+    <div class="cc locked" id="card-7" data-case="7">
+      <div class="cnum">Dossier 07</div><div class="ctheme">&#127981; Th&#232;me 8 &#8212; Entreprendre</div>
+      <h2 class="ctitle">La copie qui va trop loin</h2>
+      <p class="cdesc">Un concurrent copie l&#8217;identit&#233; visuelle de Maison D&#233;lice. Peut-on agir pour concurrence d&#233;loyale&#160;?</p>
+      <div class="cmeta"><span class="diff d2">&#11044; Niveau 2</span><span class="stag">Concurrence d&#233;loyale &middot; Imitation &middot; Art. 1240</span></div>
+      <div class="cprog"><div class="pbar" id="pb-7"></div></div><div class="cscore" id="cs-7"></div>
+      <button id="cbtn-7" onclick="event.stopPropagation();showCorrige(7)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-7">&#128274; Terminez le dossier 03</div>
+    </div>
+    <div class="cc locked" id="card-8" data-case="8">
+      <div class="cnum">Dossier 08</div><div class="ctheme">&#127981; Th&#232;me 8 &#8212; Entreprendre</div>
+      <h2 class="ctitle">Le franchis&#233; qui s&#8217;&#233;mancipe</h2>
+      <p class="cdesc">M. Azzar viole sa clause d&#8217;approvisionnement et cesse de payer ses redevances. FreshSub peut-il r&#233;silier&#160;?</p>
+      <div class="cmeta"><span class="diff d3">&#11044; Niveau 3</span><span class="stag">Franchise &middot; Obligations &middot; R&#233;siliation</span></div>
+      <div class="cprog"><div class="pbar" id="pb-8"></div></div><div class="cscore" id="cs-8"></div>
+      <button id="cbtn-8" onclick="event.stopPropagation();showCorrige(8)" style="display:none;margin-top:.6rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.5);color:var(--gold);padding:5px 14px;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--fb);font-weight:600">&#128203; Corrig&#233; BAC</button>
+      <div class="lockv" id="lock-8">&#128274; Terminez le dossier 07</div>
+    </div>
+  </div>
+</div>
+<div id="screen-game" class="screen">
+  <div class="ghdr">
+    <button class="bback" id="btn-quit">&#8592; Dossiers</button>
+    <div class="ghc">
+      <div class="ghtitle" id="gh-title"></div>
+      <div class="sdots" id="sdots"></div>
+    </div>
+    <div class="ghr">
+      <div class="slive">Score&nbsp;: <span id="live-score">0</span></div>
+      <button class="bhint" id="btn-hint">&#128161; Indice (<span id="hints-left">3</span>)</button>
+    </div>
+  </div>
+  <div class="gcont" id="gcont"></div>
+  <div class="gnav">
+    <button class="bs" id="btn-prev">&#8592; Pr&#233;c&#233;dent</button>
+    <div class="slbl" id="slbl"></div>
+    <button class="bp" id="btn-next" disabled>Valider &#8594;</button>
+  </div>
+</div>
+<div id="screen-verdict" class="screen">
+  <div class="vbox">
+    <div class="gavel">&#128296;</div>
+    <h2 class="vtitle" id="vt"></h2><p class="vtext" id="vtx"></p>
+    <div class="vscores">
+      <div class="vsi"><div class="vslbl">S&#233;lection des preuves</div><div class="vswrap"><div class="vsbar" id="vb1"></div></div><div class="vsval" id="vv1"></div></div>
+      <div class="vsi"><div class="vslbl">Qualification juridique</div><div class="vswrap"><div class="vsbar" id="vb2"></div></div><div class="vsval" id="vv2"></div></div>
+      <div class="vsi"><div class="vslbl">Syllogisme juridique</div><div class="vswrap"><div class="vsbar" id="vb3"></div></div><div class="vsval" id="vv3"></div></div>
+      <div class="vsi"><div class="vslbl">Contre-argumentation</div><div class="vswrap"><div class="vsbar" id="vb4"></div></div><div class="vsval" id="vv4"></div></div>
+    </div>
+    <div class="vtips" id="vtips"></div>
+    <div class="vxp" id="vxp"></div>
+    <div class="vacts">
+      <button class="bs" id="btn-back-map">&#8592; Retour aux dossiers</button>
+      <button class="bs" id="btn-corrige" style="border-color:var(--gold);color:var(--gold-light)">&#128203; Corrig&#233; type BAC</button>
+      <button class="bp" id="btn-synthese">Synth&#232;se finale &#8594;</button>
+    </div>
+  </div>
+</div>
+<div id="screen-synthese" class="screen">
+  <div class="swrap">
+    <div class="shdr"><h2>&#128203; Synth&#232;se juridique</h2><p class="ssub">S&#233;lectionne un &#233;l&#233;ment puis clique la zone cible. Z&#233;ro r&#233;daction.</p></div>
+    <div id="synth-content"></div>
+    <div class="sacts">
+      <button class="bs" id="btn-back-verdict">&#8592; Retour verdict</button>
+      <button class="bp" id="btn-val-synth">Valider ma synth&#232;se &#8594;</button>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="ov-hint">
+  <div class="ovbox"><div style="font-size:2rem;margin-bottom:.5rem">&#128161;</div><div class="ovtitle">Indice du mentor</div><div class="ovbody" id="hint-txt"></div><button class="bp" id="btn-close-hint">Compris &#10003;</button></div>
+</div>
+<div class="overlay hidden" id="ov-fb">
+  <div class="ovbox"><div class="fbic" id="fb-ic"></div><div class="ovtitle" id="fb-title"></div><div class="ovbody" id="fb-txt"></div><button class="bp" id="btn-close-fb">Continuer &#8594;</button></div>
+</div>
+<div class="overlay hidden" id="ov-corrige">
+  <div class="ovbox ov-corrige">
+    <div id="corrige-score-banner" style="display:none;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;text-align:center;font-size:.9rem;font-weight:600"></div>
+    <div class="ovtitle" id="corrige-title"></div>
+    <div class="corrige-intro">Voici comment r&#233;diger ce raisonnement dans une copie de BAC. Les connecteurs sont mis en &#233;vidence.</div>
+    <div id="corrige-body"></div>
+    <div style="text-align:center;margin-top:1.25rem">
+      <button class="bp" onclick="closeOv('ov-corrige');goToMap()">Retour aux dossiers &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="ov-badge">
+  <div class="ovbox badgebox"><div class="badgeic" id="badge-ic"></div><div class="ovtitle">Nouveau badge&nbsp;!</div><div class="badgenm" id="badge-nm"></div><button class="bp" id="btn-close-badge">Super&nbsp;! &#127881;</button></div>
+</div>
+<script>
+
+/* ============================================================
+   DROIT & JUSTICE — Serious Game STMG Terminale
+   Thèmes 5, 6, 7 — programme officiel
+   Règle d'or : zéro rédaction
+   ============================================================ */
+
+/* ==================== DONNÉES ==================== */
+const CASES = {
+  1:{
+    title:"L'achat qui tourne mal", theme:"Thème 5", client:"Mme Dupont",
+    steps:[
+      /* ÉTAPE 1 — Preuves avec distracteurs CRÉDIBLES */
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Lis chaque document. <strong>Sélectionne les 3 qui prouvent juridiquement l'existence et l'inexécution du contrat.</strong> Attention : certains documents semblent utiles mais ne prouvent rien en droit.",
+       min:3, max:3,
+       docs:[
+         {id:"d1",type:"Email automatique",title:"Confirmation de commande TechFlash",
+          body:"« Bonjour Mme Dupont, votre commande #TC-7841 est confirmée. Paiement de 650 € accepté. Livraison prévue sous 5 jours ouvrés. »",
+          key:true,tip:"✅ Preuve de l'acceptation du vendeur → accord de volontés formé."},
+         {id:"d2",type:"Relevé bancaire",title:"Débit de 650 € le 14/03",
+          body:"Débit de 650,00 € le 14/03 au profit de TECHFLASH SAS. Référence : TC-7841. Solde après opération : 1 247,50 €.",
+          key:true,tip:"✅ Preuve du paiement → obligation de l'acheteur exécutée."},
+         {id:"d3",type:"Email service client",title:"Réponse de TechFlash (28/03)",
+          body:"« Suite à votre réclamation, nous n'avons aucune commande à votre nom dans notre système. Nous ne pouvons pas procéder à un remboursement. »",
+          key:true,tip:"✅ Preuve de l'inexécution et du refus → TechFlash reconnaît ne pas livrer."},
+         {id:"d4",type:"Fiche technique produit",title:"Caractéristiques XPhone Pro 256 Go",
+          body:"Processeur Octa-core 3,2 GHz. RAM 12 Go. Batterie 5000 mAh. Coloris : Bleu Nuit, Blanc Perle, Graphite. Prix public conseillé : 699 €.",
+          key:false,tip:"❌ Cette fiche décrit le produit mais ne prouve aucun élément juridique de la relation contractuelle entre Mme Dupont et TechFlash."},
+         {id:"d5",type:"Captures d'écran",title:"Avis clients TechFlash (Trustpilot)",
+          body:"Note : 2,1/5 — « Nombreuses commandes non livrées. » « Service client injoignable. » 847 avis négatifs sur 1 200.",
+          key:false,tip:"❌ Ces avis montrent un problème récurrent mais ne prouvent pas l'existence du contrat spécifique de Mme Dupont."},
+         {id:"d6",type:"Conditions Générales de Vente",title:"CGV TechFlash — Art. 7.2 Livraison",
+          body:"« Le délai de livraison est indicatif. TechFlash ne saurait être tenue responsable d'un retard dû à un transporteur tiers ou à un cas de force majeure. »",
+          key:false,tip:"❌ Une clause des CGV ne prouve pas l'existence ni l'inexécution du contrat individuel de Mme Dupont."},
+       ],
+       correct:["d1","d2","d3"],
+       hints:["Demande-toi : ce document prouve-t-il qu'un accord de volontés a été formé, ou que TechFlash n'a pas livré ?","Les avis clients et les CGV ne concernent pas directement le contrat de Mme Dupont."]},
+
+      /* ÉTAPE 2 — Qualification */
+      {type:"quali", icon:"⚖️", title:"Qualification juridique",
+       inst:"Identifie le cadre juridique. <strong>Deux questions successives.</strong>",
+       q1:"Comment qualifie-t-on ce contrat ?",
+       c1:[
+         {id:"a",lbl:"Contrat de travail",det:"Lien de subordination entre employeur et salarié contre rémunération.",ok:false},
+         {id:"b",lbl:"Contrat de vente à distance",det:"Accord synallagmatique conclu en ligne entre un professionnel et un consommateur.",ok:true},
+         {id:"c",lbl:"Contrat de franchise",det:"Partenariat commercial entre franchiseur et franchisé indépendant.",ok:false},
+         {id:"d",lbl:"Contrat d'entreprise",det:"Prestation de service d'un prestataire indépendant pour un client.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Contrat de vente à distance : Mme Dupont est consommatrice, TechFlash est professionnelle. Le Code de la consommation s'applique.",
+       fb1ko:"❌ Rappel : un contrat de vente est l'accord par lequel une partie s'oblige à livrer une chose et l'autre à la payer. La vente en ligne entre pro et consommateur est une vente à distance.",
+       q2:"Ce contrat a-t-il été valablement formé ?",
+       c2:[
+         {id:"a",lbl:"Oui — email + paiement = échange des consentements",det:"Offre (mise en vente en ligne) + acceptation (clic + paiement) → contrat formé.",ok:true},
+         {id:"b",lbl:"Non — sans signature manuscrite certifiée, pas de contrat",det:"La loi exigerait obligatoirement une signature pour tout contrat à distance.",ok:false},
+         {id:"c",lbl:"Non — TechFlash n'a pas livré donc n'a pas accepté",det:"L'exécution de l'obligation serait la condition de formation du contrat.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Le consensualisme (art. 1109 C. civ.) : l'accord de volontés suffit. L'email de confirmation vaut acceptation du vendeur.",
+       fb2ko:"❌ Principe du consensualisme : le contrat est formé dès l'échange des consentements, sans forme particulière requise.",
+       hints:["Un contrat = offre + acceptation. Cherche ces deux éléments dans les pièces sélectionnées.","L'email de confirmation automatique + le paiement : que prouvent-ils juridiquement ?"]},
+
+      /* ÉTAPE 3 — SYLLOGISME BAC avec connecteurs */
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis ton argumentation comme dans une copie de BAC (réponses 2 et 3 du sujet). Choisis le <strong>connecteur</strong> puis le <strong>fragment</strong> pour chaque partie. Un résumé s'affiche en temps réel.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 du sujet — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1101 du Code civil, le contrat est un accord de volontés destiné à créer des obligations. L'article 1217 prévoit qu'en cas d'inexécution, le créancier peut obtenir l'exécution forcée ou la résolution du contrat.",ok:true},
+            {id:"f2",txt:"1103 du Code civil, les contrats légalement formés tiennent lieu de loi à ceux qui les ont faits — la force obligatoire contraint chaque partie à exécuter ses obligations.",ok:false},
+            {id:"f3",txt:"1195 du Code civil, si un changement de circonstances imprévisible rend l'exécution excessivement onéreuse, la partie peut demander une renégociation du contrat.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 du sujet — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"Mme Dupont n'a pas exercé son droit de rétractation de 14 jours : le contrat est définitivement formé, mais cela ne dispense pas TechFlash de livrer dans le délai annoncé.",ok:false},
+            {id:"f5",txt:"TechFlash a invoqué un bug informatique imprévisible et irrésistible rendant l'enregistrement de la commande impossible — ce cas de force majeure l'exonère de son obligation de livraison.",ok:false},
+            {id:"f6",txt:"Mme Dupont a passé commande et réglé 650 €. L'email de confirmation prouve l'accord de volontés formé avec TechFlash. Or, TechFlash n'a pas livré le smartphone malgré son obligation contractuelle.",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 du sujet — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"TechFlash est tenue de livrer le smartphone ou de rembourser 650 €. Mme Dupont peut demander la résolution du contrat et des dommages et intérêts.",ok:true},
+            {id:"f8",txt:"le contrat est résolu de plein droit sans mise en demeure préalable, TechFlash étant automatiquement tenue de rembourser 650 € à Mme Dupont.",ok:false},
+            {id:"f9",txt:"Mme Dupont doit accepter un avoir commercial de 650 € valable 12 mois — la résolution n'est possible qu'après un second manquement de TechFlash.",ok:false},
+          ]},
+       ],
+       hints:["Majeure : 'Selon l'article X...' + la règle générale applicable à cette affaire.","Mineure : 'En l'espèce,' + les faits concrets DE CETTE affaire uniquement.","Conclusion : 'En conséquence,' + ce que le droit impose comme solution."]},
+
+      /* ÉTAPE 4 — Contre-argumentation */
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:40,
+       inst:"L'avocat adverse soulève des objections. <strong>Choisis la meilleure réponse juridique.</strong>",
+       objections:[
+         {author:"Me Fontaine — Avocat de TechFlash",
+          txt:"« Une erreur de notre serveur a empêché l'enregistrement de la commande. Il n'y a pas eu d'accord de volontés côté vendeur. C'est un bug informatique, pas un contrat. »",
+          responses:[
+            {id:"r1",txt:"L'email de confirmation automatique envoyé par TechFlash constitue l'acceptation du vendeur. Un bug interne ne peut pas anéantir rétroactivement un consentement déjà formé et prouvé par écrit.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client est très déçu et a besoin de ce téléphone.",ok:false,pts:0},
+            {id:"r3",txt:"TechFlash devrait mieux gérer ses systèmes informatiques.",ok:false,pts:3},
+          ]},
+         {author:"Me Fontaine — Avocat de TechFlash",
+          txt:"« Mme Dupont n'a adressé aucune mise en demeure formelle. Elle ne peut donc pas agir en justice sans avoir respecté cette condition préalable. »",
+          responses:[
+            {id:"r4",txt:"L'email de réclamation adressé par Mme Dupont le 28/03 vaut mise en demeure au sens de l'article 1344 du Code civil. La condition procédurale est remplie.",ok:true,pts:20},
+            {id:"r5",txt:"La mise en demeure peut encore être faite maintenant, avant l'audience.",ok:false,pts:8},
+            {id:"r6",txt:"La mise en demeure est une formalité obsolète dans les ventes en ligne.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["Réponds toujours en citant un article de loi + une preuve concrète du dossier.","L'art. 1344 C. civ. définit la mise en demeure : vérifier si la réclamation de Mme Dupont y répond."]},
+    ],
+    synth:{
+      title:"Synthèse — Inexécution du contrat de vente",
+      zones:[{id:"z1",lbl:"Qualification de la situation"},{id:"z2",lbl:"Règle de droit (Majeure)"},{id:"z3",lbl:"Faits de l'espèce (Mineure)"},{id:"z4",lbl:"Solution juridique (Conclusion)"}],
+      chips:[
+        {id:"c1",txt:"Contrat de vente à distance valablement formé",z:"z1"},
+        {id:"c2",txt:"Mme Dupont = consommatrice / TechFlash = professionnel",z:"z1"},
+        {id:"c3",txt:"Art. 1101 C. civ. : accord de volontés créant des obligations",z:"z2"},
+        {id:"c4",txt:"Art. 1217 C. civ. : inexécution → exécution forcée ou résolution",z:"z2"},
+        {id:"c5",txt:"Email + paiement = consentements échangés",z:"z3"},
+        {id:"c6",txt:"TechFlash n'a pas livré malgré son obligation contractuelle",z:"z3"},
+        {id:"c7",txt:"TechFlash doit livrer ou rembourser 650 €",z:"z4"},
+        {id:"c8",txt:"Résolution + dommages et intérêts possibles",z:"z4"},
+        {id:"c9",txt:"Lien de subordination juridique employeur-salarié",z:null},
+        {id:"c10",txt:"Fracture du genou — préjudice corporel",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 5 : L\'inexécution du contrat de vente",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>contrat de vente à distance</strong> conclu entre Mme Dupont (consommatrice) et TechFlash SAS (professionnelle). Ce contrat a été <strong>valablement formé</strong> : l'email de confirmation vaut acceptation du vendeur ; le paiement de 650&nbsp;€ vaut acceptation de l'acheteur. L'accord de volontés est établi (art. 1109 C.&nbsp;civ.)."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1101 du Code civil, le contrat est un accord de volontés destiné à créer des obligations. L'article 1217 prévoit qu'en cas d'inexécution, le créancier peut obtenir l'exécution forcée ou la résolution du contrat."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Mme Dupont a passé commande et réglé 650&nbsp;€. L'email de confirmation et le relevé bancaire prouvent l'accord de volontés formé avec TechFlash. Or, TechFlash n'a pas livré le smartphone malgré son obligation contractuelle.<br/><br/><span class='con-highlight'>En conséquence,</span> TechFlash est tenue de livrer le smartphone ou de rembourser 650&nbsp;€. Mme Dupont peut également demander la résolution du contrat et des dommages et intérêts."}
+    ]
+  }
+  },
+
+  2:{
+    title:"L'accident de la livraison", theme:"Thème 6", client:"M. Kader Aït",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Sélectionne les <strong>4 documents qui établissent les 3 conditions de la responsabilité civile</strong> (faute, dommage, lien de causalité). Attention aux distracteurs crédibles.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"PV de gendarmerie",title:"Rapport d'accident du 12/04",
+          body:"Lucas Moreau : 58 km/h en zone 30. Distraction constatée (GPS actif sur téléphone au guidon). Passage piéton signalisé. Freinage inexistant avant l'impact.",
+          key:true,tip:"✅ Prouve la faute : excès de vitesse + distraction = comportement fautif caractérisé."},
+         {id:"d2",type:"Certificat médical CHU",title:"Bilan lésionnel de M. Aït",
+          body:"Fracture condylienne genou gauche. Intervention chirurgicale nécessaire. ITT : 21 jours. Rééducation : 3 mois minimum. Séquelles possibles.",
+          key:true,tip:"✅ Prouve le dommage corporel : certain, personnel et direct."},
+         {id:"d3",type:"Contrat de travail",title:"CDI Lucas Moreau / FastLiv SAS",
+          body:"Poste : Livreur. Véhicule de service : scooter EL-447-XZ fourni par FastLiv. Mission : livraisons au nom et pour le compte de FastLiv SAS.",
+          key:true,tip:"✅ Établit le lien de préposition : Lucas agissait pour FastLiv → responsabilité du commettant (art. 1242 al. 5)."},
+         {id:"d4",type:"Témoignage écrit",title:"Déclaration Mme Leroy, témoin",
+          body:"« Le piéton était bien engagé sur le passage clouté. Le scooter n'a pas ralenti. L'impact a été violent. Le livreur regardait son téléphone. »",
+          key:true,tip:"✅ Établit le lien de causalité direct entre la faute de Lucas et le dommage de M. Aït."},
+         {id:"d5",type:"Planning employeur",title:"Horaires de Lucas — semaine du 12/04",
+          body:"Lucas : service 10h-19h le lundi 12/04. Accident à 14h32. Lucas était en service actif selon le logiciel de suivi FastLiv.",
+          key:false,tip:"❌ Ce planning confirme les horaires mais ne prouve pas directement les 3 conditions de responsabilité civile (faute, dommage, lien de causalité)."},
+         {id:"d6",type:"Rapport interne",title:"Bilan sécurité FastLiv 2023",
+          body:"Taux d'accidents par livreur : 0,8%. Lucas Moreau : 0 accident recensé sur 3 ans. Formations sécurité : à jour.",
+          key:false,tip:"❌ L'historique favorable de Lucas ne supprime pas sa faute dans cet accident précis. L'absence de fautes passées n'efface pas la faute actuelle."},
+         {id:"d7",type:"Facture d'achat",title:"Acquisition scooter EL-447-XZ",
+          body:"FastLiv SAS a acquis ce scooter le 15/11 pour 3 200 € HT. Révision technique effectuée le 02/01. État : conforme.",
+          key:false,tip:"❌ Le bon état technique du véhicule ne supprime pas la faute de conduite du conducteur."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Les 3 conditions : faute + dommage + lien de causalité. Quel document prouve chacune ?","Le planning et le bilan sécurité sont des informations contextuelles, pas des preuves des conditions juridiques."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualifier la responsabilité",
+       inst:"Identifie le bon régime de responsabilité.",
+       q1:"Quel type de responsabilité civile s'applique entre M. Aït et Lucas ?",
+       c1:[
+         {id:"a",lbl:"Responsabilité contractuelle",det:"Il existait un contrat de transport entre M. Aït et Lucas.",ok:false},
+         {id:"b",lbl:"Responsabilité civile extracontractuelle — fait personnel",det:"Aucun contrat entre les parties. Régime de droit commun : art. 1240 C. civ.",ok:true},
+         {id:"c",lbl:"Responsabilité pénale exclusivement",det:"La seule voie possible est la sanction pénale de Lucas.",ok:false},
+         {id:"d",lbl:"Régime spécial loi Badinter (1985)",det:"La loi du 5/07/1985 s'applique automatiquement à tout accident de la route.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Aucun contrat entre M. Aït et Lucas → responsabilité extracontractuelle (art. 1240 C. civ.). NB : la loi Badinter s'applique aussi en pratique, mais le programme STMG vise le régime général.",
+       fb1ko:"❌ La responsabilité contractuelle suppose un contrat. M. Aït et Lucas ne sont liés par aucun contrat → responsabilité extracontractuelle.",
+       q2:"Peut-on engager la responsabilité de FastLiv (employeur) ?",
+       c2:[
+         {id:"a",lbl:"Oui — responsabilité du fait d'autrui : commettant/préposé (art. 1242 al. 5)",det:"L'employeur répond des dommages causés par son salarié dans l'exercice de ses fonctions.",ok:true},
+         {id:"b",lbl:"Non — FastLiv n'était pas présente sur les lieux",det:"L'employeur ne répond que s'il a directement participé à l'accident.",ok:false},
+         {id:"c",lbl:"Oui — seulement si FastLiv a commis une faute de surveillance",det:"La responsabilité du commettant exige une faute personnelle prouvée de l'employeur.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Art. 1242 al. 5 C. civ. : FastLiv (commettant) répond automatiquement des actes de Lucas (préposé) commis dans l'exercice de ses fonctions, sans faute personnelle de l'employeur nécessaire.",
+       fb2ko:"❌ La responsabilité du commettant est automatique : pas besoin de prouver une faute de l'employeur. Il suffit que le salarié ait agi dans l'exercice de ses fonctions.",
+       hints:["Y a-t-il un contrat entre le piéton et le livreur ? Non → régime extracontractuel.","Le CDI prouve que Lucas est le préposé de FastLiv → art. 1242 al. 5 C. civ."]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour engager la responsabilité de <strong>FastLiv</strong> selon la méthode BAC.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1242 alinéa 5 du Code civil, les commettants sont responsables des dommages causés par leurs préposés dans l'exercice des fonctions auxquelles ils les ont employés.",ok:true},
+            {id:"f2",txt:"1241 du Code civil, chacun est responsable du dommage causé non seulement par son fait, mais encore par sa négligence ou son imprudence — FastLiv a manqué à son obligation de surveillance de Lucas.",ok:false},
+            {id:"f3",txt:"1242 alinéa 1 du Code civil, le gardien d'une chose est responsable des dommages causés par cette chose — FastLiv est gardienne du scooter utilisé par Lucas lors de l'accident.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"FastLiv SAS n'était pas physiquement présente lors de l'accident : sans faute personnelle prouvée de la société, sa responsabilité ne peut pas être engagée pour les actes de Lucas.",ok:false},
+            {id:"f5",txt:"Lucas Moreau, salarié-préposé de FastLiv SAS, a renversé M. Aït lors d'une livraison effectuée dans l'exercice de ses fonctions. Sa faute (excès de vitesse + distraction) est prouvée par le PV de gendarmerie.",ok:true},
+            {id:"f6",txt:"Lucas avait terminé sa tournée officielle au moment des faits et agissait à titre personnel — son lien de préposition avec FastLiv était suspendu, ce qui exclut toute responsabilité du commettant.",ok:false},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"FastLiv SAS est responsable des dommages subis par M. Aït et doit l'indemniser intégralement de ses préjudices corporels et matériels.",ok:true},
+            {id:"f8",txt:"seul Lucas Moreau, auteur direct de la faute de conduite, est tenu d'indemniser M. Aït — FastLiv n'est pas responsable et peut simplement se retourner contre lui en interne.",ok:false},
+            {id:"f9",txt:"FastLiv peut s'exonérer en prouvant qu'elle avait dispensé à Lucas une formation sécurité routière complète — la faute du salarié bien formé constitue alors une cause étrangère.",ok:false},
+          ]},
+       ],
+       hints:["Art. 1242 al. 5 : responsabilité commettant (employeur) pour son préposé (salarié) dans l'exercice de ses fonctions.","La mineure cite : qui est commettant ? Qui est préposé ? Dans quelles fonctions agissait-il ?"]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:35,
+       inst:"FastLiv riposte. <strong>Défends M. Aït</strong> avec les meilleurs arguments juridiques.",
+       objections:[
+         {author:"Me Girard — Avocat de FastLiv",
+          txt:"« M. Aït n'a pas regardé avant de traverser. Sa propre imprudence est la cause de l'accident. FastLiv invoque la faute de la victime comme cause d'exonération. »",
+          responses:[
+            {id:"r1",txt:"M. Aït traversait sur un passage piéton signalisé, confirmé par le témoignage de Mme Leroy. La faute de la victime n'exonère l'auteur que si elle constitue la cause EXCLUSIVE du dommage, ce qui n'est pas établi face à une faute de conduite prouvée.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client est une victime innocente qui souffre énormément.",ok:false,pts:0},
+            {id:"r3",txt:"Lucas roulait deux fois trop vite — sa faute est flagrante.",ok:false,pts:4},
+          ]},
+         {author:"Me Girard — Avocat de FastLiv",
+          txt:"« Lucas avait terminé sa tournée officielle. L'accident s'est produit lors d'un détour personnel. Il n'agissait donc pas dans l'exercice de ses fonctions. »",
+          responses:[
+            {id:"r4",txt:"Le logiciel de suivi FastLiv confirme que Lucas était en service actif à 14h32 lors de l'accident. Il effectuait bien une livraison pour le compte de FastLiv à ce moment précis.",ok:true,pts:20},
+            {id:"r5",txt:"FastLiv devrait imposer des itinéraires fixes à ses livreurs.",ok:false,pts:4},
+            {id:"r6",txt:"Mon client ne connaît pas les horaires exacts de Lucas.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La faute de la victime n'exonère que si elle est la cause EXCLUSIVE du dommage.","Pour écarter la responsabilité du commettant, il faut prouver que le salarié avait totalement dépassé ses fonctions."]},
+    ],
+    synth:{
+      title:"Synthèse — Responsabilité civile extracontractuelle",
+      zones:[{id:"z1",lbl:"Nature des préjudices"},{id:"z2",lbl:"Régime de responsabilité"},{id:"z3",lbl:"Les 3 conditions (faute, dommage, lien)"},{id:"z4",lbl:"Responsable et conséquence"}],
+      chips:[
+        {id:"c1",txt:"Préjudice corporel : fracture genou — ITT 21 jours",z:"z1"},
+        {id:"c2",txt:"Préjudice matériel : perte de salaire 3 semaines",z:"z1"},
+        {id:"c3",txt:"Art. 1240 C. civ. : responsabilité du fait personnel (Lucas)",z:"z2"},
+        {id:"c4",txt:"Art. 1242 al. 5 C. civ. : responsabilité du fait d'autrui (FastLiv)",z:"z2"},
+        {id:"c5",txt:"Faute : 58 km/h en zone 30 + distraction au guidon",z:"z3"},
+        {id:"c6",txt:"Lien de causalité direct entre la faute et la fracture",z:"z3"},
+        {id:"c7",txt:"FastLiv (commettant) responsable des actes de Lucas (préposé)",z:"z4"},
+        {id:"c8",txt:"FastLiv doit indemniser intégralement les préjudices de M. Aït",z:"z4"},
+        {id:"c9",txt:"Clause de non-concurrence du contrat de travail",z:null},
+        {id:"c10",txt:"Rupture conventionnelle individuelle",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 6 : Responsabilité du fait d\'autrui",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il n'existe aucun contrat entre M.&nbsp;Aït et Lucas&nbsp;: on est en présence d'une <strong>responsabilité civile extracontractuelle</strong>. Lucas ayant agi dans le cadre de ses fonctions pour FastLiv SAS, on peut engager la responsabilité de FastLiv en qualité de <strong>commettant</strong> (art. 1242 al.&nbsp;5 C.&nbsp;civ.)."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1242 alinéa&nbsp;5 du Code civil, les commettants sont responsables des dommages causés par leurs préposés dans l'exercice des fonctions auxquelles ils les ont employés."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Lucas Moreau, salarié-préposé de FastLiv SAS, a renversé M.&nbsp;Aït lors d'une livraison dans l'exercice de ses fonctions. Sa faute (58&nbsp;km/h en zone 30, distraction) est établie par le PV de gendarmerie et le témoignage de Mme&nbsp;Leroy.<br/><br/><span class='con-highlight'>En conséquence,</span> FastLiv SAS est responsable des dommages subis par M.&nbsp;Aït et doit l'indemniser intégralement de ses préjudices corporels et matériels."}
+    ]
+  }
+  },
+
+  3:{
+    title:"Le licenciement contesté", theme:"Thème 7", client:"M. Rachid Benali",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Sélectionne les <strong>4 documents qui prouvent l'irrégularité du licenciement</strong>. Certains documents concernent le motif mais pas la procédure — distinction essentielle en droit.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Contrat de travail",title:"CDI M. Benali — signé mars",
+          body:"CDI. Poste : Commercial senior. 6 ans d'ancienneté. Clause d'objectifs : +10% CA annuel. Aucun avertissement ni mise à pied enregistrés.",
+          key:true,tip:"✅ Établit l'existence du CDI et l'absence de sanctions antérieures — indispensable pour apprécier la régularité du licenciement."},
+         {id:"d2",type:"Lettre recommandée AR",title:"Lettre de licenciement — reçue le 05/05",
+          body:"« Monsieur, nous vous informons de la décision de mettre fin à votre contrat pour insuffisance de résultats. Votre préavis de 3 mois commence à courir à compter de la présente. »",
+          key:true,tip:"✅ La lettre ne mentionne aucun entretien préalable → irrégularité de procédure flagrante."},
+         {id:"d3",type:"Email interne",title:"Message du DRH M. Duplessix (02/05)",
+          body:"« Rachid, suite à notre analyse trimestrielle, nous avons décidé de mettre fin à ta collaboration. Tes chiffres sont en baisse de 12% sur T1. Bonne continuation. »",
+          key:true,tip:"✅ Cet email du 02/05 prouve qu'une décision était déjà prise AVANT tout entretien → procédure totalement inversée."},
+         {id:"d4",type:"Extraction SIRH",title:"Historique convocations — M. Benali",
+          body:"Recherche dans le système RH BureauMax : aucune convocation à entretien préalable émise pour M. Rachid Benali. Aucune lettre recommandée de convocation enregistrée.",
+          key:true,tip:"✅ Preuve directe de l'absence d'entretien préalable = violation de l'art. L1232-2 Code du travail."},
+         {id:"d5",type:"Tableau de bord commercial",title:"Résultats T1 — équipe commerciale",
+          body:"M. Benali : CA réalisé 187 K€ / objectif 210 K€ (-11%). Moyenne équipe : -8%. Meilleur : +3%. Pire : -19%.",
+          key:false,tip:"❌ Ces chiffres concernent le MOTIF du licenciement, pas l'irrégularité de PROCÉDURE. Les deux questions sont distinctes en droit."},
+         {id:"d6",type:"Compte rendu",title:"Entretien annuel M. Benali — décembre",
+          body:"Évaluation : Satisfaisant. Points positifs : relationnel client, fidélisation. Points d'amélioration : prospection. Aucune alerte sur risque de licenciement.",
+          key:false,tip:"❌ Utile pour contester le motif mais ne prouve pas l'irrégularité de la procédure de licenciement."},
+         {id:"d7",type:"Bulletin de salaire",title:"Bulletin de paie — avril",
+          body:"Salaire brut : 3 650 €. Ancienneté : +180 €. Aucune retenue disciplinaire. Cumul annuel brut : 14 520 €.",
+          key:false,tip:"❌ Le bulletin de salaire ne prouve pas l'irrégularité de la procédure de licenciement."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Distinction fondamentale : procédure ≠ motif. Cherche les preuves de l'ABSENCE d'entretien préalable.","Les résultats et l'entretien annuel concernent le fond, pas la procédure."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualifier le licenciement",
+       inst:"Analyse le licenciement de M. Benali.",
+       q1:"À quelle catégorie appartient ce licenciement ?",
+       c1:[
+         {id:"a",lbl:"Licenciement pour motif économique",det:"Suppressions de postes liées aux difficultés économiques ou réorganisation de l'entreprise.",ok:false},
+         {id:"b",lbl:"Licenciement pour motif personnel",det:"Motif inhérent à la personne du salarié : comportement, capacités, résultats individuels.",ok:true},
+         {id:"c",lbl:"Rupture conventionnelle homologuée",det:"Accord amiable signé par les deux parties et validé par la DREETS.",ok:false},
+         {id:"d",lbl:"Licenciement pour faute grave",det:"Faute rendant impossible le maintien du salarié même pendant le préavis.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! L'insuffisance de résultats est un motif inhérent à la personne du salarié → licenciement pour motif personnel (art. L1232-1 C. trav.).",
+       fb1ko:"❌ Le licenciement pour motif économique concerne les difficultés de l'entreprise. Ici c'est la performance individuelle qui est en cause → motif personnel.",
+       q2:"Ce licenciement est-il juridiquement valide ?",
+       c2:[
+         {id:"a",lbl:"Oui — une baisse de 12% constitue une cause réelle et sérieuse",det:"L'insuffisance de résultats chiffrée suffit toujours à justifier un licenciement.",ok:false},
+         {id:"b",lbl:"Non — la procédure légale obligatoire n'a pas été respectée",det:"Tout licenciement individuel doit être précédé d'un entretien préalable avec convocation formelle (art. L1232-2 C. trav.).",ok:true},
+         {id:"c",lbl:"Oui — l'email du DRH vaut convocation légale",det:"Un email informel remplace juridiquement la convocation par lettre recommandée.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! L'art. L1232-2 C. trav. impose une convocation formelle AVANT toute décision. Son absence rend la procédure irrégulière, même si le motif pouvait être fondé.",
+       fb2ko:"❌ La procédure est d'ordre public. L'entretien préalable est obligatoire (art. L1232-2) : son absence entraîne l'irrégularité, indépendamment du bien-fondé du motif.",
+       hints:["Cherche dans les pièces : y a-t-il eu une convocation formelle à entretien préalable ?","L'email du DRH du 02/05 et la lettre du 05/05 : dans quel ordre cela s'est-il passé ?"]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour contester le licenciement selon la <strong>méthode BAC</strong>.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"L1232-2 du Code du travail, avant toute décision de licenciement, l'employeur doit convoquer le salarié à un entretien préalable par lettre recommandée ou remise en main propre, précisant l'objet, la date, l'heure, le lieu et le droit à assistance.",ok:true},
+            {id:"f2",txt:"L1232-1 du Code du travail, tout licenciement pour motif personnel doit être justifié par une cause réelle et sérieuse — l'insuffisance de résultats, si elle est objectivement établie, peut en constituer une.",ok:false},
+            {id:"f3",txt:"L1237-19 du Code du travail, la rupture conventionnelle est l'accord amiable entre employeur et salarié pour mettre fin au contrat de travail — elle est soumise à homologation par la DREETS.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"L'email informel du DRH du 02/05 adressé à M. Benali vaut convocation à entretien préalable — il mentionne la situation et lui permet de s'expliquer avant toute décision définitive.",ok:false},
+            {id:"f5",txt:"La baisse de résultats de 12% de M. Benali, objectivement établie par le tableau de bord, constitue une cause réelle et sérieuse qui dispense l'employeur de la formalité de l'entretien préalable.",ok:false},
+            {id:"f6",txt:"BureauMax a notifié le licenciement de M. Benali par lettre du 05/05 sans qu'aucune convocation à entretien préalable n'ait été émise, comme le confirme l'extraction du SIRH. L'email du DRH du 02/05 prouve que la décision était déjà prise avant tout entretien.",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"le licenciement de M. Benali est irrégulier. BureauMax doit lui verser des dommages et intérêts pour non-respect de la procédure (art. L1235-2 C. trav.), et le licenciement peut être requalifié en licenciement sans cause réelle et sérieuse.",ok:true},
+            {id:"f8",txt:"le licenciement est nul de plein droit : M. Benali doit être réintégré dans son poste et percevoir l'intégralité des salaires dus depuis la date du licenciement.",ok:false},
+            {id:"f9",txt:"BureauMax peut régulariser la procédure a posteriori en convoquant M. Benali à un entretien, ce qui purgera l'irrégularité et dispensera la société de verser des dommages et intérêts.",ok:false},
+          ]},
+       ],
+       hints:["La majeure cite l'article qui impose l'entretien préalable → Code du travail, pas Code civil.","La mineure doit expliquer POURQUOI BureauMax n'a pas respecté cet article dans ce cas précis."]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:30,
+       inst:"BureauMax riposte. <strong>Défends M. Benali.</strong>",
+       objections:[
+         {author:"Me Leconte — Avocat de BureauMax",
+          txt:"« M. Benali affiche une baisse de 12% sur le T1. L'insuffisance de résultats constitue une cause réelle et sérieuse. La procédure n'est qu'une formalité administrative. »",
+          responses:[
+            {id:"r1",txt:"La procédure d'entretien préalable n'est pas une formalité : c'est un droit fondamental permettant au salarié de présenter sa défense avant toute décision. Son non-respect est sanctionné indépendamment du bien-fondé du motif (art. L1235-2 C. trav.).",ok:true,pts:25},
+            {id:"r2",txt:"12% de baisse, ce n'est pas assez grave pour licencier après 6 ans.",ok:false,pts:5},
+            {id:"r3",txt:"Mon client est dévoué à l'entreprise depuis 6 ans.",ok:false,pts:0},
+          ]},
+         {author:"Me Leconte — Avocat de BureauMax",
+          txt:"« L'email du DRH du 2 mai constitue un entretien préalable informel. M. Benali a été informé. L'esprit de la loi est respecté. »",
+          responses:[
+            {id:"r4",txt:"L'art. L1232-2 C. trav. exige une convocation par lettre recommandée précisant l'objet, la date, l'heure, le lieu ET le droit d'assistance. Un email annonçant déjà la décision ne satisfait ni à la forme ni à l'esprit de la loi.",ok:true,pts:20},
+            {id:"r5",txt:"BureauMax aurait dû envoyer une vraie lettre recommandée.",ok:false,pts:8},
+            {id:"r6",txt:"Mon client n'a pas eu connaissance de cet email.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La procédure est d'ordre public : elle ne peut pas être remplacée par un équivalent informel.","Énumère les exigences précises de l'art. L1232-2 : forme + contenu obligatoire de la convocation."]},
+    ],
+    synth:{
+      title:"Synthèse — Le licenciement irrégulier",
+      zones:[{id:"z1",lbl:"Nature du contrat et du licenciement"},{id:"z2",lbl:"Règle de droit violée (Majeure)"},{id:"z3",lbl:"Manquement constaté (Mineure)"},{id:"z4",lbl:"Conséquences pour BureauMax"}],
+      chips:[
+        {id:"c1",txt:"CDI — licenciement pour motif personnel",z:"z1"},
+        {id:"c2",txt:"6 ans d'ancienneté — aucun avertissement antérieur",z:"z1"},
+        {id:"c3",txt:"Art. L1232-2 C. trav. : convocation obligatoire par LR avant tout licenciement",z:"z2"},
+        {id:"c4",txt:"Art. L1235-2 C. trav. : irrégularité → dommages et intérêts",z:"z2"},
+        {id:"c5",txt:"Aucune convocation émise — décision prise avant tout entretien",z:"z3"},
+        {id:"c6",txt:"Email du DRH du 02/05 prouve la décision antérieure à toute procédure",z:"z3"},
+        {id:"c7",txt:"Licenciement irrégulier : BureauMax doit des D&I à M. Benali",z:"z4"},
+        {id:"c8",txt:"Possible requalification en licenciement sans cause réelle et sérieuse",z:"z4"},
+        {id:"c9",txt:"Art. 1240 C. civ. : responsabilité extracontractuelle",z:null},
+        {id:"c10",txt:"Fracture du genou — préjudice corporel",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 7 : Le licenciement irrégulier",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>licenciement pour motif personnel</strong> (insuffisance de résultats). Ce licenciement est <strong>irrégulier en la forme</strong>&nbsp;: aucune convocation à entretien préalable n'a été émise, en violation de l'art. L1232-2 C. trav."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> L1232-2 du Code du travail, avant toute décision de licenciement, l'employeur doit convoquer le salarié à un entretien préalable par lettre recommandée précisant l'objet, la date, l'heure, le lieu et le droit à assistance."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> BureauMax a notifié le licenciement de M.&nbsp;Benali par lettre du 05/05 sans qu'aucune convocation n'ait été émise (SIRH). L'email du DRH du 02/05 prouve que la décision était prise avant tout entretien.<br/><br/><span class='con-highlight'>En conséquence,</span> le licenciement est irrégulier. BureauMax doit verser des dommages et intérêts (art. L1235-2 C. trav.) et le licenciement peut être requalifié sans cause réelle et sérieuse."}
+    ]
+  }
+  },
+
+  4:{
+    title:"La voiture au compteur truqué", theme:"Thème 5 — Le Contrat", client:"M. Aurélien Gros",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"M. Gros a acheté une voiture d'occasion. Le vendeur professionnel lui a affirmé que le véhicule avait 42 000 km. M. Gros découvre que le compteur a été falsifié. <strong>Sélectionne les 4 documents</strong> qui permettent d'invoquer la nullité du contrat.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Contrat de vente",title:"Bon de commande signé",
+          body:"Vente d'un véhicule Peugeot 308 — 42 000 km déclarés — Prix : 11 500 €. Signé le 03/02 par M. Gros et le vendeur AutoPlus SAS.",
+          key:true,tip:"✅ Prouve l'existence du contrat et la mention du kilométrage déclaré par le vendeur."},
+         {id:"d2",type:"Rapport expertise",title:"Expertise kilométrique — garage Moreau",
+          body:"Après démontage du tableau de bord : le compteur affiche 42 000 km mais les pièces d'usure (courroie, plaquettes, embrayage) correspondent à un véhicule de 97 000 km minimum. Fraude caractérisée.",
+          key:true,tip:"✅ Prouve la manœuvre dolosive : le kilométrage a été délibérément falsifié."},
+         {id:"d3",type:"Email vendeur",title:"Email commercial AutoPlus (29/01)",
+          body:"« Le véhicule est en parfait état, compteur certifié 42 000 km, carnet d'entretien complet, aucun accident. C'est une occasion rare à ce prix. »",
+          key:true,tip:"✅ Prouve les affirmations mensongères du vendeur avant la signature → intention de tromper."},
+         {id:"d4",type:"Facture réparations",title:"Devis garage — réparations urgentes",
+          body:"Courroie de distribution : 680 €. Embrayage complet : 1 200 €. Plaquettes + disques : 320 €. Total : 2 200 €. Réparations nécessaires et urgentes.",
+          key:true,tip:"✅ Prouve le préjudice subi : M. Gros n'aurait pas acheté à ce prix s'il avait connu le vrai kilométrage."},
+         {id:"d5",type:"Carnet entretien",title:"Carnet d'entretien AutoPlus",
+          body:"Trois tampons réguliers jusqu'à 38 000 km. Pas de tampon entre 38 000 et 42 000 km. Dernier tampon daté de 2 ans.",
+          key:false,tip:"❌ Élément intéressant mais insuffisant seul pour prouver le dol — il faut l'expertise kilométrique."},
+         {id:"d6",type:"Publicité",title:"Annonce LeBonCoin originale",
+          body:"« Peugeot 308 — 42 000 km — Première main — Parfait état — 11 500 € — Professionnel. »",
+          key:false,tip:"❌ L'annonce confirme les déclarations mais n'a pas la force probante du contrat signé et de l'expertise."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Pour prouver le dol : cherche la manœuvre (expertise), l'intention de tromper (email), et le consentement vicié (contrat).","Le préjudice doit être prouvé pour obtenir des dommages et intérêts en plus de la nullité."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualification juridique",
+       inst:"Qualifie la situation juridique de M. Gros.",
+       q1:"Quel vice du consentement peut invoquer M. Gros ?",
+       c1:[
+         {id:"a",lbl:"L'erreur sur les qualités essentielles (art. 1132)",det:"M. Gros s'est trompé seul sur les caractéristiques du véhicule.",ok:false},
+         {id:"b",lbl:"Le dol — manœuvres frauduleuses du vendeur (art. 1137)",det:"Le vendeur a délibérément trompé M. Gros par des mensonges pour obtenir son consentement.",ok:true},
+         {id:"c",lbl:"La violence économique (art. 1143)",det:"Le vendeur a exercé une pression économique abusive sur M. Gros.",ok:false},
+         {id:"d",lbl:"La lésion — déséquilibre du prix (art. 1168)",det:"Le prix est disproportionné par rapport à la valeur réelle du véhicule.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Le dol (art. 1137 C. civ.) est constitué : le vendeur a utilisé des manœuvres frauduleuses (falsification + email mensonger) pour obtenir le consentement de M. Gros.",
+       fb1ko:"❌ L'erreur est spontanée (l'acheteur se trompe seul). Ici, le vendeur a INTENTIONNELLEMENT trompé M. Gros → c'est le dol.",
+       q2:"Quelle sanction M. Gros peut-il demander ?",
+       c2:[
+         {id:"a",lbl:"La nullité relative du contrat + dommages et intérêts",det:"Le dol entraîne la nullité relative (protège la victime) et permet l'indemnisation du préjudice.",ok:true},
+         {id:"b",lbl:"La nullité absolue du contrat uniquement",det:"La nullité absolue est réservée aux violations de l'ordre public, pas aux vices du consentement.",ok:false},
+         {id:"c",lbl:"La résolution du contrat pour inexécution",det:"La résolution sanctionne l'inexécution d'une obligation contractuelle, pas un vice du consentement.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Le dol entraîne la nullité RELATIVE (art. 1178 C. civ.) — seule la victime peut l'invoquer. M. Gros peut également obtenir des dommages et intérêts pour son préjudice.",
+       fb2ko:"❌ La nullité absolue sanctionne les atteintes à l'ordre public (objet illicite…). Le dol, vice du consentement, entraîne la nullité relative — seule la victime peut s'en prévaloir.",
+       hints:["Qui a trompé qui ? Intentionnellement ? → dol ou erreur ?","Nullité relative = protège la victime. Nullité absolue = protège l'ordre public."]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour obtenir la <strong>nullité du contrat</strong> selon la méthode BAC.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1137 du Code civil, le dol est le fait pour un contractant d'obtenir le consentement de l'autre par des manœuvres ou des mensonges. Il est une cause de nullité relative du contrat.",ok:true},
+            {id:"f2",txt:"1132 du Code civil, l'erreur sur les qualités essentielles de la chose vendue est une cause de nullité relative — M. Gros s'est trompé seul sur le kilométrage réel du véhicule.",ok:false},
+            {id:"f3",txt:"1130 du Code civil, l'erreur, le dol et la violence vicient le consentement — mais seul le juge apprécie au cas par cas si le vice est suffisamment grave pour justifier la nullité.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"M. Gros, en n'exigeant pas d'expertise indépendante avant la signature, a commis une imprudence qui rompt le lien de causalité entre les manœuvres d'AutoPlus et le préjudice subi.",ok:false},
+            {id:"f5",txt:"AutoPlus SAS a délibérément falsifié le kilométrage du véhicule et affirmé par email que le compteur était certifié à 42 000 km, alors que l'expertise prouve 97 000 km. Ces manœuvres ont vicié le consentement de M. Gros.",ok:true},
+            {id:"f6",txt:"Les CGV d'AutoPlus excluant toute garantie sur le kilométrage déclaré, M. Gros a accepté contractuellement l'aléa kilométrique en signant le bon de commande sans réserve.",ok:false},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"le contrat de vente est nul pour dol. M. Gros est en droit d'obtenir la restitution des 11 500 € et des dommages et intérêts pour couvrir son préjudice (2 200 € de réparations urgentes).",ok:true},
+            {id:"f8",txt:"M. Gros ne peut obtenir qu'une réduction du prix proportionnelle à l'écart kilométrique — la nullité totale du contrat est une sanction disproportionnée pour un simple écart déclaratif.",ok:false},
+            {id:"f9",txt:"le contrat est nul de nullité absolue en raison de la fraude au compteur, qui porte atteinte à l'ordre public économique — les deux parties sont remises dans leur état antérieur.",ok:false},
+          ]},
+       ],
+       hints:["Art. 1137 C. civ. = le dol. Bien différencier de l'erreur (art. 1132) et de la violence (art. 1140).","La conclusion doit indiquer la nullité ET les dommages et intérêts."]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:38,
+       inst:"AutoPlus riposte. <strong>Défends M. Gros</strong> juridiquement.",
+       objections:[
+         {author:"Me Basset — Avocat d'AutoPlus SAS",
+          txt:"« M. Gros est un adulte majeur. Il aurait dû faire expertiser le véhicule avant d'acheter. Son manque de prudence est sa propre responsabilité. »",
+          responses:[
+            {id:"r1",txt:"Le dol d'un professionnel de l'automobile (AutoPlus SAS) à l'égard d'un consommateur est particulièrement sanctionné. La falsification du compteur est une manœuvre active qui va bien au-delà d'un simple défaut d'information : M. Gros a été induit en erreur intentionnellement.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client fait confiance aux professionnels de bonne foi.",ok:false,pts:0},
+            {id:"r3",txt:"AutoPlus aurait dû être plus honnête avec ses clients.",ok:false,pts:3},
+          ]},
+         {author:"Me Basset — Avocat d'AutoPlus SAS",
+          txt:"« Le kilométrage indiqué dans le contrat était basé sur les informations du précédent propriétaire. AutoPlus n'avait pas connaissance de la falsification. Il n'y a donc pas d'intention de tromper. »",
+          responses:[
+            {id:"r4",txt:"L'email commercial du 29/01 affirme que le compteur est 'certifié'. En tant que professionnel de l'automobile, AutoPlus avait l'obligation de vérifier le kilométrage avant de le garantir. La négligence professionnelle caractérisée équivaut au dol par réticence.",ok:true,pts:20},
+            {id:"r5",txt:"AutoPlus devrait vérifier ses véhicules avant de les vendre.",ok:false,pts:5},
+            {id:"r6",txt:"Mon client ne pouvait pas savoir que le vendeur mentait.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["Le dol peut être commis par réticence : taire une information que l'on devait révéler. Un professionnel ne peut pas ignorer l'état de son stock.","Distingue l'intention de tromper (dol) de la simple négligence — mais le résultat est le même pour un professionnel."]},
+    ],
+    synth:{
+      title:"Synthèse — Nullité du contrat pour dol",
+      zones:[{id:"z1",lbl:"Qualification de la situation"},{id:"z2",lbl:"Règle de droit (Majeure)"},{id:"z3",lbl:"Faits de l'espèce (Mineure)"},{id:"z4",lbl:"Solution juridique (Conclusion)"}],
+      chips:[
+        {id:"c1",txt:"Contrat de vente vicié par dol",z:"z1"},
+        {id:"c2",txt:"M. Gros = consommateur / AutoPlus = professionnel",z:"z1"},
+        {id:"c3",txt:"Art. 1137 C. civ. : le dol — manœuvres frauduleuses obtenant le consentement",z:"z2"},
+        {id:"c4",txt:"Art. 1178 C. civ. : nullité relative — seule la victime peut l'invoquer",z:"z2"},
+        {id:"c5",txt:"Falsification du compteur + email mensonger d'AutoPlus",z:"z3"},
+        {id:"c6",txt:"Sans le dol, M. Gros n'aurait pas contracté à ce prix",z:"z3"},
+        {id:"c7",txt:"Nullité du contrat : restitution des 11 500 €",z:"z4"},
+        {id:"c8",txt:"Dommages et intérêts : 2 200 € de réparations urgentes",z:"z4"},
+        {id:"c9",txt:"Licenciement pour motif économique",z:null},
+        {id:"c10",txt:"Responsabilité du fait d'autrui",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 5 : Le dol et la nullité relative",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>vice du consentement&nbsp;: le dol</strong> (art. 1137 C.&nbsp;civ.). AutoPlus a utilisé des manœuvres frauduleuses (falsification du compteur&nbsp;+ email mensonger) pour obtenir le consentement de M.&nbsp;Gros, entraînant la <strong>nullité relative</strong> du contrat."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1137 du Code civil, le dol est le fait pour un contractant d'obtenir le consentement de l'autre par des manœuvres ou des mensonges. Il est une cause de nullité relative du contrat."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> AutoPlus SAS a délibérément falsifié le kilométrage (97&nbsp;000&nbsp;km réels vs 42&nbsp;000 déclarés) et garanti par email un compteur «&nbsp;certifié&nbsp;». Ces manœuvres ont vicié le consentement de M.&nbsp;Gros&nbsp;: sans elles, il n'aurait pas contracté à ce prix.<br/><br/><span class='con-highlight'>En conséquence,</span> le contrat est nul pour dol. M.&nbsp;Gros peut obtenir la restitution des 11&nbsp;500&nbsp;€ et des dommages et intérêts (2&nbsp;200&nbsp;€ de réparations urgentes)."}
+    ]
+  }
+  },
+
+  5:{
+    title:"Le présentoir qui s'effondre", theme:"Thème 6 — La Responsabilité", client:"Mme Sophie Renard",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Mme Renard est blessée dans le supermarché Marché'Plus par un présentoir métallique qui s'effondre sur elle. <strong>Sélectionne les 4 éléments</strong> qui permettent d'engager la responsabilité du supermarché.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Rapport d'incident",title:"Déclaration d'accident Marché'Plus",
+          body:"Le 08/03 à 11h20, un présentoir d'articles promotionnels (rayon boissons) s'est effondré sur une cliente. Cause apparente : surcharge du présentoir par les employés lors du réassort.",
+          key:true,tip:"✅ Prouve le fait dommageable : la chose (présentoir) sous la garde du supermarché a causé un dommage."},
+         {id:"d2",type:"Certificat médical",title:"Urgences CHU — Mme Renard",
+          body:"Traumatisme crânien léger + hématome temporal droit + contusion à l'épaule gauche. ITT : 14 jours. Surveillance neurologique recommandée pendant 1 mois.",
+          key:true,tip:"✅ Prouve le dommage corporel certain, personnel et direct."},
+         {id:"d3",type:"Vidéosurveillance",title:"Extrait CCTV — rayon boissons 11h18-11h22",
+          body:"Les images montrent : le présentoir stable à 11h18, un employé qui charge 12 bouteilles supplémentaires à 11h19, le présentoir qui bascule à 11h20 sur Mme Renard. Mme Renard marchait normalement dans l'allée.",
+          key:true,tip:"✅ Prouve le lien de causalité direct entre la surcharge (fait de la chose sous garde) et le dommage."},
+         {id:"d4",type:"Rapport technique",title:"Expertise du présentoir — bureau Véritas",
+          body:"Capacité maximale du présentoir : 25 kg. Charge au moment de l'effondrement estimée à 38 kg. Présentoir en bon état général, non défectueux. Cause : surcharge.",
+          key:true,tip:"✅ Prouve que la chose était sous la garde de Marché'Plus et que c'est son utilisation anormale (surcharge) qui a causé le dommage."},
+         {id:"d5",type:"Ticket de caisse",title:"Achats de Mme Renard ce jour-là",
+          body:"Courses effectuées : yaourts, pain, jus d'orange, café. Montant total : 34,20 €. Heure : 11h15.",
+          key:false,tip:"❌ Le ticket de caisse prouve que Mme Renard était cliente ce jour-là mais ne prouve aucune des conditions de la responsabilité civile."},
+         {id:"d6",type:"Attestation",title:"Témoignage de M. Favier, autre client",
+          body:"« J'ai vu la dame marcher normalement dans l'allée. Le rayon semblait vraiment trop chargé depuis le matin. »",
+          key:false,tip:"❌ Le témoignage confirme des éléments mais reste insuffisant seul : la vidéo et le rapport technique sont des preuves objectivement plus solides."},
+         {id:"d7",type:"Fiche sécurité",title:"Procédure réassort Marché'Plus",
+          body:"Procédure interne : « Ne jamais dépasser la charge maximale indiquée sur le présentoir. Vérification obligatoire avant tout réassort. »",
+          key:false,tip:"❌ Cette procédure interne peut servir à prouver une faute organisationnelle mais n'établit pas directement les conditions de la responsabilité du fait des choses."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Responsabilité du fait des choses (art. 1242 al. 1) : gardien + chose + dommage + lien de causalité.","La vidéo + le rapport technique sont les preuves objectives les plus solides pour établir le fait de la chose."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualifier la responsabilité",
+       inst:"Identifie le régime de responsabilité applicable.",
+       q1:"Quel régime de responsabilité civile s'applique ici ?",
+       c1:[
+         {id:"a",lbl:"Responsabilité du fait personnel (art. 1240 C. civ.)",det:"Il faut prouver une faute personnelle de l'employé ou du dirigeant.",ok:false},
+         {id:"b",lbl:"Responsabilité du fait des choses (art. 1242 al. 1 C. civ.)",det:"Le gardien d'une chose répond des dommages que cette chose cause — présomption de responsabilité.",ok:true},
+         {id:"c",lbl:"Responsabilité contractuelle pour manquement à l'obligation de sécurité",det:"Le contrat de vente crée une obligation de sécurité à charge du vendeur.",ok:false},
+         {id:"d",lbl:"Régime spécial produits défectueux (art. 1245 C. civ.)",det:"Le produit vendu était défectueux et a causé le dommage.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Art. 1242 al. 1 C. civ. : le gardien d'une chose est présumé responsable des dommages qu'elle cause. Marché'Plus, gardien du présentoir, est présumé responsable. Pas besoin de prouver une faute !",
+       fb1ko:"❌ Le présentoir est une chose inerte placée sous la garde de Marché'Plus. L'art. 1242 al. 1 crée une PRÉSOMPTION de responsabilité du gardien — plus simple à mettre en œuvre que de prouver une faute personnelle.",
+       q2:"Qui est le 'gardien' de la chose au sens de l'art. 1242 al. 1 ?",
+       c2:[
+         {id:"a",lbl:"L'employé qui a effectué le réassort",det:"Le salarié qui a physiquement chargé le présentoir est le gardien.",ok:false},
+         {id:"b",lbl:"Marché'Plus SAS — le supermarché",det:"La société exerce le pouvoir d'usage, de direction et de contrôle sur le présentoir → elle est gardienne.",ok:true},
+         {id:"c",lbl:"Le fabricant du présentoir",det:"Le fabricant est responsable si le produit est défectueux — ce n'est pas le cas ici.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Le gardien est celui qui exerce un pouvoir d'usage, de direction et de contrôle sur la chose. C'est Marché'Plus qui gère son magasin et ses présentoirs → Marché'Plus est gardienne.",
+       fb2ko:"❌ La garde n'est pas liée à qui tient physiquement la chose. C'est celui qui a le POUVOIR de direction et de contrôle. Marché'Plus dirige ses employés et contrôle ses rayons → elle est gardienne.",
+       hints:["Responsabilité du fait des choses = présomption : pas besoin de prouver une faute !","Le gardien = celui qui a le pouvoir d'usage, de direction et de contrôle sur la chose."]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour engager la responsabilité de <strong>Marché'Plus</strong>.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1242 alinéa 1 du Code civil, on est responsable non seulement du dommage que l'on cause par son propre fait, mais encore de celui qui est causé par le fait des choses que l'on a sous sa garde.",ok:true},
+            {id:"f2",txt:"1240 du Code civil, tout fait de l'homme causant un dommage oblige à réparation — Marché'Plus a commis une faute en ne contrôlant pas la charge du présentoir, ce qui engage sa responsabilité personnelle.",ok:false},
+            {id:"f3",txt:"1245 du Code civil, le producteur est responsable du dommage causé par un défaut de son produit — le présentoir défectueux ayant cédé, son fabricant engage sa responsabilité.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"Mme Renard s'est approchée imprudemment d'un présentoir visiblement instable, ce qui constitue une faute de la victime susceptible d'exonérer totalement Marché'Plus de sa responsabilité.",ok:false},
+            {id:"f5",txt:"L'employé de Marché'Plus, auteur direct de la surcharge, est seul responsable des dommages — la société ne peut être tenue pour les actes commis par l'un de ses salariés sans ordre exprès.",ok:false},
+            {id:"f6",txt:"Marché'Plus SAS, gardienne du présentoir, a laissé ses employés surcharger cet équipement au-delà de sa capacité maximale (38 kg pour 25 kg autorisés). Le présentoir s'est effondré sur Mme Renard, lui causant un traumatisme crânien et une contusion à l'épaule (ITT 14 jours).",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"Marché'Plus SAS est présumée responsable en sa qualité de gardienne du présentoir et doit indemniser intégralement Mme Renard de ses préjudices corporels.",ok:true},
+            {id:"f8",txt:"Mme Renard doit apporter la preuve d'une faute caractérisée de Marché'Plus pour obtenir indemnisation — la présomption de responsabilité ne s'applique pas aux choses inertes telles qu'un présentoir statique.",ok:false},
+            {id:"f9",txt:"Marché'Plus s'exonère en prouvant que l'employé avait reçu des consignes précises de ne pas surcharger les présentoirs — la faute du salarié constitue une cause étrangère rompant le lien de causalité.",ok:false},
+          ]},
+       ],
+       hints:["Art. 1242 al. 1 = présomption de responsabilité : Mme Renard n'a pas à prouver une faute !","La mineure doit identifier : qui est le gardien ? Quelle chose ? Quel dommage ?"]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:42,
+       inst:"Marché'Plus riposte. <strong>Défends Mme Renard.</strong>",
+       objections:[
+         {author:"Me Ardisson — Avocat de Marché'Plus",
+          txt:"« Mme Renard aurait dû faire attention en passant près d'un rayon chargé. Sa propre inattention a contribué à l'accident. Marché'Plus invoque la faute de la victime pour s'exonérer partiellement. »",
+          responses:[
+            {id:"r1",txt:"La vidéo de surveillance confirme que Mme Renard marchait normalement dans l'allée, sans comportement imprudent. La faute de la victime n'exonère le gardien que si elle est la cause exclusive du dommage — ce qui est impossible à établir face à une surcharge objectivement prouvée par le bureau Véritas.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client faisait simplement ses courses normalement.",ok:false,pts:0},
+            {id:"r3",txt:"Les rayons d'un supermarché ne devraient jamais être surchargés.",ok:false,pts:3},
+          ]},
+         {author:"Me Ardisson — Avocat de Marché'Plus",
+          txt:"« L'effondrement est dû à un comportement imprévisible d'un salarié individuel. Marché'Plus n'a pas commis de faute en tant qu'entreprise. La responsabilité du fait des choses ne s'applique pas à une situation causée par une erreur humaine. »",
+          responses:[
+            {id:"r4",txt:"La responsabilité du fait des choses (art. 1242 al. 1) est une présomption : Marché'Plus est responsable en tant que gardienne du présentoir, sans qu'une faute de l'entreprise soit nécessaire. Le comportement de l'employé s'impute directement à la société gardienne.",ok:true,pts:20},
+            {id:"r5",txt:"Marché'Plus aurait dû mieux former ses employés.",ok:false,pts:5},
+            {id:"r6",txt:"Mon client n'était pas au courant de la surcharge du présentoir.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La responsabilité du fait des choses est une PRÉSOMPTION : Marché'Plus ne peut s'en exonérer que par force majeure ou faute exclusive de la victime.","Le comportement d'un salarié s'impute à l'employeur gardien de la chose — pas d'exonération possible ici."]},
+    ],
+    synth:{
+      title:"Synthèse — Responsabilité du fait des choses",
+      zones:[{id:"z1",lbl:"Nature du dommage et gardien"},{id:"z2",lbl:"Règle de droit applicable"},{id:"z3",lbl:"Faits de l'espèce"},{id:"z4",lbl:"Solution juridique"}],
+      chips:[
+        {id:"c1",txt:"Présentoir = chose sous la garde de Marché'Plus",z:"z1"},
+        {id:"c2",txt:"Dommage corporel : traumatisme crânien + contusion (ITT 14 jours)",z:"z1"},
+        {id:"c3",txt:"Art. 1242 al. 1 C. civ. : responsabilité du gardien du fait des choses",z:"z2"},
+        {id:"c4",txt:"Présomption de responsabilité : pas besoin de prouver une faute",z:"z2"},
+        {id:"c5",txt:"Surcharge du présentoir (38 kg / 25 kg max) par les employés",z:"z3"},
+        {id:"c6",txt:"Vidéo + expertise prouvent le lien de causalité direct",z:"z3"},
+        {id:"c7",txt:"Marché'Plus présumée responsable — doit indemniser Mme Renard",z:"z4"},
+        {id:"c8",txt:"Seule la force majeure ou faute exclusive de la victime exonèrerait Marché'Plus",z:"z4"},
+        {id:"c9",txt:"Clause de non-concurrence — conditions de validité",z:null},
+        {id:"c10",txt:"Dol — nullité relative du contrat",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 6 : Responsabilité du fait des choses",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit de la <strong>responsabilité du fait des choses</strong> (art. 1242 al.&nbsp;1 C.&nbsp;civ.). Marché'Plus SAS est <strong>gardienne</strong> du présentoir (pouvoir d'usage, de direction et de contrôle). Elle est présumée responsable — Mme&nbsp;Renard n'a pas à prouver de faute."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1242 alinéa&nbsp;1 du Code civil, on est responsable non seulement du dommage que l'on cause par son propre fait, mais encore de celui qui est causé par le fait des choses que l'on a sous sa garde."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Marché'Plus, gardienne du présentoir, a laissé ses employés le surcharger (38&nbsp;kg pour 25&nbsp;kg autorisés). Il s'est effondré sur Mme&nbsp;Renard, lui causant un traumatisme crânien et une contusion (ITT 14 jours).<br/><br/><span class='con-highlight'>En conséquence,</span> Marché'Plus est présumée responsable et doit indemniser intégralement Mme&nbsp;Renard. Seule la force majeure ou la faute exclusive de la victime pourrait l'exonérer."}
+    ]
+  }
+  },
+
+  6:{
+    title:"La clause de non-concurrence", theme:"Thème 7 — Le Travail Salarié", client:"SocioCom SAS (employeur)",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Mme Laura Torres a quitté SocioCom SAS pour créer sa propre agence de communication, directement concurrente. Son contrat contenait une clause de non-concurrence. SocioCom veut l'invoquer. <strong>Sélectionne les 4 pièces essentielles</strong> pour analyser la validité et la violation de la clause.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Contrat de travail",title:"CDI Mme Torres — clause de non-concurrence",
+          body:"Art. 12 : « Pendant 18 mois suivant la rupture, Mme Torres s'interdit d'exercer toute activité concurrente dans un rayon de 80 km autour de Lyon. Contrepartie financière : 30% du salaire mensuel brut versée chaque mois. »",
+          key:true,tip:"✅ Prouve l'existence de la clause et ses conditions : durée (18 mois), zone géographique (80 km), contrepartie financière (30% salaire)."},
+         {id:"d2",type:"Extrait Kbis",title:"Création de Torres Communication — 15/09",
+          body:"Immatriculation de Torres Communication SASU. Objet social : « Conseil en communication, gestion de réseaux sociaux, création de contenu digital pour entreprises. » Siège social : Lyon 3e.",
+          key:true,tip:"✅ Prouve la création d'une activité concurrente par Mme Torres, dans la zone géographique interdite (Lyon)."},
+         {id:"d3",type:"Lettre de rupture",title:"Rupture conventionnelle homologuée",
+          body:"Rupture conventionnelle de Mme Torres signée le 01/07 et homologuée par la DREETS le 15/07. Date de fin de contrat : 01/08. Indemnité spécifique : 8 200 €.",
+          key:true,tip:"✅ Prouve la date de rupture du contrat → point de départ du délai de 18 mois de la clause."},
+         {id:"d4",type:"Bulletins de salaire",title:"Versements contrepartie non-concurrence",
+          body:"Bulletins août, sept., oct. : mention « Indemnité clause non-concurrence : 1 095 € bruts » versée chaque mois. Total versé : 3 285 € sur 3 mois.",
+          key:true,tip:"✅ Prouve que SocioCom a bien versé la contrepartie financière — condition de validité remplie de son côté."},
+         {id:"d5",type:"Email",title:"Email de Mme Torres à SocioCom (30/07)",
+          body:"« Je tiens à vous informer de mon projet de création d'entreprise dans le secteur de la communication digitale. Je compte sur votre compréhension. »",
+          key:false,tip:"❌ Cet email annonce le projet mais ne prouve pas que l'activité est effectivement concurrente ni qu'elle viole la clause."},
+         {id:"d6",type:"Site internet",title:"Capture site web Torres Communication",
+          body:"Page d'accueil : « Torres Communication — Votre agence de communication digitale à Lyon — Réseaux sociaux, contenu, stratégie digitale pour PME et startups. »",
+          key:false,tip:"❌ Le site confirme l'activité mais le Kbis est une preuve officielle plus solide pour établir la violation de la clause."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Pour invoquer une clause de non-concurrence : vérifier sa VALIDITÉ (4 conditions) + prouver la VIOLATION.","Le Kbis est la preuve officielle de l'activité concurrente. Les bulletins prouvent que SocioCom a respecté ses obligations."]},
+
+      {type:"quali", icon:"⚖️", title:"Analyser la clause de non-concurrence",
+       inst:"Analyse la validité et l'application de la clause.",
+       q1:"Quelles sont les conditions cumulatives de validité d'une clause de non-concurrence ?",
+       c1:[
+         {id:"a",lbl:"Limitation dans le temps + limitation géographique uniquement",det:"Seules la durée et la zone suffisent à rendre la clause valide.",ok:false},
+         {id:"b",lbl:"Durée + zone géographique + intérêt légitime + contrepartie financière",det:"Ces 4 conditions cumulatives sont exigées par la jurisprudence (Cass. soc. 10/07/2002).",ok:true},
+         {id:"c",lbl:"Accord du salarié par signature uniquement",det:"La signature suffit — le salarié a librement accepté la clause.",ok:false},
+         {id:"d",lbl:"Durée + intérêt légitime uniquement",det:"Seules la durée et la justification professionnelle sont nécessaires.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! La jurisprudence (Cass. soc. 10/07/2002) exige 4 conditions cumulatives : limitation dans le temps ✓ (18 mois) + limitation géographique ✓ (80 km) + intérêt légitime de l'entreprise + contrepartie financière ✓ (30% du salaire).",
+       fb1ko:"❌ La Cour de cassation exige 4 conditions CUMULATIVES : durée limitée + zone géographique + intérêt légitime de l'entreprise + contrepartie financière obligatoire. L'absence d'une seule rend la clause nulle.",
+       q2:"Cette clause est-elle valide et violée par Mme Torres ?",
+       c2:[
+         {id:"a",lbl:"Valide et violée — les 4 conditions sont réunies et Torres Communication est concurrente",det:"La clause remplit les 4 conditions. Mme Torres crée une agence de communication à Lyon dans les 18 mois.",ok:true},
+         {id:"b",lbl:"Nulle — l'activité de conseil en communication est trop générale pour constituer une réelle concurrence",det:"Les activités sont trop différentes pour que la clause s'applique.",ok:false},
+         {id:"c",lbl:"Nulle — la contrepartie de 30% est insuffisante",det:"30% du salaire mensuel est trop faible pour constituer une contrepartie sérieuse.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! La clause est valide (4 conditions réunies) et violée : Mme Torres crée une agence de communication digitale à Lyon — activité directement concurrente de SocioCom, dans la zone géographique interdite, dans le délai de 18 mois.",
+       fb2ko:"❌ Les 4 conditions de validité sont toutes réunies. L'activité de Torres Communication est objectivement concurrente de SocioCom (même secteur, même zone). La clause s'applique.",
+       hints:["Mémorise les 4 conditions : durée + zone + intérêt légitime + contrepartie financière (toutes obligatoires).","La jurisprudence Cass. soc. 10/07/2002 : l'absence de contrepartie financière rend la clause nulle de plein droit."]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour établir la <strong>violation de la clause de non-concurrence</strong>.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"la jurisprudence de la Cour de cassation (Cass. soc. 10 juillet 2002), une clause de non-concurrence est valide si elle est limitée dans le temps, dans l'espace, protège un intérêt légitime de l'entreprise et prévoit une contrepartie financière. Sa violation ouvre droit à des dommages et intérêts.",ok:true},
+            {id:"f2",txt:"L1121-1 du Code du travail, les restrictions aux libertés individuelles des salariés ne sont admises que si elles sont justifiées par la nature de la tâche et proportionnées au but recherché — la clause de non-concurrence doit satisfaire ce test.",ok:false},
+            {id:"f3",txt:"L1237-19 du Code du travail, la rupture conventionnelle met fin au contrat par accord mutuel et libère les parties de leurs obligations réciproques, y compris les clauses post-contractuelles.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"Torres Communication exerce dans le conseil stratégique digital, domaine distinct de la création graphique de SocioCom — les activités sont complémentaires, non concurrentes au sens de la clause.",ok:false},
+            {id:"f5",txt:"La contrepartie financière de 30% du salaire mensuel brut versée par SocioCom est notoirement dérisoire et insuffisante, ce qui rend la clause nulle de plein droit et libère Mme Torres.",ok:false},
+            {id:"f6",txt:"La clause de non-concurrence du CDI de Mme Torres remplit les 4 conditions de validité. SocioCom a versé la contrepartie financière. Pourtant, Mme Torres a créé Torres Communication (agence concurrente) à Lyon dans le délai de 18 mois interdit.",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"Mme Torres a violé une clause de non-concurrence valide. SocioCom est en droit de lui réclamer des dommages et intérêts et peut demander la cessation de l'activité concurrente.",ok:true},
+            {id:"f8",txt:"Mme Torres doit restituer toutes les contreparties perçues et verser une pénalité de 6 mois de salaire — le juge ne peut pas ordonner la cessation de son activité sans décision spéciale.",ok:false},
+            {id:"f9",txt:"la rupture conventionnelle ayant mis fin à tous les engagements contractuels mutuels, SocioCom ne peut plus invoquer la clause de non-concurrence qui s'est éteinte avec le contrat de travail.",ok:false},
+          ]},
+       ],
+       hints:["La jurisprudence de la Cass. soc. 10/07/2002 est la référence centrale pour les clauses de non-concurrence.","La conclusion doit préciser les sanctions possibles : dommages et intérêts + cessation de l'activité."]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:45,
+       inst:"Mme Torres conteste. <strong>Défends SocioCom</strong> contre ses arguments.",
+       objections:[
+         {author:"Me Vidal — Avocat de Mme Torres",
+          txt:"« Torres Communication exerce dans le conseil stratégique alors que SocioCom est spécialisée dans la création graphique. Les activités sont complémentaires, pas concurrentes. La clause ne s'applique pas. »",
+          responses:[
+            {id:"r1",txt:"Le Kbis de Torres Communication mentionne explicitement 'gestion de réseaux sociaux et stratégie digitale pour entreprises' — secteur identique à SocioCom. La similarité des clientèles cibles (PME lyonnaises) caractérise la concurrence directe.",ok:true,pts:25},
+            {id:"r2",txt:"SocioCom a investi dans la formation de Mme Torres.",ok:false,pts:0},
+            {id:"r3",txt:"Torres Communication prend des clients de SocioCom.",ok:false,pts:4},
+          ]},
+         {author:"Me Vidal — Avocat de Mme Torres",
+          txt:"« Mme Torres n'a pas été informée de la portée réelle de la clause au moment de la signature. Elle n'a donc pas donné un consentement éclairé. La clause devrait être annulée pour dol. »",
+          responses:[
+            {id:"r4",txt:"La clause de non-concurrence figure explicitement à l'article 12 du CDI, signé par Mme Torres. La clarté de la rédaction (durée, zone, contrepartie chiffrée) exclut tout dol ou erreur. Un salarié est censé lire son contrat de travail avant de le signer.",ok:true,pts:20},
+            {id:"r5",txt:"Mme Torres aurait dû lire son contrat plus attentivement.",ok:false,pts:6},
+            {id:"r6",txt:"SocioCom a toujours bien traité Mme Torres pendant ses années de service.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["Pour établir la concurrence : comparer les objets sociaux, les zones géographiques et les clientèles cibles.","La clause est rédigée clairement avec contrepartie chiffrée → pas de dol possible."]},
+    ],
+    synth:{
+      title:"Synthèse — La clause de non-concurrence",
+      zones:[{id:"z1",lbl:"Nature de la relation et de la clause"},{id:"z2",lbl:"Conditions de validité (Majeure)"},{id:"z3",lbl:"Faits de l'espèce (Mineure)"},{id:"z4",lbl:"Conséquences de la violation"}],
+      chips:[
+        {id:"c1",txt:"CDI avec clause de non-concurrence",z:"z1"},
+        {id:"c2",txt:"Rupture conventionnelle → déclenchement de la clause",z:"z1"},
+        {id:"c3",txt:"4 conditions cumulatives (Cass. soc. 10/07/2002) : durée + zone + intérêt + contrepartie",z:"z2"},
+        {id:"c4",txt:"Toutes les 4 conditions réunies dans le CDI de Mme Torres",z:"z2"},
+        {id:"c5",txt:"Torres Communication créée à Lyon dans le délai de 18 mois interdit",z:"z3"},
+        {id:"c6",txt:"Activité directement concurrente de SocioCom (même secteur, même zone)",z:"z3"},
+        {id:"c7",txt:"Mme Torres doit des dommages et intérêts à SocioCom",z:"z4"},
+        {id:"c8",txt:"SocioCom peut demander la cessation de l'activité concurrente en justice",z:"z4"},
+        {id:"c9",txt:"Présomption de responsabilité du gardien",z:null},
+        {id:"c10",txt:"Nullité relative pour vice du consentement",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 7 : La clause de non-concurrence",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'une <strong>clause de non-concurrence</strong> dont il faut vérifier la validité (4 conditions cumulatives — Cass. soc. 10/07/2002) puis la violation. Les 4 conditions sont réunies. Mme&nbsp;Torres a créé une agence concurrente dans la zone et le délai interdits."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>D'après</span> la jurisprudence de la Cour de cassation (Cass. soc. 10 juillet 2002), une clause de non-concurrence est valide si elle est limitée dans le temps, dans l'espace, protège un intérêt légitime et prévoit une contrepartie financière. Sa violation ouvre droit à des dommages et intérêts."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> la clause remplit les 4 conditions&nbsp;: 18 mois, 80&nbsp;km autour de Lyon, intérêt légitime de SocioCom, contrepartie de 30&nbsp;%. Pourtant, Mme&nbsp;Torres a créé Torres Communication (même secteur, même zone) dans le délai interdit.<br/><br/><span class='con-highlight'>En conséquence,</span> Mme&nbsp;Torres a violé une clause valide. SocioCom peut obtenir des dommages et intérêts et demander la cessation de l'activité concurrente."}
+    ]
+  }
+  },
+
+  7:{
+    title:"La copie qui va trop loin", theme:"Thème 8 — Entreprendre", client:"Maison Délice SAS",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"Maison Délice SAS, pâtisserie artisanale fondée en 2018, constate qu'un concurrent vient d'ouvrir à 200 mètres avec un nom, un logo et une vitrine quasi identiques. <strong>Sélectionne les 4 documents</strong> qui prouvent la concurrence déloyale.",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Extrait Kbis",title:"Maison Délice SAS — immatriculation 2018",
+          body:"Immatriculation : 12/03/2018. Objet : vente de pâtisseries et confiseries artisanales. Logo déposé : croissant doré sur fond bleu marine. Slogan déposé : « L'art de la douceur depuis 2018 ».",
+          key:true,tip:"✅ Prouve l'antériorité de Maison Délice : son identité visuelle existait avant le concurrent."},
+         {id:"d2",type:"Extrait Kbis",title:"Douceurs Maison SARL — immatriculation 2024",
+          body:"Immatriculation : 15/01/2024. Objet : vente de pâtisseries et confiseries. Logo : croissant doré sur fond bleu nuit. Slogan : « L'art de la douceur depuis toujours ».",
+          key:true,tip:"✅ Prouve la création postérieure du concurrent avec des éléments quasi identiques à ceux de Maison Délice."},
+         {id:"d3",type:"Rapport photographique",title:"Comparaison visuelle des deux boutiques",
+          body:"Photos côte à côte : devantures identiques (bois doré, fond bleu, croissant stylisé), carte identique en termes de présentation, emballages aux couleurs similaires. Rapport établi par huissier de justice le 20/03/2024.",
+          key:true,tip:"✅ Preuve matérielle de l'imitation : un huissier a constaté la ressemblance — document à haute valeur probante."},
+         {id:"d4",type:"Témoignages clients",title:"Attestations de 8 clients confondus",
+          body:"8 clients attestent avoir confondu les deux boutiques : « J'ai cru que c'était une deuxième adresse de Maison Délice. » « Je suis entré dans la mauvaise boutique. »",
+          key:true,tip:"✅ Prouve le risque de confusion dans l'esprit du consommateur — condition centrale de la concurrence déloyale."},
+         {id:"d5",type:"Bilan comptable",title:"Chiffre d'affaires Maison Délice T1 2024",
+          body:"CA T1 2024 : 48 200 € vs T1 2023 : 67 400 €. Baisse de 28,4%. Le gérant attribue cette baisse à l'ouverture de Douceurs Maison.",
+          key:false,tip:"❌ La baisse de CA est une conséquence possible mais ne prouve pas directement les actes de concurrence déloyale — il faut d'abord prouver les actes eux-mêmes."},
+         {id:"d6",type:"Article de presse",title:"Article journal local — Douceurs Maison",
+          body:"« Une nouvelle adresse gourmande s'installe rue du Marché ! Douceurs Maison propose des pâtisseries artisanales dans un cadre chaleureux... »",
+          key:false,tip:"❌ L'article décrit l'ouverture mais ne prouve pas les actes de concurrence déloyale (imitation, risque de confusion)."},
+         {id:"d7",type:"Devis agence com",title:"Devis identité visuelle Douceurs Maison",
+          body:"Devis d'une agence de communication pour la création du logo de Douceurs Maison. Mention : « Sur la base du brief client et des références visuelles du secteur. »",
+          key:false,tip:"❌ Ce devis est suspect mais ne prouve pas directement l'imitation intentionnelle ni le risque de confusion — insuffisant seul."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["La concurrence déloyale par imitation nécessite : des éléments copiés + une antériorité + un risque de confusion.","Le constat d'huissier est la preuve la plus solide pour démontrer la ressemblance — il a force probante."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualifier la situation",
+       inst:"Identifie le cadre juridique applicable.",
+       q1:"Quelle est la nature juridique de l'acte commis par Douceurs Maison ?",
+       c1:[
+         {id:"a",lbl:"Une concurrence déloyale par imitation (parasitisme)",det:"Douceurs Maison copie les éléments distinctifs de Maison Délice pour capter sa clientèle.",ok:true},
+         {id:"b",lbl:"Une contrefaçon de marque déposée à l'INPI",det:"L'imitation d'une marque déposée constitue une contrefaçon, pas une concurrence déloyale.",ok:false},
+         {id:"c",lbl:"Un acte normal de concurrence sur le marché libre",det:"La liberté du commerce permet de s'installer dans le même secteur qu'un concurrent.",ok:false},
+         {id:"d",lbl:"Une violation du contrat de franchise",det:"Douceurs Maison était franchisée de Maison Délice et viole ses obligations.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! La concurrence déloyale par imitation (aussi appelée parasitisme) consiste à copier les éléments distinctifs d'un concurrent pour en tirer profit en créant une confusion dans l'esprit du public. Elle engage la responsabilité civile de son auteur (art. 1240 C. civ.).",
+       fb1ko:"❌ La contrefaçon suppose une marque enregistrée à l'INPI. Ici, on parle de concurrence déloyale : imiter les signes distinctifs d'un concurrent pour créer la confusion, ce qui engage la responsabilité civile.",
+       q2:"Sur quel fondement juridique Maison Délice peut-elle agir ?",
+       c2:[
+         {id:"a",lbl:"L'action en concurrence déloyale fondée sur l'art. 1240 C. civ.",det:"La concurrence déloyale est une faute civile qui engage la responsabilité de son auteur.",ok:true},
+         {id:"b",lbl:"L'action pénale pour escroquerie",det:"L'escroquerie suppose une tromperie pour obtenir une remise de fonds — ce n'est pas le cas.",ok:false},
+         {id:"c",lbl:"L'action en nullité du contrat de société de Douceurs Maison",det:"On ne peut pas annuler la création d'une société concurrente pour ce motif.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! L'action en concurrence déloyale est fondée sur la responsabilité civile extracontractuelle (art. 1240 C. civ.). Maison Délice doit prouver : une faute (les actes déloyaux) + un dommage (perte de clientèle) + un lien de causalité.",
+       fb2ko:"❌ L'action en concurrence déloyale est une action civile fondée sur l'art. 1240 C. civ. Elle permet d'obtenir la cessation des actes déloyaux et des dommages et intérêts.",
+       hints:["La concurrence déloyale = faute civile → art. 1240 C. civ. (responsabilité extracontractuelle).","Il faut prouver : faute (imitation) + dommage (perte clientèle) + lien de causalité."]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation de <strong>Maison Délice</strong> contre Douceurs Maison.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1240 du Code civil, tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer. Les actes de concurrence déloyale — notamment l'imitation créant une confusion — constituent une faute civile.",ok:true},
+            {id:"f2",txt:"L713-3 du Code de la propriété intellectuelle, sont interdits la reproduction ou l'imitation d'une marque enregistrée à l'INPI pour des produits ou services identiques — la contrefaçon engage la responsabilité civile et pénale de son auteur.",ok:false},
+            {id:"f3",txt:"1241 du Code civil, chacun est responsable du dommage causé non seulement par son fait, mais encore par sa négligence — Douceurs Maison a manqué de vigilance en ne vérifiant pas l'originalité de son identité visuelle avant ouverture.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"Douceurs Maison a simplement adopté les codes visuels classiques du secteur de la pâtisserie artisanale (tons dorés, fond sombre, motif de viennoiserie) sans intention délibérée de copier Maison Délice.",ok:false},
+            {id:"f5",txt:"Le risque de confusion entre deux pâtisseries voisines est un aléa inhérent à la libre concurrence commerciale — la seule ressemblance visuelle, sans preuve d'une intention frauduleuse, ne constitue pas une faute déloyale.",ok:false},
+            {id:"f6",txt:"Douceurs Maison SARL a créé en 2024 une identité visuelle quasi identique à celle de Maison Délice (logo, couleurs, slogan), postérieure de 6 ans. Le constat d'huissier et les témoignages de 8 clients prouvent le risque de confusion dans l'esprit du public et la perte de clientèle.",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"Douceurs Maison a commis des actes de concurrence déloyale fautifs. Maison Délice est en droit d'obtenir la cessation de l'utilisation des signes imitatifs et des dommages et intérêts en réparation de son préjudice commercial.",ok:true},
+            {id:"f8",txt:"Maison Délice obtient un droit exclusif sur les éléments copiés sur l'ensemble du territoire et peut exiger la fermeture définitive de Douceurs Maison dans un rayon de 500 mètres.",ok:false},
+            {id:"f9",txt:"Douceurs Maison peut conserver son identité visuelle en versant à Maison Délice une redevance annuelle calculée sur son chiffre d'affaires — la cessation d'usage n'est pas automatique.",ok:false},
+          ]},
+       ],
+       hints:["La concurrence déloyale est une faute civile → art. 1240 C. civ. (pas besoin d'un article spécial).","La conclusion doit prévoir DEUX choses : cessation des actes + indemnisation du préjudice."]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:45,
+       inst:"Douceurs Maison riposte. <strong>Défends Maison Délice.</strong>",
+       objections:[
+         {author:"Me Rousseau — Avocat de Douceurs Maison",
+          txt:"« La liberté du commerce et de l'industrie garantit à chacun le droit de s'installer dans le secteur de son choix. Utiliser des tons dorés et bleus dans une pâtisserie est banal et ne peut pas constituer une faute. »",
+          responses:[
+            {id:"r1",txt:"La liberté du commerce n'autorise pas les actes déloyaux. La combinaison spécifique de ces éléments (croissant doré, fond bleu marine, slogan quasi identique) constitue l'identité distinctive de Maison Délice, antérieure de 6 ans. Le constat d'huissier et 8 témoignages prouvent la confusion réelle — au-delà du simple choix de couleurs.",ok:true,pts:25},
+            {id:"r2",txt:"Maison Délice est une ancienne et belle enseigne qui mérite d'être protégée.",ok:false,pts:0},
+            {id:"r3",txt:"Douceurs Maison aurait pu choisir d'autres couleurs.",ok:false,pts:3},
+          ]},
+         {author:"Me Rousseau — Avocat de Douceurs Maison",
+          txt:"« La baisse de 28% du CA de Maison Délice est due à la crise économique générale et à l'inflation, pas à notre ouverture. Le lien de causalité n'est pas établi. »",
+          responses:[
+            {id:"r4",txt:"La baisse est concomitante à l'ouverture de Douceurs Maison en janvier 2024. Les 8 témoignages de clients confondus établissent directement le détournement de clientèle. La chronologie (ouverture janvier 2024, baisse CA T1 2024) et la confusion prouvée constituent un lien de causalité suffisant.",ok:true,pts:20},
+            {id:"r5",txt:"L'économie va bien dans ce secteur donc ce ne peut être que Douceurs Maison.",ok:false,pts:4},
+            {id:"r6",txt:"Mon client a perdu beaucoup d'argent à cause de ce concurrent déloyal.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La liberté du commerce ne couvre pas les actes déloyaux créant une confusion — c'est la limite de ce principe.","Pour établir le lien de causalité, appuie-toi sur la chronologie ET les témoignages de confusion."]},
+    ],
+    synth:{
+      title:"Synthèse — La concurrence déloyale par imitation",
+      zones:[{id:"z1",lbl:"Qualification des actes"},{id:"z2",lbl:"Règle de droit applicable"},{id:"z3",lbl:"Faits constitutifs de la faute"},{id:"z4",lbl:"Solution et réparation"}],
+      chips:[
+        {id:"c1",txt:"Concurrence déloyale par imitation / parasitisme",z:"z1"},
+        {id:"c2",txt:"Risque de confusion dans l'esprit du consommateur",z:"z1"},
+        {id:"c3",txt:"Art. 1240 C. civ. : toute faute causant dommage oblige à réparation",z:"z2"},
+        {id:"c4",txt:"Liberté du commerce ≠ droit à la concurrence déloyale",z:"z2"},
+        {id:"c5",txt:"Logo + couleurs + slogan quasi identiques (antériorité 2018 vs 2024)",z:"z3"},
+        {id:"c6",txt:"Constat d'huissier + 8 témoignages de clients confondus",z:"z3"},
+        {id:"c7",txt:"Cessation de l'utilisation des signes imitatifs",z:"z4"},
+        {id:"c8",txt:"Dommages et intérêts pour préjudice commercial (perte de clientèle)",z:"z4"},
+        {id:"c9",txt:"Clause de non-concurrence — 4 conditions de validité",z:null},
+        {id:"c10",txt:"Entretien préalable obligatoire avant licenciement",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 8 : La concurrence déloyale",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'<strong>actes de concurrence déloyale par imitation</strong> (parasitisme). Douceurs Maison a copié les éléments distinctifs de Maison Délice, créant un risque de confusion dans l'esprit du public. Cette faute engage sa responsabilité civile (art. 1240 C.&nbsp;civ.)."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1240 du Code civil, tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer. Les actes de concurrence déloyale — notamment l'imitation créant une confusion — constituent une telle faute."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Douceurs Maison a créé en 2024 une identité visuelle quasi identique à celle de Maison Délice (logo, couleurs, slogan), antérieure de 6 ans. Le constat d'huissier et les témoignages de 8 clients prouvent la confusion réelle et la perte de clientèle.<br/><br/><span class='con-highlight'>En conséquence,</span> Douceurs Maison a commis des actes de concurrence déloyale fautifs. Maison Délice peut obtenir la cessation des actes imitatifs et des dommages et intérêts."}
+    ]
+  }
+  },
+
+  8:{
+    title:"Le franchisé qui s'émancipe", theme:"Thème 8 — Entreprendre", client:"FreshSub France SAS (franchiseur)",
+    steps:[
+      {type:"docs", icon:"📁", title:"Sélection des preuves",
+       inst:"M. Karim Azzar exploite une franchise FreshSub (sandwicherie). Depuis 6 mois, il s'approvisionne en pain et légumes hors du réseau agréé, utilise des recettes non validées et ne verse plus les redevances. FreshSub veut résilier le contrat. <strong>Sélectionne les 4 pièces essentielles.</strong>",
+       min:4, max:4,
+       docs:[
+         {id:"d1",type:"Contrat de franchise",title:"Contrat FreshSub / M. Azzar — Art. 8 et 12",
+          body:"Art. 8 : « Le franchisé s'engage à s'approvisionner exclusivement auprès des fournisseurs agréés FreshSub. » Art. 12 : « Une redevance mensuelle de 5% du CA HT est due le 5 de chaque mois. » Art. 18 : « Tout manquement grave entraîne la résiliation du contrat après mise en demeure restée sans effet sous 15 jours. »",
+          key:true,tip:"✅ Prouve les obligations contractuelles précises de M. Azzar et la clause de résiliation applicable."},
+         {id:"d2",type:"Rapport d'audit",title:"Audit terrain FreshSub — 14/03/2025",
+          body:"L'auditeur FreshSub constate : pain provenant d'un boulanger local non agréé, sauce maison non conforme aux fiches recettes, absence de DLC tracées. 6 non-conformités majeures.",
+          key:true,tip:"✅ Prouve la violation de la clause d'approvisionnement exclusif — manquement grave au contrat de franchise."},
+         {id:"d3",type:"Relevé de compte",title:"Redevances impayées — oct. à mars",
+          body:"6 redevances mensuelles de 1 840 € non versées. Total dû : 11 040 €. Rappels adressés les 12/11, 14/01 et 03/03 restés sans réponse.",
+          key:true,tip:"✅ Prouve l'inexécution de l'obligation de redevance — 6 mensualités impayées malgré rappels."},
+         {id:"d4",type:"Lettre recommandée AR",title:"Mise en demeure FreshSub — 10/03/2025",
+          body:"« Monsieur, nous vous mettons en demeure de cesser l'approvisionnement hors réseau et de régler les 11 040 € de redevances impayées dans un délai de 15 jours, faute de quoi le contrat sera résilié conformément à l'article 18. »",
+          key:true,tip:"✅ La mise en demeure est la condition préalable à la résiliation : FreshSub a bien respecté la procédure contractuelle."},
+         {id:"d5",type:"Avis client Google",title:"Avis Google — Sandwich FreshSub Azzar",
+          body:"★★★☆☆ : « Le pain n'est plus le même qu'avant. » ★★☆☆☆ : « Pas conforme à ce qu'on trouve dans les autres FreshSub. » Moyenne : 3,1/5 (vs 4,2/5 réseau).",
+          key:false,tip:"❌ Les avis clients montrent une dégradation de l'image mais ne constituent pas une preuve juridique des manquements contractuels."},
+         {id:"d6",type:"Bilan comptable",title:"CA de la franchise Azzar — 2024",
+          body:"CA annuel 2024 : 441 600 €. CA T4 : 98 200 €. Redevances dues T4 : 4 910 €. Charges d'exploitation : 67%. Résultat net : 4,2%.",
+          key:false,tip:"❌ Le bilan confirme la solvabilité de M. Azzar mais ne prouve pas directement les manquements contractuels."},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Pour résilier un contrat de franchise : il faut prouver le manquement + la mise en demeure préalable.","Les avis clients et le bilan sont des éléments contextuels, pas des preuves juridiques des manquements."]},
+
+      {type:"quali", icon:"⚖️", title:"Qualifier la situation",
+       inst:"Analyse les obligations du contrat de franchise.",
+       q1:"Qu'est-ce qu'un contrat de franchise au sens juridique ?",
+       c1:[
+         {id:"a",lbl:"Un contrat de travail déguisé entre FreshSub et M. Azzar",det:"Le franchisé est un entrepreneur indépendant, pas un salarié.",ok:false},
+         {id:"b",lbl:"Un contrat de partenariat par lequel le franchiseur concède son savoir-faire contre redevances",det:"Le franchiseur apporte marque, savoir-faire et assistance ; le franchisé exploite en son nom et verse des redevances.",ok:true},
+         {id:"c",lbl:"Un contrat de société créant une filiale de FreshSub",det:"M. Azzar n'est pas associé de FreshSub — il exploite sa propre entreprise sous licence.",ok:false},
+         {id:"d",lbl:"Un contrat de sous-traitance entre deux sociétés",det:"La sous-traitance concerne l'exécution d'une partie d'un marché, pas l'exploitation d'un réseau commercial.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Le contrat de franchise est un contrat de partenariat (art. 8.4 du programme). Le franchiseur concède sa marque, son savoir-faire et son assistance. Le franchisé exploite le concept en son nom propre et verse des redevances. Il reste juridiquement indépendant.",
+       fb1ko:"❌ Le franchisé n'est pas salarié (pas de lien de subordination) mais entrepreneur indépendant. Il exploite la marque FreshSub sous licence, contre paiement de redevances.",
+       q2:"Les violations de M. Azzar justifient-elles la résiliation du contrat ?",
+       c2:[
+         {id:"a",lbl:"Oui — les manquements graves + mise en demeure restée sans effet = résiliation justifiée",det:"Art. 18 du contrat : tout manquement grave + mise en demeure sans effet → résiliation.",ok:true},
+         {id:"b",lbl:"Non — le franchisé est indépendant, FreshSub ne peut pas contrôler ses approvisionnements",det:"La liberté du franchisé ne s'applique pas aux obligations contractuelles qu'il a acceptées.",ok:false},
+         {id:"c",lbl:"Non — les impayés de 6 mois ne sont pas suffisamment graves pour résilier",det:"6 mois d'impayés et 6 non-conformités majeures restent des manquements mineurs.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Les deux manquements (approvisionnement hors réseau + redevances impayées) sont graves et cumulatifs. La mise en demeure du 10/03 est restée sans effet dans le délai de 15 jours → FreshSub peut résilier conformément à l'art. 18 du contrat.",
+       fb2ko:"❌ M. Azzar a librement signé un contrat contenant une clause d'approvisionnement exclusif et une obligation de redevance. Ces obligations s'imposent à lui. Les manquements réitérés après mise en demeure justifient la résiliation.",
+       hints:["Le franchisé reste indépendant MAIS est lié par ses obligations contractuelles librement acceptées.","Vérifier : manquement grave ? Mise en demeure préalable ? Délai respecté ?"]},
+
+      {type:"syllog", icon:"🏗️", title:"Syllogisme juridique — méthode BAC",
+       inst:"Construis l'argumentation pour justifier la <strong>résiliation du contrat de franchise</strong>.",
+       rows:[
+         {key:"maj", label:"MAJEURE", sub:"Réponse 2 — La règle de droit", cls:"maj", tcls:"tmaj",
+          connectors:["Selon l'article","D'après","Aux termes de","En application de"],
+          okConnector:"Selon l'article",
+          frags:[
+            {id:"f1",txt:"1217 du Code civil, la partie envers laquelle l'engagement n'a pas été exécuté peut provoquer la résolution du contrat. L'article 1226 précise que la résolution peut résulter d'une mise en demeure infructueuse lorsque l'inexécution est suffisamment grave.",ok:true},
+            {id:"f2",txt:"1224 du Code civil, la résolution résulte soit d'une décision de justice à la demande du créancier, soit, si les parties en sont convenues, d'une clause résolutoire — seul le juge peut mettre fin au contrat de franchise.",ok:false},
+            {id:"f3",txt:"1103 du Code civil, les contrats légalement formés tiennent lieu de loi à ceux qui les ont faits — FreshSub et M. Azzar sont tous deux liés par le contrat et ne peuvent s'en défaire unilatéralement.",ok:false},
+          ]},
+         {key:"min", label:"MINEURE", sub:"Réponse 3 — Les faits de l'espèce", cls:"min", tcls:"tmin",
+          connectors:["En l'espèce,","Or, en l'espèce,","Dans les faits,","Dans cette affaire,"],
+          okConnector:"En l'espèce,",
+          frags:[
+            {id:"f4",txt:"M. Azzar a partiellement régularisé sa situation après la mise en demeure en recontactant deux fournisseurs agréés, ce qui démontre sa bonne volonté et suspend le droit de résiliation de FreshSub.",ok:false},
+            {id:"f5",txt:"Les difficultés économiques de M. Azzar constituent un changement de circonstances imprévisible (art. 1195 C. civ.) qui justifie la renégociation du contrat plutôt que sa résiliation immédiate.",ok:false},
+            {id:"f6",txt:"M. Azzar a violé deux obligations essentielles du contrat de franchise : la clause d'approvisionnement exclusif (audit du 14/03) et le paiement des redevances (11 040 € impayés). La mise en demeure du 10/03/2025 est restée sans effet dans le délai contractuel de 15 jours.",ok:true},
+          ]},
+         {key:"conc", label:"CONCLUSION", sub:"Réponse 3 — La solution", cls:"conc", tcls:"tconc",
+          connectors:["En conséquence,","Dès lors,","Ainsi,","Par conséquent,"],
+          okConnector:"En conséquence,",
+          frags:[
+            {id:"f7",txt:"FreshSub France SAS est en droit de résilier le contrat de franchise pour inexécution grave et peut réclamer à M. Azzar le paiement des redevances impayées (11 040 €) ainsi que des dommages et intérêts pour le préjudice subi.",ok:true},
+            {id:"f8",txt:"FreshSub doit obligatoirement obtenir une décision judiciaire avant de résilier le contrat — la résiliation unilatérale par notification écrite n'est pas admise en droit des contrats commerciaux.",ok:false},
+            {id:"f9",txt:"M. Azzar peut maintenir l'enseigne FreshSub jusqu'à la décision judiciaire définitive, sous réserve de consigner les redevances dues sur un compte séquestre dans un délai de 30 jours.",ok:false},
+          ]},
+       ],
+       hints:["Art. 1217 + 1226 C. civ. : inexécution grave + mise en demeure infructueuse = résolution possible.","La conclusion doit préciser ce que FreshSub peut obtenir : résiliation + redevances impayées + D&I."]},
+
+      {type:"contre", icon:"⚔️", title:"Contre-argumentation", jugeStart:42,
+       inst:"M. Azzar conteste. <strong>Défends FreshSub</strong> contre ses arguments.",
+       objections:[
+         {author:"Me Caron — Avocat de M. Azzar",
+          txt:"« M. Azzar est chef d'entreprise indépendant. En s'approvisionnant localement, il a simplement exercé sa liberté commerciale. Le contrat de franchise ne peut pas totalement supprimer la liberté d'un commerçant indépendant. »",
+          responses:[
+            {id:"r1",txt:"M. Azzar a librement signé le contrat de franchise qui prévoit expressément une clause d'approvisionnement exclusif à l'article 8. Cette clause, licite car justifiée par la protection du savoir-faire et de l'image du réseau, s'impose à lui. La liberté commerciale ne peut pas primer sur des obligations contractuelles librement acceptées.",ok:true,pts:25},
+            {id:"r2",txt:"Le pain local n'est pas aussi bon que celui des fournisseurs agréés FreshSub.",ok:false,pts:0},
+            {id:"r3",txt:"M. Azzar aurait dû demander l'autorisation avant de changer de fournisseur.",ok:false,pts:5},
+          ]},
+         {author:"Me Caron — Avocat de M. Azzar",
+          txt:"« Mon client traverse des difficultés financières temporaires. Les 6 mois d'impayés sont dus à une baisse conjoncturelle d'activité. FreshSub devrait faire preuve de solidarité au lieu de résilier brutalement. »",
+          responses:[
+            {id:"r4",txt:"Les difficultés financières de M. Azzar ne suspendent pas ses obligations contractuelles. Malgré 3 rappels (novembre, janvier, mars), aucun règlement n'a été effectué. La mise en demeure du 10/03 est restée sans effet dans le délai de 15 jours prévu à l'article 18 du contrat. FreshSub a respecté la procédure.",ok:true,pts:20},
+            {id:"r5",txt:"Les impayés de 11 040 € représentent une somme considérable pour FreshSub.",ok:false,pts:4},
+            {id:"r6",txt:"M. Azzar devrait trouver un arrangement à l'amiable avec FreshSub.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["Une clause contractuelle librement acceptée s'impose aux parties — même au commerçant indépendant.","La procédure de résiliation a été respectée : 3 rappels + mise en demeure + délai de 15 jours."]},
+    ],
+    synth:{
+      title:"Synthèse — La résiliation du contrat de franchise",
+      zones:[{id:"z1",lbl:"Nature du contrat et des parties"},{id:"z2",lbl:"Obligations violées (Majeure)"},{id:"z3",lbl:"Manquements constatés (Mineure)"},{id:"z4",lbl:"Solution juridique"}],
+      chips:[
+        {id:"c1",txt:"Contrat de franchise : concession de marque + savoir-faire contre redevances",z:"z1"},
+        {id:"c2",txt:"FreshSub = franchiseur / M. Azzar = franchisé indépendant",z:"z1"},
+        {id:"c3",txt:"Art. 1217 C. civ. : inexécution → résolution possible",z:"z2"},
+        {id:"c4",txt:"Art. 1226 C. civ. : résolution par mise en demeure infructueuse si manquement grave",z:"z2"},
+        {id:"c5",txt:"Approvisionnement hors réseau agréé (6 non-conformités audit)",z:"z3"},
+        {id:"c6",txt:"11 040 € de redevances impayées malgré 3 rappels et mise en demeure",z:"z3"},
+        {id:"c7",txt:"FreshSub peut résilier le contrat de franchise",z:"z4"},
+        {id:"c8",txt:"FreshSub peut réclamer 11 040 € + dommages et intérêts",z:"z4"},
+        {id:"c9",txt:"Présomption de responsabilité du gardien de la chose",z:null},
+        {id:"c10",txt:"Dol — nullité relative — vice du consentement",z:null},
+      ]
+    }
+  ,corrige:{
+    title:"Corrigé — Thème 8 : La résiliation du contrat de franchise",
+    parts:[
+      {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>contrat de franchise</strong> par lequel FreshSub concède sa marque et son savoir-faire à M.&nbsp;Azzar (franchisé indépendant) contre redevances. Les manquements graves cumulés&nbsp;+ mise en demeure sans effet justifient la <strong>résiliation</strong>."},
+      {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1217 du Code civil, la partie envers laquelle l'engagement n'a pas été exécuté peut provoquer la résolution du contrat. L'article 1226 précise que la résolution peut résulter d'une mise en demeure infructueuse lorsque l'inexécution est suffisamment grave."},
+      {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> M.&nbsp;Azzar a violé deux obligations essentielles&nbsp;: la clause d'approvisionnement exclusif (6 non-conformités — audit du 14/03) et le paiement des redevances (11&nbsp;040&nbsp;€ impayés malgré 3 rappels). La mise en demeure du 10/03 est restée sans effet sous 15 jours.<br/><br/><span class='con-highlight'>En conséquence,</span> FreshSub est en droit de résilier le contrat et peut réclamer 11&nbsp;040&nbsp;€ de redevances impayées ainsi que des dommages et intérêts."}
+    ]
+  }
+  }
+
+};
+
+/* ==================== STATE ==================== */
+let S={cas:null,step:0,scores:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0},prog:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0},done:{1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},synthed:{1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},
+  xp:0,hints:3,stepPts:[0,0,0,0],juge:40,synAns:{},selChip:null,
+  selDocs:[],objIdx:0,objPts:0,afterFb:null,sylSt:{}};
+
+/* Sauvegarde : sessionStorage avec fallback mémoire (compatible file://) */
+const _store={};
+function _set(k,v){try{sessionStorage.setItem(k,v);}catch(e){_store[k]=v;}}
+function _get(k){try{return sessionStorage.getItem(k);}catch(e){return _store[k]||null;}}
+function save(){try{_set('dj4',JSON.stringify({scores:S.scores,prog:S.prog,done:S.done,xp:S.xp,synthed:S.synthed}));}catch(e){}}
+function load(){try{const raw=_get('dj4');if(!raw)return;const d=JSON.parse(raw);if(d.scores)Object.assign(S,{scores:d.scores,prog:d.prog,done:d.done,xp:d.xp||0,synthed:d.synthed||S.synthed});}catch(e){}}
+
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const t=document.getElementById('screen-'+id);if(t){t.classList.add('active');t.scrollTop=0}}
+function goToMap(){updMap();updHomeProgress();goTo('map')}
+function goToSynth(){buildSynth();goTo('synthese')}
+
+function repLabel(xp){if(xp>=300)return'⭐ Avocat Senior';if(xp>=200)return'🌟 Avocat Confirmé';if(xp>=100)return'📋 Avocat Junior';return'🎓 Stagiaire'}
+function updMap(){
+  document.getElementById('map-xp').textContent='XP : '+S.xp;
+  document.getElementById('map-rep').textContent=repLabel(S.xp);
+  [1,2,3,4,5,6,7,8].forEach(n=>{
+    const pb=document.getElementById('pb-'+n),cs=document.getElementById('cs-'+n);
+    const card=document.getElementById('card-'+n),lock=document.getElementById('lock-'+n);
+    if(pb)pb.style.width=S.prog[n]+'%';
+    if(cs&&S.scores[n]>0)cs.textContent='Score : '+S.scores[n]+'/100';
+    if(n===2&&S.done[1]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===3&&S.done[2]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===4&&S.done[1]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===5&&S.done[2]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===6&&S.done[3]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===7&&S.done[3]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===8&&S.done[7]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(S.done[n])card&&card.classList.add('done');
+    const cbtn=document.getElementById('cbtn-'+n);
+    if(cbtn)cbtn.style.display=S.synthed[n]?'inline-block':'none';
+  });
+}
+function updSaveInfo(){const n=Object.values(S.done).filter(Boolean).length;if(document.getElementById('save-info'))document.getElementById('save-info').textContent=n>0?n+'/8 dossier(s) sauvegardé(s)':'';}
+
+/* ==================== EVENTS ==================== */
+function updHomeProgress(){
+  const done=Object.values(S.done).filter(Boolean).length;
+  const pct=Math.round((done/8)*100);
+  const fill=document.getElementById('home-prog-fill');
+  const wrap=document.getElementById('home-progress-wrap');
+  if(fill)fill.style.width=pct+'%';
+  if(wrap)wrap.style.display=done>0?'block':'none';
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const safe=(id,fn)=>{const el=document.getElementById(id);if(el)fn(el);else console.warn('MISSING ID:',id);};
+  try{load();}catch(e){console.error('load()',e);}
+  try{updMap();}catch(e){console.error('updMap()',e);}
+  try{updSaveInfo();}catch(e){console.error('updSaveInfo()',e);}
+  safe('btn-start',el=>el.onclick=goToMap);
+  safe('btn-home2',el=>el.onclick=()=>goTo('home'));
+  safe('btn-quit',el=>el.onclick=()=>{save();goToMap()});
+  safe('btn-prev',el=>el.onclick=prevStep);
+  safe('btn-next',el=>el.onclick=nextStep);
+  safe('btn-hint',el=>el.onclick=useHint);
+  safe('btn-close-hint',el=>el.onclick=()=>closeOv('ov-hint'));
+  safe('btn-close-fb',el=>el.onclick=closeFb);
+  safe('btn-close-badge',el=>el.onclick=()=>closeOv('ov-badge'));
+  safe('btn-back-map',el=>el.onclick=goToMap);
+  safe('btn-synthese',el=>el.onclick=goToSynth);
+  safe('btn-corrige',el=>el.onclick=()=>showCorrige(S.cas));
+  safe('btn-back-verdict',el=>el.onclick=()=>goTo('verdict'));
+  safe('btn-val-synth',el=>el.onclick=valSynth);
+  document.querySelectorAll('.cc').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const n=parseInt(card.dataset.case);
+      if(n===2&&!S.done[1])return;
+      if(n===3&&!S.done[2])return;
+      startCase(n);
+    });
+  });
+  try{updHomeProgress();}catch(e){console.error('updHomeProgress()',e);}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeOv('ov-hint');closeFb();closeOv('ov-badge')}});
+});
+
+/* ==================== GAME START ==================== */
+function startCase(n){
+  S.cas=n;S.step=0;S.hints=3;S.stepPts=[0,0,0,0];S.selDocs=[];S.objIdx=0;S.objPts=0;S.sylSt={};S.afterFb=null;
+  const cd=CASES[n];S.juge=cd.steps.find(s=>s.type==='contre')?.jugeStart||40;
+  document.getElementById('gh-title').textContent=cd.title;
+  document.getElementById('hints-left').textContent=S.hints;
+  document.getElementById('live-score').textContent=0;
+  buildDots();renderStep();goTo('game');
+}
+function buildDots(){
+  const steps=CASES[S.cas].steps,c=document.getElementById('sdots');c.innerHTML='';
+  steps.forEach((_,i)=>{const d=document.createElement('div');d.className='sdot'+(i===0?' active':'');d.id='dot'+i;c.appendChild(d)});
+}
+function updDots(){CASES[S.cas].steps.forEach((_,i)=>{const d=document.getElementById('dot'+i);if(d)d.className='sdot'+(i<S.step?' done':i===S.step?' active':'')})}
+function updLive(){document.getElementById('live-score').textContent=S.stepPts.reduce((a,b)=>a+b,0)}
+
+function renderStep(){
+  const step=CASES[S.cas].steps[S.step];
+  S.selDocs=[];S.sylSt={};
+  document.getElementById('btn-prev').style.visibility=S.step===0?'hidden':'visible';
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('slbl').textContent=step.icon+' '+step.title+' — Étape '+(S.step+1)+'/'+CASES[S.cas].steps.length;
+  updDots();
+  const gc=document.getElementById('gcont');gc.innerHTML='';gc.classList.add('fi');setTimeout(()=>gc.classList.remove('fi'),400);
+  gc.appendChild(mkInstr(step));
+  if(step.type==='docs')rDocs(step,gc);
+  else if(step.type==='quali')rQuali(step,gc);
+  else if(step.type==='syllog')rSyllog(step,gc);
+  else if(step.type==='contre')rContre(step,gc);
+}
+function mkInstr(step){
+  const d=document.createElement('div');d.className='sinstr';
+  d.innerHTML=`<span class="sic">${step.icon}</span><div><strong>${step.title}</strong><br/>${step.inst}</div>`;return d;
+}
+
+/* ---- DOCS ---- */
+function rDocs(step,c){
+  const grid=document.createElement('div');grid.className='docgrid';
+  step.docs.forEach(doc=>{
+    const el=document.createElement('div');el.className='dcard';el.id='doc-'+doc.id;
+    el.innerHTML=`<div class="dtype">${doc.type}</div><div class="dtitle">${doc.title}</div><div class="dbody">${doc.body}</div><div class="dcheck">✓</div><div class="dtip">${doc.tip}</div>`;
+    el.onclick=()=>togDoc(doc.id,step);grid.appendChild(el);
+  });
+  c.appendChild(grid);
+  const info=document.createElement('p');info.style.cssText='font-size:.8rem;color:var(--gray);text-align:center;margin-top:.5rem';
+  info.textContent='Sélectionne exactement '+step.max+' document(s). Les explications apparaîtront à la validation.';c.appendChild(info);
+}
+function togDoc(id,step){
+  const el=document.getElementById('doc-'+id),idx=S.selDocs.indexOf(id);
+  if(idx===-1){if(S.selDocs.length>=step.max){const f=S.selDocs.shift();document.getElementById('doc-'+f)?.classList.remove('sel')}S.selDocs.push(id);el.classList.add('sel')}
+  else{S.selDocs.splice(idx,1);el.classList.remove('sel')}
+  document.getElementById('btn-next').disabled=S.selDocs.length!==step.min;
+}
+function revealDocs(step){
+  step.docs.forEach(doc=>{
+    const el=document.getElementById('doc-'+doc.id);if(!el)return;
+    const sel=S.selDocs.includes(doc.id);
+    el.classList.remove('sel');
+    if(sel&&doc.key)el.classList.add('cor');
+    else if(sel&&!doc.key)el.classList.add('wr');
+    else el.classList.add('neu');
+    el.style.pointerEvents='none';
+  });
+}
+
+/* ---- QUALI ---- */
+function rQuali(step,c){
+  const wrap1=document.createElement('div');
+  wrap1.innerHTML=`<div style="font-weight:600;font-size:.95rem;color:var(--navy);margin-bottom:1rem">${step.q1}</div>`;
+  const g1=document.createElement('div');g1.className='cgridq';g1.id='g1';
+  step.c1.forEach(ch=>{
+    const btn=document.createElement('button');btn.className='cbtn';btn.id='cb1-'+ch.id;
+    btn.innerHTML=`<div class="clbl">${ch.lbl}</div><div class="cdet">${ch.det}</div>`;
+    btn.onclick=()=>pickQ1(ch,step);g1.appendChild(btn);
+  });
+  wrap1.appendChild(g1);c.appendChild(wrap1);
+  const wrap2=document.createElement('div');wrap2.id='q2w';wrap2.style.display='none';
+  wrap2.innerHTML=`<div style="font-weight:600;font-size:.95rem;color:var(--navy);margin:1.5rem 0 1rem">${step.q2}</div>`;
+  const g2=document.createElement('div');g2.className='cgridq';g2.id='g2';
+  step.c2.forEach(ch=>{
+    const btn=document.createElement('button');btn.className='cbtn';btn.id='cb2-'+ch.id;
+    btn.innerHTML=`<div class="clbl">${ch.lbl}</div><div class="cdet">${ch.det}</div>`;
+    btn.onclick=()=>pickQ2(ch,step);g2.appendChild(btn);
+  });
+  wrap2.appendChild(g2);c.appendChild(wrap2);
+}
+function pickQ1(ch,step){
+  document.querySelectorAll('#g1 .cbtn').forEach(b=>{b.classList.add('dis');b.onclick=null});
+  document.getElementById('cb1-'+ch.id).classList.add(ch.ok?'ok':'ko');
+  if(!ch.ok)step.c1.forEach(c2=>c2.ok&&document.getElementById('cb1-'+c2.id)?.classList.add('ok'));
+  if(ch.ok){S.stepPts[S.step]+=15;updLive();showFb('✅','Bonne qualification !',step.fb1ok)}
+  else showFb('❌','Pas tout à fait…',step.fb1ko);
+  setTimeout(()=>{document.getElementById('q2w').style.display='block'},800);
+}
+function pickQ2(ch,step){
+  document.querySelectorAll('#g2 .cbtn').forEach(b=>{b.classList.add('dis');b.onclick=null});
+  document.getElementById('cb2-'+ch.id).classList.add(ch.ok?'ok':'ko');
+  if(!ch.ok)step.c2.forEach(c2=>c2.ok&&document.getElementById('cb2-'+c2.id)?.classList.add('ok'));
+  if(ch.ok){S.stepPts[S.step]+=15;updLive();showFb('✅','Exactement !',step.fb2ok)}
+  else showFb('❌','Attention…',step.fb2ko);
+  document.getElementById('btn-next').disabled=false;
+}
+
+/* ---- SYLLOGISME BAC avec connecteurs ---- */
+function rSyllog(step,c){
+  S.sylSt={};
+  const wrap=document.createElement('div');wrap.className='sylwrap';
+  step.rows.forEach(row=>{
+    S.sylSt[row.key]={connector:null,connOk:false,frag:null};
+    const rowEl=document.createElement('div');rowEl.className='sylrow '+row.cls;
+    rowEl.innerHTML=`<div class="sylhdr"><span class="syltag ${row.tcls}">${row.label}</span><span class="sylsub">${row.sub}</span></div>`;
+    /* Zone de prévisualisation */
+    const asm=document.createElement('div');asm.className='sylasm';asm.id='asm-'+row.key;
+    const prev=document.createElement('div');prev.className='sylprev';prev.id='prev-'+row.key;prev.textContent='Sélectionne un connecteur puis un fragment…';
+    rowEl.appendChild(asm);rowEl.appendChild(prev);
+    /* Connecteurs */
+    const cl=document.createElement('div');cl.className='blbl';cl.textContent='1. Choisis le connecteur :';rowEl.appendChild(cl);
+    const cb=document.createElement('div');cb.className='fragbank';cb.id='cb-'+row.key;
+    row.connectors.forEach(con=>{
+      const el=document.createElement('button');el.className='conchip';el.textContent=con;
+      el.onclick=()=>pickCon(row.key,con,con===row.okConnector,step);cb.appendChild(el);
+    });
+    rowEl.appendChild(cb);
+    /* Fragments */
+    const fl=document.createElement('div');fl.className='blbl';fl.style.marginTop='10px';fl.textContent='2. Choisis le bon fragment :';rowEl.appendChild(fl);
+    const fb=document.createElement('div');fb.className='fragbank';fb.id='fb-'+row.key;
+    row.frags.forEach(fr=>{
+      const el=document.createElement('button');el.className='fr';el.id='fr-'+fr.id;el.textContent=fr.txt;
+      el.onclick=()=>pickFrag(row.key,fr,step);fb.appendChild(el);
+    });
+    rowEl.appendChild(fb);
+    wrap.appendChild(rowEl);
+  });
+  c.appendChild(wrap);
+  const tip=document.createElement('div');tip.className='bactip';
+  tip.innerHTML='<strong>📖 Méthode BAC STMG :</strong><br/>Réponse 2 : <em>« Selon l\'article X... [règle générale] »</em><br/>Réponse 3 : <em>« En l\'espèce, [faits] ... En conséquence, [solution] »</em>';
+  c.appendChild(tip);
+}
+function pickCon(key,con,ok,step){
+  document.querySelectorAll('#cb-'+key+' .conchip').forEach(b=>b.classList.remove('selc'));
+  event.currentTarget.classList.add('selc');
+  S.sylSt[key].connector=con;S.sylSt[key].connOk=ok;
+  updAsm(key);checkSylDone(step);
+}
+function pickFrag(key,fr,step){
+  document.querySelectorAll('#fb-'+key+' .fr').forEach(b=>b.classList.remove('self'));
+  document.getElementById('fr-'+fr.id).classList.add('self');
+  S.sylSt[key].frag=fr;
+  updAsm(key);checkSylDone(step);
+}
+function updAsm(key){
+  const st=S.sylSt[key],asm=document.getElementById('asm-'+key),prev=document.getElementById('prev-'+key);
+  asm.innerHTML='';
+  if(st.connector){const c=document.createElement('span');c.className='conchip';c.style.cursor='default';c.textContent=st.connector;asm.appendChild(c);asm.classList.add('has')}
+  if(st.frag){const f=document.createElement('span');f.className='pfrag';f.textContent=st.frag.txt;asm.appendChild(f)}
+  if(st.connector||st.frag){prev.textContent=(st.connector||'…')+' '+(st.frag?.txt||'…');prev.className='sylprev active'}
+}
+function checkSylDone(step){
+  const done=step.rows.every(r=>S.sylSt[r.key]?.connector&&S.sylSt[r.key]?.frag);
+  document.getElementById('btn-next').disabled=!done;
+}
+
+/* ---- CONTRE ---- */
+function rContre(step,c){S.objIdx=0;S.objPts=0;rObj(step,c)}
+function rObj(step,c){
+  c.innerHTML='';c.appendChild(mkInstr(step));
+  if(S.objIdx>=step.objections.length){
+    const d=document.createElement('div');d.className='sinstr';
+    d.innerHTML=`<span class="sic">🎉</span><div>Toutes les objections traitées&nbsp;! Score&nbsp;: <strong style="color:var(--gold-light)">${S.objPts} pts</strong></div>`;
+    c.appendChild(d);document.getElementById('btn-next').disabled=false;return;
+  }
+  const obj=step.objections[S.objIdx];
+  const meter=document.createElement('div');meter.className='jmeter';
+  meter.innerHTML=`<div class="jic">👨‍⚖️</div><div class="jinfo"><div class="jlbl">Conviction du juge</div><div class="jwrap"><div class="jbar" id="jbar" style="width:${S.juge}%"></div></div></div><div class="jpct" id="jpct">${S.juge}%</div>`;
+  c.appendChild(meter);
+  const oc=document.createElement('div');oc.className='objcard fi';
+  oc.innerHTML=`<div class="objic">⚔️</div><div><div class="objauto">${obj.author}</div><div class="objtxt">${obj.txt}</div></div>`;
+  c.appendChild(oc);
+  const lbl=document.createElement('div');lbl.style.cssText='font-weight:600;font-size:.9rem;color:var(--navy);margin:1rem 0 .75rem';lbl.textContent='Votre réponse :';c.appendChild(lbl);
+  const list=document.createElement('div');list.style.cssText='display:flex;flex-direction:column;gap:10px';
+  obj.responses.forEach(r=>{
+    const btn=document.createElement('button');btn.className='cbtn';
+    btn.innerHTML=`<div class="clbl">${r.txt}</div>`;
+    btn.onclick=()=>pickRep(r,step,c);list.appendChild(btn);
+  });
+  c.appendChild(list);
+}
+function pickRep(r,step,c){
+  c.querySelectorAll('.cbtn').forEach(b=>{b.classList.add('dis');b.onclick=null});
+  if(r.ok){S.juge=Math.min(100,S.juge+r.pts);S.objPts+=r.pts;S.stepPts[S.step]+=r.pts;updLive();updJauge();showFb('✅','Excellent argument !','Le juge est convaincu. Votre argumentation s\'appuie sur la loi et les preuves du dossier.')}
+  else{S.juge=Math.max(0,S.juge-5);S.stepPts[S.step]+=r.pts;updLive();updJauge();showFb('⚠️','Argument insuffisant','Répondez sur le fond juridique : citez un article de loi ou une preuve du dossier. Les émotions ne convainquent pas un juge.')}
+  S.objIdx++;S.afterFb=()=>rObj(step,c);
+}
+function updJauge(){const b=document.getElementById('jbar'),p=document.getElementById('jpct');if(b)b.style.width=S.juge+'%';if(p)p.textContent=S.juge+'%'}
+
+/* ==================== NAVIGATION ==================== */
+function nextStep(){
+  const step=CASES[S.cas].steps[S.step];
+  if(step.type==='docs'){
+    const ok=S.selDocs.filter(id=>step.correct.includes(id)).length;
+    S.stepPts[S.step]+=Math.round((ok/step.correct.length)*20);updLive();
+    revealDocs(step);
+    document.getElementById('btn-next').disabled=true;
+    setTimeout(()=>doNext(),1400);return;
+  }
+  if(step.type==='syllog')valSyl(step);
+  doNext();
+}
+function doNext(){
+  S.step++;S.prog[S.cas]=Math.round((S.step/CASES[S.cas].steps.length)*100);save();
+  if(S.step>=CASES[S.cas].steps.length){showVerdict();return}
+  renderStep();
+}
+function prevStep(){if(S.step>0){S.step--;renderStep()}}
+
+function valSyl(step){
+  let pts=0;
+  step.rows.forEach(row=>{
+    const st=S.sylSt[row.key]||{};
+    if(st.connOk)pts+=5;
+    if(st.frag?.ok)pts+=10;
+    /* Feedback visuel */
+    if(st.connector){
+      document.querySelectorAll('#cb-'+row.key+' .conchip').forEach(b=>{if(b.textContent===st.connector)b.classList.add(st.connOk?'okc':'koc')});
+    }
+    if(st.frag){const el=document.getElementById('fr-'+st.frag.id);if(el)el.classList.add(st.frag.ok?'okf':'kof')}
+  });
+  S.stepPts[S.step]+=pts;updLive();
+}
+
+/* ==================== HINT ==================== */
+function useHint(){
+  if(S.hints<=0)return;
+  const step=CASES[S.cas].steps[S.step];
+  const hints=step.hints||["Relis l'instruction.","Cherche la notion clé dans ton cours."];
+  S.hints--;document.getElementById('hints-left').textContent=S.hints;
+  document.getElementById('hint-txt').textContent=hints[Math.floor(Math.random()*hints.length)];
+  document.getElementById('ov-hint').classList.remove('hidden');
+}
+function closeOv(id){document.getElementById(id).classList.add('hidden')}
+
+/* ==================== FEEDBACK ==================== */
+function showFb(ic,title,txt){
+  document.getElementById('fb-ic').textContent=ic;
+  document.getElementById('fb-title').textContent=title;
+  document.getElementById('fb-txt').textContent=txt;
+  document.getElementById('ov-fb').classList.remove('hidden');
+}
+function closeFb(){
+  document.getElementById('ov-fb').classList.add('hidden');
+  if(S.afterFb){const fn=S.afterFb;S.afterFb=null;fn()}
+}
+
+/* ==================== VERDICT ==================== */
+function showVerdict(){
+  const total=S.stepPts.reduce((a,b)=>a+b,0);
+  const score=Math.min(100,Math.round((total/95)*100));
+  S.scores[S.cas]=score;S.done[S.cas]=true;
+  const xp=Math.round(score*.8);S.xp+=xp;save();
+  let title,txt;
+  if(score>=80){title='🏆 Victoire ! Dossier maîtrisé';txt=`Votre raisonnement est solide. Le juge décide en faveur de ${CASES[S.cas].client}.`}
+  else if(score>=50){title='⚖️ Résultat partiel';txt='Certains éléments sont bien identifiés. Renforcez le syllogisme et les contre-arguments.'}
+  else{title='📚 À retravailler';txt=`Revoyez votre cours sur le ${CASES[S.cas].theme}. Méthode : majeure → mineure → conclusion.`}
+  document.getElementById('vt').textContent=title;document.getElementById('vtx').textContent=txt;
+  document.getElementById('vxp').textContent='+ '+xp+' XP — '+repLabel(S.xp);
+  const maxS=[20,30,45,45];
+  [1,2,3,4].forEach(i=>{
+    const pct=Math.min(100,Math.round(((S.stepPts[i-1]||0)/maxS[i-1])*100));
+    setTimeout(()=>{const b=document.getElementById('vb'+i);if(b)b.style.width=pct+'%'},300*i);
+    const v=document.getElementById('vv'+i);if(v)v.textContent=pct+'%';
+  });
+  const tips=[];
+  if(S.stepPts[0]<15)tips.push('• Preuves : identifie faute + dommage + lien de causalité (ou formation + inexécution du contrat).');
+  if(S.stepPts[1]<20)tips.push('• Qualification : identifie d\'abord le type de relation juridique avant de choisir le régime.');
+  if(S.stepPts[2]<25)tips.push('• Syllogisme BAC : "Selon l\'article…" puis "En l\'espèce," puis "En conséquence,".');
+  if(S.stepPts[3]<20)tips.push('• Contre-argumentation : toujours citer un article de loi + une preuve du dossier.');
+  if(!tips.length)tips.push('• Excellent ! Tu maîtrises la méthode du raisonnement juridique niveau BAC STMG.');
+  document.getElementById('vtips').innerHTML='<strong style="color:var(--gold-light);display:block;margin-bottom:6px">💡 Conseils du mentor</strong>'+tips.join('<br>');
+  goTo('verdict');
+  if(score>=80){const badges={1:{ic:'📜',nm:'Maître du Contrat'},2:{ic:'⚖️',nm:'Expert Responsabilité'},3:{ic:'🏛️',nm:'Avocat du Travail'},4:{ic:'🔍',nm:'Chasseur de Dol'},5:{ic:'🛡️',nm:'Gardien de la Justice'},6:{ic:'⚡',nm:'Expert en Clauses'},7:{ic:'🏪',nm:'Défenseur du Commerce'},8:{ic:'🤝',nm:'Expert en Franchise'}};const b=badges[S.cas];if(b)setTimeout(()=>{document.getElementById('badge-ic').textContent=b.ic;document.getElementById('badge-nm').textContent=b.nm;document.getElementById('ov-badge').classList.remove('hidden')},1500)}
+  updMap();
+}
+
+/* ==================== SYNTHESE ==================== */
+function buildSynth(){
+  const syn=CASES[S.cas].synth,c=document.getElementById('synth-content');c.innerHTML='';
+  const h=document.createElement('h3');h.style.cssText='font-family:var(--fd);font-size:1.2rem;color:var(--navy);margin-bottom:1.25rem';h.textContent=syn.title;c.appendChild(h);
+  const bl=document.createElement('div');bl.style.cssText='font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:6px';bl.textContent='Éléments disponibles — clique un élément puis la zone cible';c.appendChild(bl);
+  const bank=document.createElement('div');bank.className='sbank';S.synAns={};S.selChip=null;
+  [...syn.chips].sort(()=>Math.random()-.5).forEach(ch=>{
+    const el=document.createElement('div');el.className='schip';el.id='sch-'+ch.id;el.textContent=ch.txt;el.dataset.cz=ch.z||'';
+    el.onclick=()=>selChipFn(ch.id);bank.appendChild(el);
+  });
+  c.appendChild(bank);
+  const zg=document.createElement('div');zg.style.cssText='display:grid;gap:1rem';
+  syn.zones.forEach(z=>{
+    const zEl=document.createElement('div');zEl.className='szone';zEl.id='sz-'+z.id;
+    zEl.innerHTML=`<div class="zlbl">${z.lbl}</div><div class="zitems" id="zi-${z.id}"></div>`;
+    zEl.onclick=()=>dropZone(z.id);zg.appendChild(zEl);
+  });
+  c.appendChild(zg);
+}
+function selChipFn(id){
+  document.querySelectorAll('.schip').forEach(c=>c.classList.remove('ssel'));
+  if(S.selChip===id){S.selChip=null;return}
+  const el=document.getElementById('sch-'+id);
+  if(el&&!el.classList.contains('placed')){el.classList.add('ssel');S.selChip=id}
+}
+function dropZone(zid){
+  if(!S.selChip)return;
+  const chip=document.getElementById('sch-'+S.selChip);if(!chip||chip.classList.contains('placed'))return;
+  const items=document.getElementById('zi-'+zid);if(!items)return;
+  const badge=document.createElement('div');badge.className='pchip';badge.textContent=chip.textContent;
+  const cid=S.selChip;
+  badge.onclick=e=>{e.stopPropagation();badge.remove();chip.classList.remove('placed');delete S.synAns[cid];if(!items.children.length)document.getElementById('sz-'+zid)?.classList.remove('filled')};
+  items.appendChild(badge);chip.classList.add('placed');chip.classList.remove('ssel');
+  S.synAns[cid]=zid;S.selChip=null;document.getElementById('sz-'+zid)?.classList.add('filled');
+}
+function valSynth(){
+  const syn=CASES[S.cas].synth;
+  const rel=syn.chips.filter(c=>c.z!==null);
+  const ok=rel.filter(c=>S.synAns[c.id]===c.z).length;
+  const pct=Math.round((ok/rel.length)*100);
+  // Marquer synthèse complète
+  S.synthed[S.cas]=true;
+  save();
+  updHomeProgress();
+  updMap();
+  // Afficher le score dans la bannière du corrigé
+  const banner=document.getElementById('corrige-score-banner');
+  if(banner){
+    if(pct===100){
+      banner.textContent='🏆 Parfait ! Toutes les notions au bon endroit.';
+      banner.style.cssText='display:block;background:#E8F5EE;color:#2D7D56;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;text-align:center;font-size:.9rem;font-weight:600;border:1px solid #2D7D56';
+    } else if(pct>=60){
+      banner.textContent='✅ Bien ! '+ok+'/'+rel.length+' éléments correctement placés.';
+      banner.style.cssText='display:block;background:#FEF3E2;color:#C67B1A;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;text-align:center;font-size:.9rem;font-weight:600;border:1px solid #C67B1A';
+    } else {
+      banner.textContent='📚 '+ok+'/'+rel.length+' placés. Reprends la méthode : règle → faits → conclusion.';
+      banner.style.cssText='display:block;background:#FDEAEA;color:#B83232;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;text-align:center;font-size:.9rem;font-weight:600;border:1px solid #B83232';
+    }
+  }
+  // Ouvrir directement le corrigé
+  showCorrige(S.cas);
+}
+
+
+function showCorrige(caseNum){
+  const n=(caseNum!==undefined&&caseNum!==null)?caseNum:S.cas;
+  const c=CASES[n];
+  if(!c||!c.corrige)return;
+  // Si appelé depuis la carte (pas depuis synthèse), réinitialiser la bannière
+  if(caseNum!==S.cas){
+    const banner=document.getElementById('corrige-score-banner');
+    if(banner)banner.style.display='none';
+  }
+  document.getElementById('corrige-title').textContent=c.corrige.title;
+  const body=document.getElementById('corrige-body');
+  body.innerHTML='';
+  c.corrige.parts.forEach(function(part){
+    const wrap=document.createElement('div');wrap.className='corrige-part';
+    const lbl=document.createElement('div');lbl.className='corrige-part-label';lbl.textContent=part.label;
+    const txt=document.createElement('div');txt.className='corrige-text '+(part.cls||'');
+    txt.innerHTML=part.text;
+    wrap.appendChild(lbl);wrap.appendChild(txt);body.appendChild(wrap);
+  });
+  document.getElementById('ov-corrige').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
