@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DROIT & JUSTICE — Serious Game STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0B1628;--navy-mid:#152340;--navy-light:#1E3257;
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5E8C0;
+  --white:#FFFFFF;--off-white:#F8F6F0;--gray-light:#E8E5DF;--gray:#9A9590;
+  --green:#2D7D56;--green-light:#E8F5EE;
+  --red:#B83232;--red-light:#FDEAEA;
+  --orange:#C67B1A;--orange-light:#FEF3E2;
+  --font-d:'Playfair Display',Georgia,serif;
+  --font-b:'DM Sans',system-ui,sans-serif;
+  --r:12px;--rl:20px;
+  --sh:0 4px 24px rgba(11,22,40,.12);--shl:0 8px 40px rgba(11,22,40,.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font-b);background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* HOME */
+.home-bg{min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#0D2040 100%);display:flex;align-items:center;padding:2rem;position:relative;overflow:hidden}
+.home-bg::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);border-radius:50%}
+.home-cols{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1100px;margin:0 auto;width:100%;align-items:center}
+.badge-firm{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.4);padding:6px 16px;border-radius:30px;margin-bottom:1.5rem}
+.game-title{font-family:var(--font-d);font-size:clamp(3.5rem,7vw,5.5rem);font-weight:900;line-height:.9;margin-bottom:1rem}
+.game-sub{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.game-desc{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.7;max-width:420px;margin-bottom:2rem}
+.home-right{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.scales-big{font-size:5rem;animation:sway 3s ease-in-out infinite;display:block;text-align:center}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.theme-chips{display:flex;flex-direction:column;gap:8px;width:100%}
+.theme-chip{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-left:3px solid var(--gold);padding:10px 16px;border-radius:6px;font-size:.85rem;color:var(--gold-light);font-weight:500}
+.save-info{margin-top:.75rem;font-size:.78rem;color:var(--gray)}
+
+/* BUTTONS */
+.btn-p{background:var(--gold);color:var(--navy);border:none;padding:14px 28px;border-radius:8px;font-family:var(--font-b);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-p:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:var(--sh)}
+.btn-p:disabled{background:var(--gray);cursor:not-allowed;transform:none;opacity:.6}
+.btn-s{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.25);padding:12px 24px;border-radius:8px;font-family:var(--font-b);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-s:hover{background:rgba(255,255,255,.08)}
+.btn-back{background:none;border:none;color:rgba(255,255,255,.6);font-family:var(--font-b);font-size:.88rem;cursor:pointer;padding:8px 12px;transition:color .2s}
+.btn-back:hover{color:var(--white)}
+.btn-hint{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold-light);padding:8px 14px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:var(--font-b)}
+.btn-hint:hover{background:rgba(201,168,76,.25)}
+
+/* MAP */
+#screen-map{background:var(--off-white);color:var(--navy)}
+.map-header{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.map-title{font-family:var(--font-d);font-size:1.3rem;color:var(--white);font-weight:700}
+.xp-mini{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--gold-light)}
+.rep-badge{background:rgba(201,168,76,.2);border:1px solid var(--gold);padding:3px 12px;border-radius:20px;font-size:.75rem;font-weight:600;color:var(--gold-light)}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;padding:2rem;max-width:1100px;margin:0 auto;width:100%}
+.case-card{background:var(--white);border-radius:var(--rl);padding:1.75rem;cursor:pointer;transition:all .25s;box-shadow:0 2px 12px rgba(11,22,40,.08);border:2px solid transparent;position:relative;overflow:hidden}
+.case-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gold)}
+.case-card:hover{transform:translateY(-4px);box-shadow:var(--shl);border-color:rgba(201,168,76,.3)}
+.case-card.locked{opacity:.65;cursor:default}
+.case-card.locked:hover{transform:none;box-shadow:0 2px 12px rgba(11,22,40,.08)}
+.case-card.done::before{background:var(--green)}
+.case-num{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:4px}
+.case-theme{font-size:.75rem;font-weight:600;color:var(--gold);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.05em}
+.case-title{font-family:var(--font-d);font-size:1.35rem;color:var(--navy);margin-bottom:.75rem;line-height:1.2}
+.case-desc{font-size:.88rem;color:#5A6070;line-height:1.6;margin-bottom:1rem}
+.case-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.diff{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px}
+.d1{background:#E8F5EE;color:var(--green)}.d2{background:var(--orange-light);color:var(--orange)}.d3{background:var(--red-light);color:var(--red)}
+.skills-tag{font-size:.72rem;color:var(--gray);background:var(--gray-light);padding:3px 10px;border-radius:20px}
+.case-prog{background:var(--gray-light);border-radius:4px;height:5px;margin-bottom:.5rem}
+.prog-bar{height:5px;border-radius:4px;background:var(--gold);width:0%;transition:width .5s}
+.case-score-lbl{font-size:.8rem;color:var(--gray);font-weight:500}
+.lock-ov{position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:600;color:var(--navy);border-radius:var(--rl)}
+
+/* GAME */
+#screen-game{background:#F2F0EB;color:var(--navy)}
+.game-header{background:var(--navy);padding:.75rem 1.5rem;display:flex;align-items:center;gap:1rem;justify-content:space-between;flex-shrink:0}
+.gh-center{flex:1;text-align:center}
+.gh-title{font-size:.88rem;font-weight:600;color:var(--gold-light);margin-bottom:5px}
+.steps-dots{display:flex;gap:6px;justify-content:center}
+.sdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s}
+.sdot.done{background:var(--green)}.sdot.active{background:var(--gold);transform:scale(1.3)}
+.gh-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.score-live{font-size:.85rem;color:var(--gold-light);font-weight:600;white-space:nowrap}
+.game-content{flex:1;overflow-y:auto;padding:1.5rem;max-width:900px;margin:0 auto;width:100%}
+.game-nav{background:var(--white);border-top:1px solid var(--gray-light);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-shrink:0}
+.step-lbl{font-size:.8rem;color:var(--gray);text-align:center;font-weight:500;flex:1}
+
+/* STEP COMPONENTS */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:1rem}
+.doc-card{background:var(--white);border-radius:var(--r);padding:1.2rem;border-left:4px solid var(--navy);box-shadow:0 2px 8px rgba(11,22,40,.06);cursor:pointer;transition:all .2s;position:relative}
+.doc-card.selected{border-left-color:var(--gold);background:var(--gold-pale)}
+.doc-card:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.doc-type{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--gray);margin-bottom:5px}
+.doc-title{font-size:.92rem;font-weight:600;color:var(--navy);margin-bottom:5px}
+.doc-body{font-size:.82rem;color:#5A6070;line-height:1.5}
+.doc-check{position:absolute;top:10px;right:12px;font-size:1.1rem;opacity:0;transition:opacity .2s}
+.doc-card.selected .doc-check{opacity:1}
+.step-instr{background:var(--navy);color:var(--white);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:.9rem;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.step-instr .ic{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+.choices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1rem}
+.choice-btn{background:var(--white);border:2px solid var(--gray-light);border-radius:var(--r);padding:1rem;cursor:pointer;text-align:left;transition:all .2s;font-family:var(--font-b);width:100%}
+.choice-btn:hover:not(.disabled){border-color:var(--navy);background:var(--off-white)}
+.choice-btn.selected{border-color:var(--gold);background:var(--gold-pale)}
+.choice-btn.correct{border-color:var(--green);background:var(--green-light)}
+.choice-btn.wrong{border-color:var(--red);background:var(--red-light)}
+.choice-btn.disabled{pointer-events:none}
+.choice-lbl{font-size:.9rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.choice-det{font-size:.78rem;color:var(--gray);line-height:1.4}
+.syllog-grid{display:grid;gap:1rem;margin-bottom:1rem}
+.syllog-row{background:var(--white);border-radius:var(--r);padding:1rem 1.25rem;display:grid;grid-template-columns:150px 1fr;gap:1rem;align-items:start}
+.syllog-lbl{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding-top:4px}
+.syllog-lbl small{display:block;font-size:.63rem;text-transform:none;letter-spacing:0;font-weight:400;color:var(--gray);margin-top:2px}
+.syllog-lbl.maj{color:var(--navy)}.syllog-lbl.min{color:var(--orange)}.syllog-lbl.conc{color:var(--green)}
+.syllog-chips{display:flex;flex-wrap:wrap;gap:8px}
+.syllog-chip{background:var(--off-white);border:2px solid var(--gray-light);border-radius:6px;padding:8px 12px;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:var(--font-b);color:var(--navy);text-align:left}
+.syllog-chip:hover{border-color:var(--navy)}
+.syllog-chip.selected{border-color:var(--gold);background:var(--gold-pale);font-weight:600}
+.syllog-chip.correct{border-color:var(--green);background:var(--green-light);color:var(--green)}
+.syllog-chip.wrong{border-color:var(--red);background:var(--red-light);color:var(--red)}
+.obj-card{background:var(--red-light);border:2px solid var(--red);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;display:flex;gap:12px;align-items:flex-start}
+.obj-ic{font-size:1.4rem;flex-shrink:0}
+.obj-author{font-size:.73rem;font-weight:700;color:var(--red);margin-bottom:4px;text-transform:uppercase}
+.obj-text{font-size:.88rem;color:var(--navy);line-height:1.6}
+.juge-meter{background:var(--white);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.juge-ic{font-size:1.8rem}
+.juge-info{flex:1}
+.juge-lbl{font-size:.73rem;color:var(--gray);margin-bottom:4px}
+.juge-wrap{background:var(--gray-light);border-radius:4px;height:8px}
+.juge-bar{height:8px;border-radius:4px;background:var(--gold);transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.juge-pct{font-size:.85rem;font-weight:700;color:var(--navy);min-width:36px;text-align:right}
+.reponse-list{display:flex;flex-direction:column;gap:10px}
+
+/* VERDICT */
+#screen-verdict{background:var(--off-white);color:var(--navy);align-items:center;justify-content:center;padding:2rem}
+.verdict-box{max-width:680px;width:100%;text-align:center}
+.gavel{font-size:3rem;animation:gavel .6s ease-out;display:inline-block;margin-bottom:1rem}
+@keyframes gavel{0%{transform:rotate(-40deg) scale(.5);opacity:0}60%{transform:rotate(10deg) scale(1.1)}100%{transform:rotate(0) scale(1);opacity:1}}
+.verdict-title{font-family:var(--font-d);font-size:2rem;color:var(--navy);margin-bottom:.75rem}
+.verdict-text{font-size:1rem;color:#5A6070;line-height:1.7;margin-bottom:1.5rem}
+.vscores{background:var(--white);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.25rem;text-align:left}
+.vs-item{display:grid;grid-template-columns:165px 1fr 50px;gap:10px;align-items:center;margin-bottom:10px}
+.vs-lbl{font-size:.82rem;font-weight:500;color:var(--navy)}
+.vs-wrap{background:var(--gray-light);border-radius:4px;height:8px}
+.vs-bar{height:8px;border-radius:4px;background:var(--gold);transition:width 1s ease}
+.vs-val{font-size:.82rem;font-weight:700;color:var(--navy);text-align:right}
+.verdict-tips{background:var(--navy);color:var(--white);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1rem;text-align:left;font-size:.88rem;line-height:1.7}
+.verdict-xp{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+.verdict-acts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* SYNTHESE */
+#screen-synthese{background:var(--off-white);color:var(--navy)}
+.synth-wrap{max-width:820px;margin:0 auto;padding:2rem;width:100%}
+.synth-hdr{text-align:center;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--gray-light)}
+.synth-hdr h2{font-family:var(--font-d);font-size:1.8rem;color:var(--navy);margin-bottom:.4rem}
+.synth-sub{color:var(--gray);font-size:.88rem}
+.synth-bank{display:flex;flex-wrap:wrap;gap:10px;background:var(--white);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;border:1px solid var(--gray-light)}
+.synth-chip{background:var(--off-white);border:2px solid var(--gray-light);border-radius:6px;padding:8px 14px;font-size:.8rem;cursor:pointer;transition:all .2s;color:var(--navy);font-family:var(--font-b)}
+.synth-chip:hover{border-color:var(--navy);transform:translateY(-1px)}
+.synth-chip.sel{border-color:var(--gold);background:var(--gold-pale);font-weight:600}
+.synth-chip.placed{opacity:.35;pointer-events:none}
+.synth-zone{background:var(--white);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;min-height:80px;border:2px dashed var(--gray-light);transition:all .2s;cursor:pointer}
+.synth-zone:hover{border-color:var(--gold);background:#FFFBF0}
+.synth-zone.filled{border-style:solid;border-color:var(--green)}
+.zone-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:8px}
+.zone-items{display:flex;flex-wrap:wrap;gap:8px;min-height:30px}
+.placed-chip{background:var(--gold-pale);border:2px solid var(--gold);border-radius:6px;padding:6px 12px;font-size:.78rem;color:var(--navy);cursor:pointer}
+.placed-chip:hover{background:var(--red-light);border-color:var(--red)}
+.synth-acts{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.bank-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:6px}
+
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;background:rgba(11,22,40,.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.overlay.hidden{display:none}
+.ov-box{background:var(--white);border-radius:var(--rl);padding:2rem;max-width:480px;width:100%;text-align:center;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);color:var(--navy)}
+@keyframes popIn{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.ov-title{font-family:var(--font-d);font-size:1.4rem;font-weight:700;color:var(--navy);margin-bottom:.75rem}
+.ov-body{font-size:.9rem;color:#5A6070;line-height:1.7;margin-bottom:1.25rem}
+.fb-icon{font-size:3rem;margin-bottom:.5rem}
+.badge-box{border-top:5px solid var(--gold)}
+.badge-ic{font-size:4rem;margin-bottom:.5rem}
+.badge-nm{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:1.25rem}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .home-cols{grid-template-columns:1fr;gap:2rem}
+  .home-right{display:none}
+  .cases-grid{grid-template-columns:1fr;padding:1rem}
+  .game-header{padding:.5rem 1rem;gap:.5rem}
+  .game-content{padding:1rem}
+  .game-nav{padding:.75rem 1rem}
+  .syllog-row{grid-template-columns:1fr}
+  .vs-item{grid-template-columns:130px 1fr 40px}
+  .doc-grid{grid-template-columns:1fr}
+  .choices-grid{grid-template-columns:1fr}
+}
+.fade-in{animation:fi .4s ease}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="home-bg">
+    <div class="home-cols">
+      <div>
+        <div class="badge-firm">Cabinet Leclerc &amp; Associés — STMG Terminale</div>
+        <h1 class="game-title">DROIT<br/>&amp;<br/>JUSTICE</h1>
+        <p class="game-sub">Serious Game · Économie-Droit · Terminale STMG</p>
+        <p class="game-desc">Tu incarnes un avocat junior. Trois dossiers t'attendent. Analyse, qualifie, argumente — sans jamais rédiger.</p>
+        <button class="btn-p" onclick="goToMap()">Prendre en charge les dossiers →</button>
+        <div class="save-info" id="save-info"></div>
+      </div>
+      <div class="home-right">
+        <span class="scales-big">⚖️</span>
+        <div class="theme-chips">
+          <div class="theme-chip">📄 Thème 5 — Le Contrat</div>
+          <div class="theme-chip">⚠️ Thème 6 — La Responsabilité</div>
+          <div class="theme-chip">💼 Thème 7 — Le Travail Salarié</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div id="screen-map" class="screen">
+  <div class="map-header">
+    <button class="btn-back" onclick="goTo('home')">← Accueil</button>
+    <div class="map-title">⚖️ Vos dossiers</div>
+    <div class="xp-mini">
+      <span id="map-xp">XP : 0</span>
+      <span class="rep-badge" id="map-rep">🎓 Stagiaire</span>
+    </div>
+  </div>
+  <div class="cases-grid">
+    <div class="case-card" id="card-1" onclick="startCase(1)">
+      <div class="case-num">Dossier 01</div>
+      <div class="case-theme">📄 Thème 5 — Le Contrat</div>
+      <h2 class="case-title">L'achat qui tourne mal</h2>
+      <p class="case-desc">Mme Dupont commande un smartphone en ligne. Le vendeur n'a jamais livré. Qui a tort ? Que dit le droit ?</p>
+      <div class="case-meta">
+        <span class="diff d1">⬤ Niveau 1</span>
+        <span class="skills-tag">Formation · Inexécution · Syllogisme</span>
+      </div>
+      <div class="case-prog"><div class="prog-bar" id="pb-1"></div></div>
+      <div class="case-score-lbl" id="cs-1"></div>
+    </div>
+    <div class="case-card locked" id="card-2" onclick="startCase(2)">
+      <div class="case-num">Dossier 02</div>
+      <div class="case-theme">⚠️ Thème 6 — La Responsabilité</div>
+      <h2 class="case-title">L'accident de la livraison</h2>
+      <p class="case-desc">Un livreur renverse un piéton. Responsabilité civile ou pénale ? Contractuelle ou extracontractuelle ?</p>
+      <div class="case-meta">
+        <span class="diff d2">⬤ Niveau 2</span>
+        <span class="skills-tag">Fait générateur · Dommage · Fait d'autrui</span>
+      </div>
+      <div class="case-prog"><div class="prog-bar" id="pb-2"></div></div>
+      <div class="case-score-lbl" id="cs-2"></div>
+      <div class="lock-ov" id="lock-2">🔒 Terminez le dossier 01</div>
+    </div>
+    <div class="case-card locked" id="card-3" onclick="startCase(3)">
+      <div class="case-num">Dossier 03</div>
+      <div class="case-theme">💼 Thème 7 — Le Travail Salarié</div>
+      <h2 class="case-title">Le licenciement contesté</h2>
+      <p class="case-desc">M. Benali est licencié après 6 ans. La procédure a-t-elle été respectée ? Le motif est-il valable ?</p>
+      <div class="case-meta">
+        <span class="diff d3">⬤ Niveau 3</span>
+        <span class="skills-tag">CDI · Rupture · Cause réelle et sérieuse</span>
+      </div>
+      <div class="case-prog"><div class="prog-bar" id="pb-3"></div></div>
+      <div class="case-score-lbl" id="cs-3"></div>
+      <div class="lock-ov" id="lock-3">🔒 Terminez le dossier 02</div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="screen-game" class="screen">
+  <div class="game-header">
+    <button class="btn-back" onclick="quitCase()">← Dossiers</button>
+    <div class="gh-center">
+      <div class="gh-title" id="gh-title"></div>
+      <div class="steps-dots" id="steps-dots"></div>
+    </div>
+    <div class="gh-right">
+      <div class="score-live">Score : <span id="live-score">0</span></div>
+      <button class="btn-hint" onclick="useHint()">💡 Indice (<span id="hints-left">3</span>)</button>
+    </div>
+  </div>
+  <div class="game-content" id="game-content"></div>
+  <div class="game-nav">
+    <button class="btn-s" id="btn-prev" onclick="prevStep()">← Précédent</button>
+    <div class="step-lbl" id="step-lbl"></div>
+    <button class="btn-p" id="btn-next" onclick="nextStep()" disabled>Valider →</button>
+  </div>
+</div>
+
+<!-- VERDICT -->
+<div id="screen-verdict" class="screen">
+  <div class="verdict-box">
+    <div class="gavel">🔨</div>
+    <h2 class="verdict-title" id="vt"></h2>
+    <p class="verdict-text" id="vtx"></p>
+    <div class="vscores">
+      <div class="vs-item"><div class="vs-lbl">Sélection des preuves</div><div class="vs-wrap"><div class="vs-bar" id="vb1"></div></div><div class="vs-val" id="vv1"></div></div>
+      <div class="vs-item"><div class="vs-lbl">Qualification juridique</div><div class="vs-wrap"><div class="vs-bar" id="vb2"></div></div><div class="vs-val" id="vv2"></div></div>
+      <div class="vs-item"><div class="vs-lbl">Syllogisme juridique</div><div class="vs-wrap"><div class="vs-bar" id="vb3"></div></div><div class="vs-val" id="vv3"></div></div>
+      <div class="vs-item"><div class="vs-lbl">Contre-argumentation</div><div class="vs-wrap"><div class="vs-bar" id="vb4"></div></div><div class="vs-val" id="vv4"></div></div>
+    </div>
+    <div class="verdict-tips" id="v-tips"></div>
+    <div class="verdict-xp" id="v-xp"></div>
+    <div class="verdict-acts">
+      <button class="btn-s" onclick="goToMap()">← Retour aux dossiers</button>
+      <button class="btn-p" onclick="goToSynthese()">Synthèse finale →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SYNTHESE -->
+<div id="screen-synthese" class="screen">
+  <div class="synth-wrap">
+    <div class="synth-hdr">
+      <h2>📋 Synthèse juridique</h2>
+      <p class="synth-sub">Sélectionne un élément dans la banque, puis clique sur la zone où le placer. Règle d'or : zéro rédaction.</p>
+    </div>
+    <div id="synth-content"></div>
+    <div class="synth-acts">
+      <button class="btn-s" onclick="goTo('verdict')">← Retour verdict</button>
+      <button class="btn-p" onclick="validateSynthese()">Valider ma synthèse →</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY HINT -->
+<div class="overlay hidden" id="ov-hint">
+  <div class="ov-box">
+    <div style="font-size:2rem;margin-bottom:.5rem">💡</div>
+    <div class="ov-title">Indice du mentor</div>
+    <div class="ov-body" id="hint-txt"></div>
+    <button class="btn-p" onclick="closeOverlay('ov-hint')">Compris ✓</button>
+  </div>
+</div>
+
+<!-- OVERLAY FEEDBACK -->
+<div class="overlay hidden" id="ov-fb">
+  <div class="ov-box">
+    <div class="fb-icon" id="fb-ic"></div>
+    <div class="ov-title" id="fb-title"></div>
+    <div class="ov-body" id="fb-txt"></div>
+    <button class="btn-p" onclick="closeFeedback()">Continuer →</button>
+  </div>
+</div>
+
+<!-- OVERLAY BADGE -->
+<div class="overlay hidden" id="ov-badge">
+  <div class="ov-box badge-box">
+    <div class="badge-ic" id="badge-ic"></div>
+    <div class="ov-title">Nouveau badge !</div>
+    <div class="badge-nm" id="badge-nm"></div>
+    <button class="btn-p" onclick="closeOverlay('ov-badge')">Super ! 🎉</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DONNÉES DES AFFAIRES — Thèmes 5, 6, 7 programme STMG
+   ============================================================ */
+const CASES = {
+  1:{
+    title:"L'achat qui tourne mal",theme:"Thème 5 — Le Contrat",client:"Mme Dupont",
+    steps:[
+      {id:"docs",title:"Découverte du dossier",icon:"📁",
+       instruction:"Lis les pièces du dossier. <strong>Sélectionne les 3 documents</strong> qui prouvent la situation juridique de Mme Dupont.",
+       type:"docs",min:3,max:3,
+       docs:[
+         {id:"d1",type:"Email reçu",title:"Confirmation de commande",body:"« Merci pour votre commande #TC-7841. Paiement de 650 € accepté. Livraison sous 5 jours. »",key:true},
+         {id:"d2",type:"Relevé bancaire",title:"Débit de 650 €",body:"Débit effectif le 14/03 au profit de TechFlash SAS. Ref : TC-7841.",key:true},
+         {id:"d3",type:"Email vendeur",title:"Réponse de TechFlash",body:"« Nous n'avons aucune trace de votre commande. Aucun contrat n'a été formé entre nous. »",key:true},
+         {id:"d4",type:"Photo produit",title:"Smartphone convoité",body:"Photo du modèle XPhone Pro 256Go, coloris bleu nuit.",key:false},
+         {id:"d5",type:"Publicité",title:"Bannière promotionnelle",body:"« Vente flash TechFlash — 48h seulement ! Prix cassés ! »",key:false},
+       ],
+       correct:["d1","d2","d3"],
+       hints:["Un contrat se forme par l'offre + l'acceptation. Cherche ces deux éléments.","Le paiement et l'email de confirmation : que prouvent-ils juridiquement ?"]},
+
+      {id:"quali",title:"Qualification juridique",icon:"⚖️",
+       instruction:"Identifie le cadre juridique de la situation. <strong>Deux questions à répondre.</strong>",
+       type:"quali",
+       q1:"Comment qualifie-t-on ce contrat ?",
+       c1:[
+         {id:"c1a",lbl:"Contrat de travail",det:"Lien de subordination employeur-salarié.",ok:false},
+         {id:"c1b",lbl:"Contrat de vente à distance",det:"Accord synallagmatique entre professionnel et consommateur, conclu en ligne.",ok:true},
+         {id:"c1c",lbl:"Contrat de franchise",det:"Partenariat commercial entre franchiseur et franchisé.",ok:false},
+         {id:"c1d",lbl:"Contrat de société",det:"Association pour une activité économique commune.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! C'est un contrat de vente à distance. Mme Dupont est consommatrice, TechFlash est professionnelle. Le Code de la consommation s'applique.",
+       fb1ko:"❌ Ce n'est pas la bonne qualification. Un contrat de vente est l'accord par lequel une partie s'oblige à livrer une chose et l'autre à la payer. La vente en ligne est conclue à distance entre un professionnel et un consommateur.",
+       q2:"Ce contrat a-t-il été valablement formé ?",
+       c2:[
+         {id:"c2a",lbl:"Oui — l'email + le paiement prouvent l'échange des consentements",det:"Offre (mise en vente) + acceptation (clic + paiement) = contrat formé.",ok:true},
+         {id:"c2b",lbl:"Non — sans signature papier, pas de contrat valide",det:"La loi exigerait obligatoirement un écrit signé.",ok:false},
+         {id:"c2c",lbl:"Non — le vendeur n'a pas livré donc n'a pas accepté",det:"La livraison est une obligation, pas une condition de formation.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! Le contrat est formé dès l'échange des consentements (principe du consensualisme). L'email de confirmation + le débit bancaire en sont la preuve.",
+       fb2ko:"❌ Rappel : en droit français, le principe est le consensualisme — l'accord de volontés suffit à former un contrat. Le papier n'est pas obligatoire.",
+       hints:["Y a-t-il une offre ? Une acceptation ? Ces deux éléments suffisent à former un contrat.","L'email de confirmation de commande vaut acceptation de l'offre par les deux parties."]},
+
+      {id:"syllog",title:"Syllogisme juridique",icon:"🏗️",
+       instruction:"Construis ton raisonnement en <strong>3 étapes</strong>. Sélectionne le bon élément pour chaque partie.",
+       type:"syllog",
+       rows:[
+         {key:"maj",lbl:"MAJEURE",sub:"La règle de droit applicable",cls:"maj",
+          chips:[
+            {id:"m1",txt:"Art. 1101 C. civ. : Le contrat est un accord de volontés destiné à créer des obligations.",ok:true},
+            {id:"m2",txt:"Art. L1232-2 C. trav. : Convocation obligatoire à entretien préalable avant licenciement.",ok:false},
+            {id:"m3",txt:"Art. 1240 C. civ. : Tout fait causant dommage oblige à réparation.",ok:false},
+          ]},
+         {key:"min",lbl:"MINEURE",sub:"Application aux faits",cls:"min",
+          chips:[
+            {id:"mi1",txt:"TechFlash a confirmé la commande par email et débité 650 € : accord de volontés formé.",ok:true},
+            {id:"mi2",txt:"Lucas roulait à 60 km/h en zone 30 lors d'une livraison.",ok:false},
+            {id:"mi3",txt:"BureauMax a licencié M. Benali sans entretien préalable.",ok:false},
+          ]},
+         {key:"conc",lbl:"CONCLUSION",sub:"La solution juridique",cls:"conc",
+          chips:[
+            {id:"co1",txt:"TechFlash est tenue de livrer ou de rembourser 650 € : inexécution de son obligation contractuelle.",ok:true},
+            {id:"co2",txt:"Mme Dupont doit indemniser TechFlash pour ses frais de traitement.",ok:false},
+            {id:"co3",txt:"Le juge peut prononcer la nullité absolue du contrat d'office.",ok:false},
+          ]},
+       ],
+       hints:["La majeure = la règle générale. Ici on parle de contrat → art. 1101 C. civ.","La mineure = les faits concrets de cette affaire. Qui a fait quoi ?"]},
+
+      {id:"contre",title:"Contre-argumentation",icon:"⚔️",
+       instruction:"L'avocat adverse soulève des objections. <strong>Choisis la meilleure réponse juridique</strong> pour défendre Mme Dupont.",
+       type:"contre",jugeStart:40,
+       objections:[
+         {author:"Me Fontaine — Avocat de TechFlash",
+          txt:"« Une erreur de notre serveur informatique a empêché l'enregistrement de la commande. Il n'y a pas eu d'accord de volontés côté vendeur. Ce n'est pas une inexécution, c'est un bug. »",
+          responses:[
+            {id:"r1",txt:"L'email de confirmation automatique constitue l'acceptation de TechFlash. Un bug interne ne peut pas annuler un accord de volontés déjà formé et prouvé.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client est très déçu et a besoin de ce téléphone.",ok:false,pts:0},
+            {id:"r3",txt:"TechFlash devrait mieux gérer son système informatique.",ok:false,pts:5},
+          ]},
+         {author:"Me Fontaine — Avocat de TechFlash",
+          txt:"« Mme Dupont n'a pas adressé de mise en demeure à TechFlash avant d'agir. La procédure n'est donc pas respectée. »",
+          responses:[
+            {id:"r4",txt:"L'email de réclamation du 28/03 adressé à TechFlash vaut mise en demeure au sens de l'art. 1344 C. civ. La condition est remplie.",ok:true,pts:20},
+            {id:"r5",txt:"La mise en demeure peut être faite maintenant, avant le jugement.",ok:false,pts:10},
+            {id:"r6",txt:"La mise en demeure est une formalité inutile dans les ventes en ligne.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["Réponds toujours en citant un texte de loi ou une preuve concrète du dossier.","L'argument le plus fort est celui qui répond sur le fond juridique, pas sur les émotions."]},
+    ],
+    synthese:{
+      title:"Synthèse — Inexécution du contrat de vente",
+      zones:[
+        {id:"z1",lbl:"Qualification de la situation"},
+        {id:"z2",lbl:"Règle de droit applicable (Majeure)"},
+        {id:"z3",lbl:"Faits de l'espèce (Mineure)"},
+        {id:"z4",lbl:"Solution juridique (Conclusion)"},
+      ],
+      chips:[
+        {id:"ch1",txt:"Contrat de vente à distance valablement formé",z:"z1"},
+        {id:"ch2",txt:"Mme Dupont = consommatrice / TechFlash = professionnel",z:"z1"},
+        {id:"ch3",txt:"Art. 1101 C. civ. : accord de volontés créant des obligations",z:"z2"},
+        {id:"ch4",txt:"Art. 1217 C. civ. : inexécution → exécution forcée ou résolution",z:"z2"},
+        {id:"ch5",txt:"Email de confirmation + paiement = consentements échangés",z:"z3"},
+        {id:"ch6",txt:"TechFlash n'a pas livré malgré son obligation contractuelle",z:"z3"},
+        {id:"ch7",txt:"TechFlash doit livrer ou rembourser 650 € à Mme Dupont",z:"z4"},
+        {id:"ch8",txt:"Résolution du contrat + dommages et intérêts possibles",z:"z4"},
+        {id:"ch9",txt:"Lien de subordination juridique",z:null},
+        {id:"ch10",txt:"Fracture du genou — préjudice corporel",z:null},
+      ]
+    }
+  },
+
+  2:{
+    title:"L'accident de la livraison",theme:"Thème 6 — La Responsabilité",client:"M. Kader Aït",
+    steps:[
+      {id:"docs",title:"Découverte du dossier",icon:"📁",
+       instruction:"Analyse le dossier. <strong>Sélectionne les 4 éléments</strong> qui permettront d'établir la responsabilité.",
+       type:"docs",min:4,max:4,
+       docs:[
+         {id:"d1",type:"PV de police",title:"Rapport d'accident",body:"Lucas : 60 km/h en zone 30. Distraction (GPS). Passage piéton signalisé. Passage au rouge contesté.",key:true},
+         {id:"d2",type:"Certificat médical",title:"Fracture du genou gauche",body:"Fracture condylienne. ITT : 21 jours. Rééducation 3 mois. Préjudice corporel certain.",key:true},
+         {id:"d3",type:"Contrat de travail",title:"CDI Lucas / FastLiv",body:"CDI livreur chez FastLiv SAS. Scooter fourni par l'entreprise. Livraisons en son nom.",key:true},
+         {id:"d4",type:"Témoignage",title:"Témoin oculaire",body:"« Le piéton était bien sur le passage clouté. Le scooter n'a pas freiné avant l'impact. »",key:true},
+         {id:"d5",type:"Facture",title:"Achat du scooter",body:"Facture d'achat : scooter Yamaha EL-447-XZ acquis par FastLiv le 12/01.",key:false},
+         {id:"d6",type:"Pub",title:"Slogan FastLiv",body:"« Livraison express garantie en 20 minutes — Commandez maintenant ! »",key:false},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Les 3 conditions de la responsabilité civile : faute + dommage + lien de causalité.","Le contrat de travail est essentiel : il établit le lien entre Lucas et FastLiv."]},
+
+      {id:"quali",title:"Qualifier la responsabilité",icon:"⚖️",
+       instruction:"Identifie le régime de responsabilité applicable.",
+       type:"quali",
+       q1:"Quel type de responsabilité civile peut-on engager ?",
+       c1:[
+         {id:"c1a",lbl:"Responsabilité contractuelle",det:"Il existait un contrat entre M. Aït et le livreur.",ok:false},
+         {id:"c1b",lbl:"Responsabilité civile extracontractuelle",det:"Pas de contrat entre le piéton et le livreur. Régime du fait personnel / des choses.",ok:true},
+         {id:"c1c",lbl:"Responsabilité pénale uniquement",det:"Seule la sanction pénale est envisageable ici.",ok:false},
+         {id:"c1d",lbl:"Aucune responsabilité civile possible",det:"L'accident était inévitable, force majeure.",ok:false},
+       ],
+       fb1ok:"✅ Exact ! Il n'y a aucun contrat entre Lucas et M. Aït. On applique la responsabilité civile extracontractuelle (art. 1240 C. civ. : fait personnel).",
+       fb1ko:"❌ La responsabilité contractuelle suppose un contrat entre les parties. M. Aït et Lucas ne sont liés par aucun contrat — c'est donc bien la responsabilité extracontractuelle.",
+       q2:"Peut-on également engager la responsabilité de FastLiv (l'employeur) ?",
+       c2:[
+         {id:"c2a",lbl:"Oui — responsabilité du fait d'autrui (art. 1242 C. civ.)",det:"L'employeur (commettant) répond des actes de son salarié (préposé) dans ses fonctions.",ok:true},
+         {id:"c2b",lbl:"Non — seul Lucas est responsable de ses propres actes",det:"Chacun répond uniquement de ce qu'il fait personnellement.",ok:false},
+         {id:"c2c",lbl:"Oui — mais seulement si FastLiv était présente sur les lieux",det:"L'employeur ne répond que s'il a directement participé à l'accident.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! FastLiv est responsable du fait de son salarié. Lucas effectuait une livraison pour FastLiv : il agissait dans l'exercice de ses fonctions.",
+       fb2ko:"❌ La responsabilité du fait d'autrui (art. 1242 C. civ.) permet d'engager la responsabilité de l'employeur pour les actes de son salarié commis dans l'exercice de ses fonctions.",
+       hints:["Y a-t-il un contrat entre le piéton et le livreur ? Non → régime extracontractuel.","Qui répond des actes d'un salarié commis pendant son travail ?"]},
+
+      {id:"syllog",title:"Syllogisme juridique",icon:"🏗️",
+       instruction:"Construis le raisonnement pour engager la responsabilité de <strong>FastLiv</strong>.",
+       type:"syllog",
+       rows:[
+         {key:"maj",lbl:"MAJEURE",sub:"La règle de droit applicable",cls:"maj",
+          chips:[
+            {id:"m1",txt:"Art. 1242 al. 5 C. civ. : les commettants sont responsables des dommages causés par leurs préposés dans l'exercice de leurs fonctions.",ok:true},
+            {id:"m2",txt:"Art. 1101 C. civ. : le contrat est un accord de volontés.",ok:false},
+            {id:"m3",txt:"Art. L1232-2 C. trav. : entretien préalable obligatoire avant licenciement.",ok:false},
+          ]},
+         {key:"min",lbl:"MINEURE",sub:"Application aux faits",cls:"min",
+          chips:[
+            {id:"mi1",txt:"Lucas, salarié-préposé de FastLiv, a renversé M. Aït lors d'une livraison (dans l'exercice de ses fonctions).",ok:true},
+            {id:"mi2",txt:"Mme Dupont n'a pas reçu le smartphone commandé sur TechFlash.",ok:false},
+            {id:"mi3",txt:"BureauMax n'a pas respecté la procédure de licenciement.",ok:false},
+          ]},
+         {key:"conc",lbl:"CONCLUSION",sub:"La solution juridique",cls:"conc",
+          chips:[
+            {id:"co1",txt:"FastLiv (commettant) est responsable du dommage subi par M. Aït et doit l'indemniser.",ok:true},
+            {id:"co2",txt:"M. Aït doit prouver une faute contractuelle de FastLiv.",ok:false},
+            {id:"co3",txt:"Lucas seul doit rembourser les frais médicaux de M. Aït.",ok:false},
+          ]},
+       ],
+       hints:["L'employeur répond de son salarié : c'est la responsabilité du fait d'autrui, art. 1242 C. civ.","La conclusion identifie QUI paie QUOI à QUI."]},
+
+      {id:"contre",title:"Contre-argumentation",icon:"⚔️",
+       instruction:"FastLiv contre-attaque. <strong>Défends M. Aït</strong> avec les meilleurs arguments juridiques.",
+       type:"contre",jugeStart:35,
+       objections:[
+         {author:"Me Girard — Avocat de FastLiv",
+          txt:"« M. Aït aurait dû regarder avant de traverser. Sa propre imprudence est la cause de l'accident. FastLiv invoque la faute de la victime comme cause d'exonération partielle. »",
+          responses:[
+            {id:"r1",txt:"M. Aït traversait sur un passage piéton signalisé — le témoin le confirme. La faute de la victime n'exonère l'auteur que si elle est exclusive, ce qui n'est pas établi ici.",ok:true,pts:25},
+            {id:"r2",txt:"Mon client est une victime innocente qui souffre beaucoup.",ok:false,pts:0},
+            {id:"r3",txt:"Lucas roulait deux fois trop vite — sa faute est évidente.",ok:false,pts:5},
+          ]},
+         {author:"Me Girard — Avocat de FastLiv",
+          txt:"« Lucas agissait en dehors de ses horaires de travail contractuels au moment de l'accident. Il ne peut donc pas engager la responsabilité de FastLiv. »",
+          responses:[
+            {id:"r4",txt:"Lucas effectuait une livraison commandée par FastLiv avec le scooter de l'entreprise. Il agissait dans l'exercice de ses fonctions, indépendamment de l'heure.",ok:true,pts:20},
+            {id:"r5",txt:"FastLiv devrait mieux contrôler les horaires de ses livreurs.",ok:false,pts:5},
+            {id:"r6",txt:"Mon client ne peut pas vérifier les horaires de travail du livreur.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La faute de la victime n'exonère que si elle est la cause EXCLUSIVE du dommage.","Pour la responsabilité du fait d'autrui, ce qui compte : le salarié agissait-il dans ses fonctions ?"]},
+    ],
+    synthese:{
+      title:"Synthèse — Responsabilité civile extracontractuelle",
+      zones:[
+        {id:"z1",lbl:"Nature des préjudices subis"},
+        {id:"z2",lbl:"Régime de responsabilité applicable"},
+        {id:"z3",lbl:"Les 3 conditions réunies"},
+        {id:"z4",lbl:"Responsable et conséquence"},
+      ],
+      chips:[
+        {id:"ch1",txt:"Préjudice corporel (fracture du genou — ITT 21 jours)",z:"z1"},
+        {id:"ch2",txt:"Préjudice matériel (perte de salaire 3 semaines)",z:"z1"},
+        {id:"ch3",txt:"Art. 1240 C. civ. : responsabilité du fait personnel",z:"z2"},
+        {id:"ch4",txt:"Art. 1242 C. civ. : responsabilité du fait d'autrui (commettant/préposé)",z:"z2"},
+        {id:"ch5",txt:"Faute : excès de vitesse + distraction au volant",z:"z3"},
+        {id:"ch6",txt:"Lien de causalité direct entre la faute et la fracture",z:"z3"},
+        {id:"ch7",txt:"FastLiv responsable en tant que commettant de Lucas",z:"z4"},
+        {id:"ch8",txt:"FastLiv doit indemniser intégralement le préjudice de M. Aït",z:"z4"},
+        {id:"ch9",txt:"Clause de non-concurrence du contrat de travail",z:null},
+        {id:"ch10",txt:"Rupture conventionnelle individuelle",z:null},
+      ]
+    }
+  },
+
+  3:{
+    title:"Le licenciement contesté",theme:"Thème 7 — Le Travail Salarié",client:"M. Rachid Benali",
+    steps:[
+      {id:"docs",title:"Découverte du dossier",icon:"📁",
+       instruction:"Analyse le dossier de M. Benali. <strong>Sélectionne les 4 pièces essentielles</strong> pour contester le licenciement.",
+       type:"docs",min:4,max:4,
+       docs:[
+         {id:"d1",type:"Contrat de travail",title:"CDI — 6 ans d'ancienneté",body:"CDI signé en mars. Poste : Commercial senior. Clause d'objectifs : +10% CA annuel. Aucun avertissement à ce jour.",key:true},
+         {id:"d2",type:"Lettre recommandée",title:"Lettre de licenciement",body:"« Nous vous notifions votre licenciement pour insuffisance de résultats. » — Aucune date d'entretien préalable mentionnée.",key:true},
+         {id:"d3",type:"Email interne",title:"Message du manager (02/05)",body:"« Tes chiffres sont en baisse depuis 3 mois. On va devoir se séparer de toi. Désolé. »",key:true},
+         {id:"d4",type:"Rapport RH",title:"Absence d'entretien préalable",body:"Système RH BureauMax : aucun entretien préalable enregistré pour M. Benali. Aucune convocation émise.",key:true},
+         {id:"d5",type:"Bulletin de salaire",title:"Salaire mars — 2 850 €",body:"Salaire net mensuel : 2 850 €. Aucune retenue disciplinaire. Aucun avertissement joint.",key:false},
+         {id:"d6",type:"Photo",title:"Open space BureauMax",body:"Vue générale de l'open space commercial. Équipe de 12 commerciaux.",key:false},
+       ],
+       correct:["d1","d2","d3","d4"],
+       hints:["Un licenciement valide nécessite : une cause réelle et sérieuse ET une procédure respectée.","Cherche la preuve que la procédure légale n'a pas été suivie."]},
+
+      {id:"quali",title:"Qualifier le licenciement",icon:"⚖️",
+       instruction:"Analyse le licenciement de M. Benali.",
+       type:"quali",
+       q1:"À quelle catégorie appartient ce licenciement ?",
+       c1:[
+         {id:"c1a",lbl:"Licenciement pour motif économique",det:"Lié aux difficultés économiques de l'entreprise, mutations techno., réorganisation.",ok:false},
+         {id:"c1b",lbl:"Licenciement pour motif personnel",det:"Lié au comportement ou aux capacités du salarié lui-même.",ok:true},
+         {id:"c1c",lbl:"Rupture conventionnelle",det:"Accord amiable entre employeur et salarié pour mettre fin au contrat.",ok:false},
+         {id:"c1d",lbl:"Démission",det:"Départ à l'initiative du salarié.",ok:false},
+       ],
+       fb1ok:"✅ Correct ! L'insuffisance de résultats est une raison liée à la personne du salarié. C'est un licenciement pour motif personnel (art. L1232-1 C. trav.).",
+       fb1ko:"❌ Le licenciement pour motif économique vise les difficultés de l'entreprise. Ici, c'est la performance individuelle de M. Benali qui est mise en cause : c'est un motif personnel.",
+       q2:"Ce licenciement est-il valide ?",
+       c2:[
+         {id:"c2a",lbl:"Oui — les résultats insuffisants constituent une cause réelle et sérieuse",det:"L'insuffisance de résultats suffit à justifier le licenciement.",ok:false},
+         {id:"c2b",lbl:"Non — la procédure légale n'a pas été respectée (absence d'entretien préalable)",det:"Le Code du travail impose un entretien préalable obligatoire avant tout licenciement individuel.",ok:true},
+         {id:"c2c",lbl:"Oui — l'email du manager vaut convocation légale",det:"Un email informel remplace la convocation officielle à l'entretien préalable.",ok:false},
+       ],
+       fb2ok:"✅ Exact ! L'art. L1232-2 C. trav. impose une convocation écrite à un entretien préalable avant tout licenciement individuel. Son absence rend la procédure irrégulière.",
+       fb2ko:"❌ La procédure de licenciement est d'ordre public. L'entretien préalable est obligatoire (art. L1232-2 C. trav.) : sans lui, le licenciement est irrégulier, quelle que soit la validité du motif.",
+       hints:["L'insuffisance de résultats : motif lié à la personne ou à l'entreprise ?","Cherchez dans le dossier RH : y a-t-il eu une convocation à entretien préalable ?"]},
+
+      {id:"syllog",title:"Syllogisme juridique",icon:"🏗️",
+       instruction:"Construis le raisonnement pour <strong>contester le licenciement</strong> de M. Benali.",
+       type:"syllog",
+       rows:[
+         {key:"maj",lbl:"MAJEURE",sub:"La règle de droit applicable",cls:"maj",
+          chips:[
+            {id:"m1",txt:"Art. L1232-2 C. trav. : avant tout licenciement individuel, l'employeur doit convoquer le salarié à un entretien préalable par lettre recommandée.",ok:true},
+            {id:"m2",txt:"Art. 1101 C. civ. : le contrat est un accord de volontés.",ok:false},
+            {id:"m3",txt:"Art. 1240 C. civ. : tout fait causant dommage oblige à réparation.",ok:false},
+          ]},
+         {key:"min",lbl:"MINEURE",sub:"Application aux faits",cls:"min",
+          chips:[
+            {id:"mi1",txt:"BureauMax a licencié M. Benali sans aucune convocation ni entretien préalable, comme le confirme le rapport RH.",ok:true},
+            {id:"mi2",txt:"Mme Dupont n'a pas reçu son smartphone commandé en ligne.",ok:false},
+            {id:"mi3",txt:"Lucas a renversé M. Aït sur un passage piéton.",ok:false},
+          ]},
+         {key:"conc",lbl:"CONCLUSION",sub:"La solution juridique",cls:"conc",
+          chips:[
+            {id:"co1",txt:"Le licenciement de M. Benali est irrégulier : BureauMax lui doit des dommages et intérêts pour non-respect de la procédure.",ok:true},
+            {id:"co2",txt:"M. Benali doit restituer ses indemnités de licenciement.",ok:false},
+            {id:"co3",txt:"BureauMax peut recommencer la procédure depuis le début sans conséquence.",ok:false},
+          ]},
+       ],
+       hints:["Quelle est la règle impérative avant tout licenciement ? → Code du travail, art. L1232-2.","La conclusion identifie les conséquences pour l'employeur fautif."]},
+
+      {id:"contre",title:"Contre-argumentation",icon:"⚔️",
+       instruction:"BureauMax riposte. <strong>Défends M. Benali</strong> avec les arguments juridiques les plus solides.",
+       type:"contre",jugeStart:30,
+       objections:[
+         {author:"Me Leconte — Avocat de BureauMax",
+          txt:"« M. Benali n'a pas atteint ses objectifs depuis 3 mois consécutifs. Cette insuffisance de résultats constitue une cause réelle et sérieuse. La procédure n'est qu'une formalité administrative. »",
+          responses:[
+            {id:"r1",txt:"La procédure d'entretien préalable n'est pas une formalité : c'est un droit fondamental du salarié qui lui permet de présenter sa défense. Son absence rend le licenciement irrégulier indépendamment du motif.",ok:true,pts:25},
+            {id:"r2",txt:"3 mois de baisse de résultats, ce n'est pas suffisant pour licencier.",ok:false,pts:5},
+            {id:"r3",txt:"Mon client est un bon commercial depuis 6 ans, il mérite mieux.",ok:false,pts:0},
+          ]},
+         {author:"Me Leconte — Avocat de BureauMax",
+          txt:"« L'email du manager du 2 mai informant M. Benali de la situation vaut convocation à entretien préalable. La procédure a donc été respectée dans son esprit. »",
+          responses:[
+            {id:"r4",txt:"L'art. L1232-2 C. trav. exige une convocation par lettre recommandée précisant l'objet, la date, l'heure et le lieu de l'entretien, ainsi que la possibilité de se faire assister. Un simple email informel ne satisfait pas à ces exigences légales.",ok:true,pts:20},
+            {id:"r5",txt:"BureauMax aurait dû envoyer une lettre recommandée formelle.",ok:false,pts:10},
+            {id:"r6",txt:"Mon client affirme ne pas avoir reçu cet email.",ok:false,pts:0},
+          ]},
+       ],
+       hints:["La procédure de licenciement est d'ordre public : elle ne peut pas être écartée même si le motif est valable.","Quels sont les éléments obligatoires d'une convocation à entretien préalable selon le Code du travail ?"]},
+    ],
+    synthese:{
+      title:"Synthèse — Le licenciement irrégulier",
+      zones:[
+        {id:"z1",lbl:"Nature du contrat et du licenciement"},
+        {id:"z2",lbl:"Règle de droit violée (Majeure)"},
+        {id:"z3",lbl:"Manquement constaté (Mineure)"},
+        {id:"z4",lbl:"Conséquences pour l'employeur"},
+      ],
+      chips:[
+        {id:"ch1",txt:"CDI — licenciement pour motif personnel",z:"z1"},
+        {id:"ch2",txt:"6 ans d'ancienneté chez BureauMax SAS",z:"z1"},
+        {id:"ch3",txt:"Art. L1232-2 C. trav. : convocation obligatoire à entretien préalable",z:"z2"},
+        {id:"ch4",txt:"Art. L1235-2 C. trav. : irrégularité de procédure = dommages et intérêts",z:"z2"},
+        {id:"ch5",txt:"Aucun entretien préalable organisé par BureauMax",z:"z3"},
+        {id:"ch6",txt:"Lettre de licenciement envoyée directement, sans convocation",z:"z3"},
+        {id:"ch7",txt:"Licenciement irrégulier : BureauMax doit des D&I à M. Benali",z:"z4"},
+        {id:"ch8",txt:"Possible requalification en licenciement sans cause réelle et sérieuse",z:"z4"},
+        {id:"ch9",txt:"Art. 1240 C. civ. : responsabilité extracontractuelle",z:null},
+        {id:"ch10",txt:"Fracture du genou — préjudice corporel",z:null},
+      ]
+    }
+  }
+};
+
+/* ==================== STATE ==================== */
+let S={
+  cas:null,step:0,scores:{1:0,2:0,3:0},prog:{1:0,2:0,3:0},
+  done:{1:false,2:false,3:false},xp:0,hints:3,
+  stepPts:[0,0,0,0],juge:40,synAns:{},selChip:null,
+  selDocs:[],sylSel:{},objIdx:0,objPts:0,afterFb:null,
+  q1done:false,q2done:false
+};
+
+function save(){try{localStorage.setItem('dj2',JSON.stringify({scores:S.scores,prog:S.prog,done:S.done,xp:S.xp}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem('dj2')||'{}');if(d.scores){S.scores=d.scores;S.prog=d.prog;S.done=d.done;S.xp=d.xp||0}}catch(e){}}
+
+window.onload=()=>{load();updateSaveInfo();updateMap()};
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t=document.getElementById('screen-'+id);
+  if(t){t.classList.add('active');t.scrollTop=0}
+}
+function goToMap(){updateMap();goTo('map')}
+function goToSynthese(){buildSynthese();goTo('synthese')}
+
+function updateSaveInfo(){
+  const n=Object.values(S.done).filter(Boolean).length;
+  document.getElementById('save-info').textContent=n>0?`Progression sauvegardée — ${n}/3 dossier(s) traité(s)`:'';
+}
+
+function rep(xp){
+  if(xp>=300)return'⭐ Avocat Senior';
+  if(xp>=200)return'🌟 Avocat Confirmé';
+  if(xp>=100)return'📋 Avocat Junior';
+  return'🎓 Stagiaire';
+}
+
+function updateMap(){
+  document.getElementById('map-xp').textContent='XP : '+S.xp;
+  document.getElementById('map-rep').textContent=rep(S.xp);
+  [1,2,3].forEach(n=>{
+    const pb=document.getElementById('pb-'+n);
+    const cs=document.getElementById('cs-'+n);
+    const card=document.getElementById('card-'+n);
+    const lock=document.getElementById('lock-'+n);
+    if(pb)pb.style.width=S.prog[n]+'%';
+    if(cs&&S.scores[n]>0)cs.textContent='Score : '+S.scores[n]+'/100';
+    if(n===2&&S.done[1]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(n===3&&S.done[2]){card&&card.classList.remove('locked');lock&&(lock.style.display='none')}
+    if(S.done[n]){card&&card.classList.add('done')}
+  });
+}
+
+/* ==================== START ==================== */
+function startCase(n){
+  if(n===2&&!S.done[1])return;
+  if(n===3&&!S.done[2])return;
+  S.cas=n;S.step=0;S.hints=3;S.stepPts=[0,0,0,0];
+  S.selDocs=[];S.sylSel={};S.objIdx=0;S.objPts=0;S.q1done=false;S.q2done=false;
+  const cd=CASES[n];
+  S.juge=cd.steps.find(s=>s.type==='contre')?.jugeStart||40;
+  document.getElementById('gh-title').textContent=cd.title;
+  document.getElementById('hints-left').textContent=S.hints;
+  document.getElementById('live-score').textContent=0;
+  buildDots();renderStep();goTo('game');
+}
+function quitCase(){save();goToMap()}
+
+function buildDots(){
+  const steps=CASES[S.cas].steps;
+  const c=document.getElementById('steps-dots');c.innerHTML='';
+  steps.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='sdot'+(i===0?' active':'');d.id='dot'+i;c.appendChild(d);
+  });
+}
+function updateDots(){
+  CASES[S.cas].steps.forEach((_,i)=>{
+    const d=document.getElementById('dot'+i);if(!d)return;
+    d.className='sdot'+(i<S.step?' done':i===S.step?' active':'');
+  });
+}
+function updateLive(){
+  const t=S.stepPts.reduce((a,b)=>a+b,0);
+  document.getElementById('live-score').textContent=t;
+}
+
+/* ==================== RENDER ==================== */
+function renderStep(){
+  const step=CASES[S.cas].steps[S.step];
+  S.selDocs=[];S.sylSel={};S.q1done=false;S.q2done=false;
+  document.getElementById('btn-prev').style.visibility=S.step===0?'hidden':'visible';
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('step-lbl').textContent=step.icon+' '+step.title+' — Étape '+(S.step+1)+'/'+CASES[S.cas].steps.length;
+  updateDots();
+  const gc=document.getElementById('game-content');
+  gc.innerHTML='';gc.classList.add('fade-in');
+  setTimeout(()=>gc.classList.remove('fade-in'),400);
+  gc.appendChild(mkInstr(step));
+  if(step.type==='docs')renderDocs(step,gc);
+  else if(step.type==='quali')renderQuali(step,gc);
+  else if(step.type==='syllog')renderSyllog(step,gc);
+  else if(step.type==='contre')renderContre(step,gc);
+}
+
+function mkInstr(step){
+  const d=document.createElement('div');
+  d.className='step-instr';
+  d.innerHTML=`<span class="ic">${step.icon}</span><div><strong>${step.title}</strong><br/>${step.instruction}</div>`;
+  return d;
+}
+
+/* DOCS */
+function renderDocs(step,c){
+  const grid=document.createElement('div');grid.className='doc-grid';
+  step.docs.forEach(doc=>{
+    const el=document.createElement('div');
+    el.className='doc-card';el.id='doc-'+doc.id;
+    el.innerHTML=`<div class="doc-type">${doc.type}</div><div class="doc-title">${doc.title}</div><div class="doc-body">${doc.body}</div><div class="doc-check">✓</div>`;
+    el.onclick=()=>toggleDoc(doc.id,step);
+    grid.appendChild(el);
+  });
+  c.appendChild(grid);
+  const info=document.createElement('p');
+  info.style.cssText='font-size:.8rem;color:var(--gray);text-align:center;margin-top:.5rem';
+  info.textContent='Sélectionne exactement '+step.max+' document(s).';
+  c.appendChild(info);
+}
+function toggleDoc(id,step){
+  const el=document.getElementById('doc-'+id);
+  const idx=S.selDocs.indexOf(id);
+  if(idx===-1){
+    if(S.selDocs.length>=step.max){const f=S.selDocs.shift();document.getElementById('doc-'+f)?.classList.remove('selected')}
+    S.selDocs.push(id);el.classList.add('selected');
+  }else{S.selDocs.splice(idx,1);el.classList.remove('selected')}
+  document.getElementById('btn-next').disabled=S.selDocs.length!==step.min;
+}
+
+/* QUALI */
+function renderQuali(step,c){
+  S.q1done=false;S.q2done=false;
+  const q1=document.createElement('div');
+  q1.innerHTML=`<div style="font-weight:600;font-size:.95rem;color:var(--navy);margin-bottom:1rem">${step.q1}</div>`;
+  const g1=document.createElement('div');g1.className='choices-grid';g1.id='g1';
+  step.c1.forEach(ch=>{
+    const btn=document.createElement('button');btn.className='choice-btn';btn.id='ch1-'+ch.id;
+    btn.innerHTML=`<div class="choice-lbl">${ch.lbl}</div><div class="choice-det">${ch.det}</div>`;
+    btn.onclick=()=>pickQ1(ch,step,g1);g1.appendChild(btn);
+  });
+  q1.appendChild(g1);c.appendChild(q1);
+
+  const q2wrap=document.createElement('div');q2wrap.id='q2wrap';q2wrap.style.display='none';
+  q2wrap.innerHTML=`<div style="font-weight:600;font-size:.95rem;color:var(--navy);margin:1.5rem 0 1rem">${step.q2}</div>`;
+  const g2=document.createElement('div');g2.className='choices-grid';g2.id='g2';
+  step.c2.forEach(ch=>{
+    const btn=document.createElement('button');btn.className='choice-btn';btn.id='ch2-'+ch.id;
+    btn.innerHTML=`<div class="choice-lbl">${ch.lbl}</div><div class="choice-det">${ch.det}</div>`;
+    btn.onclick=()=>pickQ2(ch,step,g2);g2.appendChild(btn);
+  });
+  q2wrap.appendChild(g2);c.appendChild(q2wrap);
+}
+function pickQ1(ch,step,g){
+  g.querySelectorAll('.choice-btn').forEach(b=>{b.classList.add('disabled');b.onclick=null});
+  const btn=document.getElementById('ch1-'+ch.id);
+  if(ch.ok){btn.classList.add('correct');S.stepPts[S.step]+=15;updateLive();showFb('✅','Bonne qualification !',step.fb1ok)}
+  else{btn.classList.add('wrong');step.c1.forEach(c=>c.ok&&document.getElementById('ch1-'+c.id)?.classList.add('correct'));showFb('❌','Pas tout à fait…',step.fb1ko)}
+  S.q1done=true;
+  setTimeout(()=>{document.getElementById('q2wrap').style.display='block'},800);
+}
+function pickQ2(ch,step,g){
+  g.querySelectorAll('.choice-btn').forEach(b=>{b.classList.add('disabled');b.onclick=null});
+  const btn=document.getElementById('ch2-'+ch.id);
+  if(ch.ok){btn.classList.add('correct');S.stepPts[S.step]+=15;updateLive();showFb('✅','Exactement !',step.fb2ok)}
+  else{btn.classList.add('wrong');step.c2.forEach(c=>c.ok&&document.getElementById('ch2-'+c.id)?.classList.add('correct'));showFb('❌','Attention…',step.fb2ko)}
+  S.q2done=true;document.getElementById('btn-next').disabled=false;
+}
+
+/* SYLLOG */
+function renderSyllog(step,c){
+  S.sylSel={};
+  const grid=document.createElement('div');grid.className='syllog-grid';
+  step.rows.forEach(row=>{
+    const r=document.createElement('div');r.className='syllog-row';
+    const lbl=document.createElement('div');lbl.className='syllog-lbl '+row.cls;
+    lbl.innerHTML=`${row.lbl}<small>${row.sub}</small>`;
+    const chips=document.createElement('div');chips.className='syllog-chips';chips.id='sr-'+row.key;
+    row.chips.forEach(ch=>{
+      const el=document.createElement('button');el.className='syllog-chip';el.id='sc-'+ch.id;
+      el.textContent=ch.txt;el.onclick=()=>pickSyllog(row.key,ch,row,step);
+      chips.appendChild(el);
+    });
+    r.appendChild(lbl);r.appendChild(chips);grid.appendChild(r);
+  });
+  c.appendChild(grid);
+}
+function pickSyllog(key,ch,row,step){
+  document.querySelectorAll('#sr-'+key+' .syllog-chip').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('sc-'+ch.id).classList.add('selected');
+  S.sylSel[key]=ch;
+  if(Object.keys(S.sylSel).length===step.rows.length)document.getElementById('btn-next').disabled=false;
+}
+
+/* CONTRE */
+function renderContre(step,c){
+  S.objIdx=0;S.objPts=0;renderObj(step,c);
+}
+function renderObj(step,c){
+  c.innerHTML='';c.appendChild(mkInstr(step));
+  if(S.objIdx>=step.objections.length){
+    const d=document.createElement('div');d.className='step-instr';
+    d.innerHTML=`<span class="ic">🎉</span><div>Toutes les objections traitées ! Score : <strong style="color:var(--gold-light)">${S.objPts} pts</strong></div>`;
+    c.appendChild(d);document.getElementById('btn-next').disabled=false;return;
+  }
+  const obj=step.objections[S.objIdx];
+  const meter=document.createElement('div');meter.className='juge-meter';
+  meter.innerHTML=`<div class="juge-ic">👨‍⚖️</div><div class="juge-info"><div class="juge-lbl">Conviction du juge</div><div class="juge-wrap"><div class="juge-bar" id="jbar" style="width:${S.juge}%"></div></div></div><div class="juge-pct" id="jpct">${S.juge}%</div>`;
+  c.appendChild(meter);
+  const oc=document.createElement('div');oc.className='obj-card fade-in';
+  oc.innerHTML=`<div class="obj-ic">⚔️</div><div><div class="obj-author">${obj.author}</div><div class="obj-text">${obj.txt}</div></div>`;
+  c.appendChild(oc);
+  const lbl=document.createElement('div');lbl.style.cssText='font-weight:600;font-size:.9rem;color:var(--navy);margin:1rem 0 .75rem';lbl.textContent='Votre réponse :';c.appendChild(lbl);
+  const list=document.createElement('div');list.className='reponse-list';
+  obj.responses.forEach(r=>{
+    const btn=document.createElement('button');btn.className='choice-btn';
+    btn.innerHTML=`<div class="choice-lbl">${r.txt}</div>`;
+    btn.onclick=()=>pickReponse(r,step,c);list.appendChild(btn);
+  });
+  c.appendChild(list);
+}
+function pickReponse(r,step,c){
+  c.querySelectorAll('.choice-btn').forEach(b=>{b.classList.add('disabled');b.onclick=null});
+  if(r.ok){
+    S.juge=Math.min(100,S.juge+r.pts);S.objPts+=r.pts;S.stepPts[S.step]+=r.pts;updateLive();
+    updJuge();showFb('✅','Excellent argument !','Le juge est convaincu. Votre argumentation juridique est solide.');
+  }else{
+    S.juge=Math.max(0,S.juge-5);S.stepPts[S.step]+=r.pts;updateLive();
+    updJuge();showFb('⚠️','Argument insuffisant','Appuyez-vous toujours sur un texte de loi ou une preuve concrète du dossier.');
+  }
+  S.objIdx++;S.afterFb=()=>renderObj(step,c);
+}
+function updJuge(){
+  const b=document.getElementById('jbar'),p=document.getElementById('jpct');
+  if(b)b.style.width=S.juge+'%';if(p)p.textContent=S.juge+'%';
+}
+
+/* ==================== NAVIGATION ==================== */
+function nextStep(){
+  const step=CASES[S.cas].steps[S.step];
+  if(step.type==='docs')validateDocs(step);
+  if(step.type==='syllog')validateSyllog(step);
+  S.step++;
+  S.prog[S.cas]=Math.round((S.step/CASES[S.cas].steps.length)*100);
+  save();
+  if(S.step>=CASES[S.cas].steps.length){showVerdict();return}
+  renderStep();
+}
+function prevStep(){if(S.step>0){S.step--;renderStep()}}
+
+function validateDocs(step){
+  const ok=S.selDocs.filter(id=>step.correct.includes(id)).length;
+  S.stepPts[S.step]+=Math.round((ok/step.correct.length)*20);updateLive();
+}
+function validateSyllog(step){
+  let pts=0;
+  step.rows.forEach(row=>{const s=S.sylSel[row.key];if(s?.ok)pts+=10});
+  S.stepPts[S.step]+=pts;updateLive();
+  step.rows.forEach(row=>{
+    const s=S.sylSel[row.key];if(s){const el=document.getElementById('sc-'+s.id);if(el)el.classList.add(s.ok?'correct':'wrong')}
+  });
+}
+
+/* ==================== HINT ==================== */
+function useHint(){
+  if(S.hints<=0)return;
+  const step=CASES[S.cas].steps[S.step];
+  const hints=step.hints||["Relis attentivement l'instruction.","Cherche la notion clé dans ton cours."];
+  S.hints--;document.getElementById('hints-left').textContent=S.hints;
+  document.getElementById('hint-txt').textContent=hints[Math.floor(Math.random()*hints.length)];
+  document.getElementById('ov-hint').classList.remove('hidden');
+}
+function closeOverlay(id){document.getElementById(id).classList.add('hidden')}
+
+/* ==================== FEEDBACK ==================== */
+function showFb(ic,title,txt){
+  document.getElementById('fb-ic').textContent=ic;
+  document.getElementById('fb-title').textContent=title;
+  document.getElementById('fb-txt').textContent=txt;
+  document.getElementById('ov-fb').classList.remove('hidden');
+}
+function closeFeedback(){
+  document.getElementById('ov-fb').classList.add('hidden');
+  if(S.afterFb){const fn=S.afterFb;S.afterFb=null;fn()}
+}
+
+/* ==================== VERDICT ==================== */
+function showVerdict(){
+  const total=S.stepPts.reduce((a,b)=>a+b,0);
+  const score=Math.min(100,Math.round((total/90)*100));
+  S.scores[S.cas]=score;S.done[S.cas]=true;
+  const xp=Math.round(score*.8);S.xp+=xp;save();
+  let title,txt;
+  if(score>=80){title='🏆 Victoire ! Dossier maîtrisé';txt=`Votre raisonnement est solide. Le juge décide en faveur de ${CASES[S.cas].client}. Vous maîtrisez les notions du ${CASES[S.cas].theme}.`}
+  else if(score>=50){title='⚖️ Résultat partiel';txt='Certains éléments sont bien identifiés. Renforcez votre argumentation en vous appuyant davantage sur les textes de loi.'}
+  else{title='📚 À retravailler';txt=`Votre raisonnement doit être affiné. Relisez votre cours sur le ${CASES[S.cas].theme} et retentez le dossier avec les indices.`}
+  document.getElementById('vt').textContent=title;
+  document.getElementById('vtx').textContent=txt;
+  document.getElementById('v-xp').textContent='+ '+xp+' XP — '+rep(S.xp);
+  const maxByStep=[20,30,30,45];
+  [1,2,3,4].forEach(i=>{
+    const pct=Math.min(100,Math.round(((S.stepPts[i-1]||0)/maxByStep[i-1])*100));
+    setTimeout(()=>{const b=document.getElementById('vb'+i);if(b)b.style.width=pct+'%'},300*i);
+    const v=document.getElementById('vv'+i);if(v)v.textContent=pct+'%';
+  });
+  const tips=[];
+  if(S.stepPts[0]<15)tips.push('• Sélectionner les preuves pertinentes : cherche les éléments qui prouvent les conditions juridiques.');
+  if(S.stepPts[1]<20)tips.push('• Qualification juridique : identifie d\'abord le type de situation (contrat, responsabilité, travail).');
+  if(S.stepPts[2]<20)tips.push('• Syllogisme : majeure (règle) → mineure (faits) → conclusion (solution).');
+  if(S.stepPts[3]<15)tips.push('• Contre-argumentation : cite toujours un article de loi ou une preuve du dossier.');
+  if(!tips.length)tips.push('• Excellent ! Tu maîtrises la méthode du raisonnement juridique.');
+  document.getElementById('v-tips').innerHTML='<strong style="color:var(--gold-light);display:block;margin-bottom:6px">💡 Conseils du mentor</strong>'+tips.join('<br>');
+  goTo('verdict');
+  if(score>=80){
+    const badges={1:{ic:'📜',nm:'Maître du Contrat'},2:{ic:'⚖️',nm:'Expert Responsabilité'},3:{ic:'🏛️',nm:'Avocat du Travail'}};
+    const b=badges[S.cas];if(b){setTimeout(()=>{document.getElementById('badge-ic').textContent=b.ic;document.getElementById('badge-nm').textContent=b.nm;document.getElementById('ov-badge').classList.remove('hidden')},1500)}
+  }
+  updateMap();
+}
+
+/* ==================== SYNTHESE ==================== */
+function buildSynthese(){
+  const syn=CASES[S.cas].synthese;
+  const c=document.getElementById('synth-content');c.innerHTML='';
+  const h=document.createElement('h3');h.style.cssText='font-family:var(--font-d);font-size:1.2rem;color:var(--navy);margin-bottom:1.25rem';h.textContent=syn.title;c.appendChild(h);
+  const bl=document.createElement('div');bl.className='bank-lbl';bl.textContent='Éléments disponibles — Sélectionne un élément puis clique sur la zone cible';c.appendChild(bl);
+  const bank=document.createElement('div');bank.className='synth-bank';bank.id='synth-bank';
+  S.synAns={};S.selChip=null;
+  const shuffled=[...syn.chips].sort(()=>Math.random()-.5);
+  shuffled.forEach(ch=>{
+    const el=document.createElement('div');el.className='synth-chip';el.id='synth-chip-'+ch.id;
+    el.textContent=ch.txt;el.dataset.cz=ch.z||'';
+    el.onclick=()=>selChipFn(ch.id);bank.appendChild(el);
+  });
+  c.appendChild(bank);
+  const zg=document.createElement('div');zg.style.cssText='display:grid;gap:1rem';
+  syn.zones.forEach(z=>{
+    const zEl=document.createElement('div');zEl.className='synth-zone';zEl.id='synth-z-'+z.id;
+    const lbl=document.createElement('div');lbl.className='zone-lbl';lbl.textContent=z.lbl;
+    const items=document.createElement('div');items.className='zone-items';items.id='zi-'+z.id;
+    zEl.appendChild(lbl);zEl.appendChild(items);
+    zEl.onclick=()=>dropToZone(z.id);zg.appendChild(zEl);
+  });
+  c.appendChild(zg);
+}
+function selChipFn(id){
+  document.querySelectorAll('.synth-chip').forEach(c=>c.classList.remove('sel'));
+  if(S.selChip===id){S.selChip=null;return}
+  const el=document.getElementById('synth-chip-'+id);
+  if(el&&!el.classList.contains('placed')){el.classList.add('sel');S.selChip=id}
+}
+function dropToZone(zid){
+  if(!S.selChip)return;
+  const chipEl=document.getElementById('synth-chip-'+S.selChip);
+  if(!chipEl||chipEl.classList.contains('placed'))return;
+  const items=document.getElementById('zi-'+zid);if(!items)return;
+  const badge=document.createElement('div');badge.className='placed-chip';
+  badge.textContent=chipEl.textContent;badge.title='Cliquer pour retirer';
+  const cid=S.selChip;
+  badge.onclick=(e)=>{e.stopPropagation();badge.remove();chipEl.classList.remove('placed');delete S.synAns[cid];const z=document.getElementById('synth-z-'+zid);if(items.children.length===0)z?.classList.remove('filled')};
+  items.appendChild(badge);chipEl.classList.add('placed');chipEl.classList.remove('sel');
+  S.synAns[cid]=zid;S.selChip=null;
+  document.getElementById('synth-z-'+zid)?.classList.add('filled');
+}
+function validateSynthese(){
+  const syn=CASES[S.cas].synthese;
+  const relevant=syn.chips.filter(c=>c.z!==null);
+  const ok=relevant.filter(c=>S.synAns[c.id]===c.z).length;
+  const pct=Math.round((ok/relevant.length)*100);
+  let msg;
+  if(pct===100)msg='🏆 Parfait ! Toutes les notions au bon endroit. Tu maîtrises le raisonnement juridique !';
+  else if(pct>=60)msg=`✅ Bien ! ${ok}/${relevant.length} éléments correctement placés. Relis les zones incorrectes avec ton cours.`;
+  else msg=`📚 ${ok}/${relevant.length} correctement placés. Reprends la méthode : règle de droit → faits → conclusion → sanction.`;
+  showFb(pct>=60?'✅':'📚','Synthèse : '+pct+'%',msg);
+  S.afterFb=()=>goToMap();
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeOverlay('ov-hint');closeFeedback();closeOverlay('ov-badge')}
+});
+</script>
+</body>
+</html>
