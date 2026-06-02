@@ -1,6 +1,6 @@
-# ⚖️ DROIT & JUSTICE — Serious Game STMG Terminale
+# ⚖️ DROIT & JUSTICE — STMG Terminale
 
-Serious game pédagogique en HTML/CSS/JavaScript vanilla, conçu pour les élèves de terminale STMG en économie-droit. Le joueur incarne un avocat junior qui traite des affaires juridiques progressives.
+Jeu pédagogique en HTML/CSS/JavaScript vanilla, conçu pour les élèves de terminale STMG en économie-droit. Le joueur incarne un avocat junior qui traite des affaires juridiques progressives.
 
 ---
 
@@ -81,15 +81,15 @@ Le jeu tient en **un seul fichier HTML** autonome, sans dépendance externe (hor
 ### Sur GitHub Pages
 
 ```bash
-# 1. Créer un dépôt GitHub (ex : stmg-serious-game)
-# 2. Uploader le fichier serious-game-stmg.html et le renommer index.html
+# 1. Créer un dépôt GitHub (ex : droit-et-justice)
+# 2. Uploader le fichier index.html
 # 3. Dans les paramètres du dépôt : Settings → Pages → Source : main branch / root
 # 4. Le jeu est accessible à : https://[username].github.io/[nom-du-depot]/
 ```
 
 ### En local (sans installation)
 
-Double-cliquer sur `serious-game-stmg.html` dans l'explorateur de fichiers — le jeu s'ouvre directement dans le navigateur.
+Double-cliquer sur `index.html` dans l'explorateur de fichiers — le jeu s'ouvre directement dans le navigateur.
 
 ### Sur un ENT ou Google Sites
 
@@ -145,7 +145,7 @@ Les variables CSS au sommet du fichier (`--navy`, `--gold`, `--green`, etc.) cen
 ## 📁 Structure du projet
 
 ```
-serious-game-stmg.html   ← fichier unique, tout-en-un
+index.html   ← fichier unique, tout-en-un
 README.md                ← ce fichier
 ```
 
