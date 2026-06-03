@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>DROIT & JUSTICE — STMG</title>
-<meta property="og:title" content="DROIT & JUSTICE — STMG">
-<meta property="og:url" content="https://kat-coder-tic.github.io/Droit-et-justice/">
+<title>DROIT & JUSTICE — Serious Game STMG</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -600,13 +598,14 @@ const CASES = {
         {id:"c10",txt:"Fracture du genou — préjudice corporel",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 5 : L\'inexécution du contrat de vente",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>contrat de vente à distance</strong> conclu entre Mme Dupont (consommatrice) et TechFlash SAS (professionnelle). Ce contrat a été <strong>valablement formé</strong> : l'email de confirmation vaut acceptation du vendeur ; le paiement de 650&nbsp;€ vaut acceptation de l'acheteur. L'accord de volontés est établi (art. 1109 C.&nbsp;civ.)."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1101 du Code civil, le contrat est un accord de volontés destiné à créer des obligations. L'article 1217 prévoit qu'en cas d'inexécution, le créancier peut obtenir l'exécution forcée ou la résolution du contrat."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Mme Dupont a passé commande et réglé 650&nbsp;€. L'email de confirmation et le relevé bancaire prouvent l'accord de volontés formé avec TechFlash. Or, TechFlash n'a pas livré le smartphone malgré son obligation contractuelle.<br/><br/><span class='con-highlight'>En conséquence,</span> TechFlash est tenue de livrer le smartphone ou de rembourser 650&nbsp;€. Mme Dupont peut également demander la résolution du contrat et des dommages et intérêts."}
     ]
+  }
   },
 
   2:{
@@ -728,13 +727,14 @@ const CASES = {
         {id:"c10",txt:"Rupture conventionnelle individuelle",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 6 : Responsabilité du fait d\'autrui",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il n'existe aucun contrat entre M.&nbsp;Aït et Lucas&nbsp;: on est en présence d'une <strong>responsabilité civile extracontractuelle</strong>. Lucas ayant agi dans le cadre de ses fonctions pour FastLiv SAS, on peut engager la responsabilité de FastLiv en qualité de <strong>commettant</strong> (art. 1242 al.&nbsp;5 C.&nbsp;civ.)."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1242 alinéa&nbsp;5 du Code civil, les commettants sont responsables des dommages causés par leurs préposés dans l'exercice des fonctions auxquelles ils les ont employés."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Lucas Moreau, salarié-préposé de FastLiv SAS, a renversé M.&nbsp;Aït lors d'une livraison dans l'exercice de ses fonctions. Sa faute (58&nbsp;km/h en zone 30, distraction) est établie par le PV de gendarmerie et le témoignage de Mme&nbsp;Leroy.<br/><br/><span class='con-highlight'>En conséquence,</span> FastLiv SAS est responsable des dommages subis par M.&nbsp;Aït et doit l'indemniser intégralement de ses préjudices corporels et matériels."}
     ]
+  }
   },
 
   3:{
@@ -856,7 +856,7 @@ const CASES = {
         {id:"c10",txt:"Fracture du genou — préjudice corporel",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 7 : Le licenciement irrégulier",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>licenciement pour motif personnel</strong> (insuffisance de résultats). Ce licenciement est <strong>irrégulier en la forme</strong>&nbsp;: aucune convocation à entretien préalable n'a été émise, en violation de l'art. L1232-2 C. trav."},
@@ -864,7 +864,8 @@ const CASES = {
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> BureauMax a notifié le licenciement de M.&nbsp;Benali par lettre du 05/05 sans qu'aucune convocation n'ait été émise (SIRH). L'email du DRH du 02/05 prouve que la décision était prise avant tout entretien.<br/><br/><span class='con-highlight'>En conséquence,</span> le licenciement est irrégulier. BureauMax doit verser des dommages et intérêts (art. L1235-2 C. trav.) et le licenciement peut être requalifié sans cause réelle et sérieuse."}
     ]
   }
-,
+  },
+
   4:{
     title:"La voiture au compteur truqué", theme:"Thème 5 — Le Contrat", client:"M. Aurélien Gros",
     steps:[
@@ -981,13 +982,14 @@ const CASES = {
         {id:"c10",txt:"Responsabilité du fait d'autrui",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 5 : Le dol et la nullité relative",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>vice du consentement&nbsp;: le dol</strong> (art. 1137 C.&nbsp;civ.). AutoPlus a utilisé des manœuvres frauduleuses (falsification du compteur&nbsp;+ email mensonger) pour obtenir le consentement de M.&nbsp;Gros, entraînant la <strong>nullité relative</strong> du contrat."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1137 du Code civil, le dol est le fait pour un contractant d'obtenir le consentement de l'autre par des manœuvres ou des mensonges. Il est une cause de nullité relative du contrat."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> AutoPlus SAS a délibérément falsifié le kilométrage (97&nbsp;000&nbsp;km réels vs 42&nbsp;000 déclarés) et garanti par email un compteur «&nbsp;certifié&nbsp;». Ces manœuvres ont vicié le consentement de M.&nbsp;Gros&nbsp;: sans elles, il n'aurait pas contracté à ce prix.<br/><br/><span class='con-highlight'>En conséquence,</span> le contrat est nul pour dol. M.&nbsp;Gros peut obtenir la restitution des 11&nbsp;500&nbsp;€ et des dommages et intérêts (2&nbsp;200&nbsp;€ de réparations urgentes)."}
     ]
+  }
   },
 
   5:{
@@ -1109,13 +1111,14 @@ const CASES = {
         {id:"c10",txt:"Dol — nullité relative du contrat",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 6 : Responsabilité du fait des choses",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit de la <strong>responsabilité du fait des choses</strong> (art. 1242 al.&nbsp;1 C.&nbsp;civ.). Marché'Plus SAS est <strong>gardienne</strong> du présentoir (pouvoir d'usage, de direction et de contrôle). Elle est présumée responsable — Mme&nbsp;Renard n'a pas à prouver de faute."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1242 alinéa&nbsp;1 du Code civil, on est responsable non seulement du dommage que l'on cause par son propre fait, mais encore de celui qui est causé par le fait des choses que l'on a sous sa garde."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Marché'Plus, gardienne du présentoir, a laissé ses employés le surcharger (38&nbsp;kg pour 25&nbsp;kg autorisés). Il s'est effondré sur Mme&nbsp;Renard, lui causant un traumatisme crânien et une contusion (ITT 14 jours).<br/><br/><span class='con-highlight'>En conséquence,</span> Marché'Plus est présumée responsable et doit indemniser intégralement Mme&nbsp;Renard. Seule la force majeure ou la faute exclusive de la victime pourrait l'exonérer."}
     ]
+  }
   },
 
   6:{
@@ -1234,7 +1237,7 @@ const CASES = {
         {id:"c10",txt:"Nullité relative pour vice du consentement",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 7 : La clause de non-concurrence",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'une <strong>clause de non-concurrence</strong> dont il faut vérifier la validité (4 conditions cumulatives — Cass. soc. 10/07/2002) puis la violation. Les 4 conditions sont réunies. Mme&nbsp;Torres a créé une agence concurrente dans la zone et le délai interdits."},
@@ -1242,8 +1245,8 @@ const CASES = {
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> la clause remplit les 4 conditions&nbsp;: 18 mois, 80&nbsp;km autour de Lyon, intérêt légitime de SocioCom, contrepartie de 30&nbsp;%. Pourtant, Mme&nbsp;Torres a créé Torres Communication (même secteur, même zone) dans le délai interdit.<br/><br/><span class='con-highlight'>En conséquence,</span> Mme&nbsp;Torres a violé une clause valide. SocioCom peut obtenir des dommages et intérêts et demander la cessation de l'activité concurrente."}
     ]
   }
+  },
 
-,
   7:{
     title:"La copie qui va trop loin", theme:"Thème 8 — Entreprendre", client:"Maison Délice SAS",
     steps:[
@@ -1363,13 +1366,14 @@ const CASES = {
         {id:"c10",txt:"Entretien préalable obligatoire avant licenciement",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 8 : La concurrence déloyale",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'<strong>actes de concurrence déloyale par imitation</strong> (parasitisme). Douceurs Maison a copié les éléments distinctifs de Maison Délice, créant un risque de confusion dans l'esprit du public. Cette faute engage sa responsabilité civile (art. 1240 C.&nbsp;civ.)."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1240 du Code civil, tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer. Les actes de concurrence déloyale — notamment l'imitation créant une confusion — constituent une telle faute."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> Douceurs Maison a créé en 2024 une identité visuelle quasi identique à celle de Maison Délice (logo, couleurs, slogan), antérieure de 6 ans. Le constat d'huissier et les témoignages de 8 clients prouvent la confusion réelle et la perte de clientèle.<br/><br/><span class='con-highlight'>En conséquence,</span> Douceurs Maison a commis des actes de concurrence déloyale fautifs. Maison Délice peut obtenir la cessation des actes imitatifs et des dommages et intérêts."}
     ]
+  }
   },
 
   8:{
@@ -1488,13 +1492,14 @@ const CASES = {
         {id:"c10",txt:"Dol — nullité relative — vice du consentement",z:null},
       ]
     }
-  },corrige:{
+  ,corrige:{
     title:"Corrigé — Thème 8 : La résiliation du contrat de franchise",
     parts:[
       {label:"Qualification juridique",cls:"quali",text:"Il s'agit d'un <strong>contrat de franchise</strong> par lequel FreshSub concède sa marque et son savoir-faire à M.&nbsp;Azzar (franchisé indépendant) contre redevances. Les manquements graves cumulés&nbsp;+ mise en demeure sans effet justifient la <strong>résiliation</strong>."},
       {label:"Règle de droit — Réponse 2",cls:"maj",text:"<span class='con-highlight'>Selon l'article</span> 1217 du Code civil, la partie envers laquelle l'engagement n'a pas été exécuté peut provoquer la résolution du contrat. L'article 1226 précise que la résolution peut résulter d'une mise en demeure infructueuse lorsque l'inexécution est suffisamment grave."},
       {label:"Faits & Solution — Réponse 3",cls:"min",text:"<span class='con-highlight'>En l'espèce,</span> M.&nbsp;Azzar a violé deux obligations essentielles&nbsp;: la clause d'approvisionnement exclusif (6 non-conformités — audit du 14/03) et le paiement des redevances (11&nbsp;040&nbsp;€ impayés malgré 3 rappels). La mise en demeure du 10/03 est restée sans effet sous 15 jours.<br/><br/><span class='con-highlight'>En conséquence,</span> FreshSub est en droit de résilier le contrat et peut réclamer 11&nbsp;040&nbsp;€ de redevances impayées ainsi que des dommages et intérêts."}
     ]
+  }
   }
 
 };
@@ -1564,6 +1569,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   safe('btn-close-badge',el=>el.onclick=()=>closeOv('ov-badge'));
   safe('btn-back-map',el=>el.onclick=goToMap);
   safe('btn-synthese',el=>el.onclick=goToSynth);
+  safe('btn-corrige',el=>el.onclick=()=>showCorrige(S.cas));
   safe('btn-back-verdict',el=>el.onclick=()=>goTo('verdict'));
   safe('btn-val-synth',el=>el.onclick=valSynth);
   document.querySelectorAll('.cc').forEach(card=>{
